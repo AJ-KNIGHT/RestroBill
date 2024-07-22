@@ -4,105 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Login 2</title>
-    <style>
-        * {
-
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: rgb(39, 42, 44);
-        }
-
-
-        .main {
-            display: flex;
-            min-height: 100vh;
-            flex-wrap: wrap;
-            width: 100%;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover
-        }
-
-        .container {
-            background: #fff;
-            width: 500px;
-            padding: 65px 54px 55px 55px;
-            margin-top: 10px;
-            overflow: hidden;
-            border-radius: 10px;
-        }
-        .login-form{
-            width: 100%;
-        }
-
-        .form-heading {
-            display: block;
-            font-family: Poppins-Bold;
-            font-size: 39px;
-            color: #333333;
-            text-align: center;
-            line-height: 1.2;
-            padding-bottom: 49px;
-        }
-
-        .form-input {
-            position: relative;
-            width: 100%;
-            border-bottom: 2px solid #d9d9d9;
-            margin-bottom: 23px;
-        }
-
-        .label-input {
-            font-size: 14px;
-            font-family: Poppins-Regular;
-            line-height: 1.5;
-            color: #333333;
-            padding-left: 7px;
-
-        }
-
-        .form-input input {
-            outline: 0;
-            border: 0;
-            display: block;
-            background-color: transparent;
-            font-family: Poppins-Medium;
-            font-size: 16px;
-            color: #333333;
-            line-height: 1.2;
-            width: 100%;
-            height: 55px;
-            padding: 0 7px 0 43px;
-        }
-
-        .form-btn {
-            display: block;
-            width: 100%;
-            position: relative;
-            z-index: 1;
-            overflow: hidden;
-            border-radius: 25px;
-            margin: 0 auto;
-        }
-
-        .submit-btn {
-            position: absolute;
-            z-index: -1;
-            width: 300%;
-            height: 100%;
-            background-color: linear-gradient(right, #00dbde, #fc00ff, #00dbde, #fc00ff);
-            top: 0;
-            left: -100%;
-            transition: all 0.4s;
-        }
-    </style>
+	<link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
 </head>
 
 <body>
@@ -112,23 +16,25 @@
                 <span class="form-heading">Login</span>
                 <div class="form-input">
                     <span class="label-input">Username</span>
-                    <input type="text" placeholder="Type your username" name="username">
+                    <input type="text" placeholder="Type your username" name="username" class="input">
+                    <span class="icon" data-symbol="&#xf206;"></span>
 
                 </div>
                 <div class="form-input">
-                    <span class="label">Password</span>
-                    <input type="password" placeholder="Type your password" name="password">
+                    <span class="label-input">Password</span>
+                    <input type="password" placeholder="Type your password" name="password" class="input">
+                    <span class="icon" data-symbol="&#xf190;"></span>
 
                 </div>
                 <div class="form-btn">
                     <div class="submit-btn">
-                        <button>LOGIN</button>
+                        <div class="submit-btn-1"></div>
+                        <button class="btn">LOGIN</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-
 </body>
 
 </html>
