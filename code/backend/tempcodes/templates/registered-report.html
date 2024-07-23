@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        tabel, th, td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <h1>Registration Report</h1>
+    <h2>Used : {{ method }} Method</h2>
+
+    <table>
+        <tr>
+            <th>Username</th>
+            <th>Password</th>
+            <th>Email</th>
+        </tr>
+        <tr>
+            <td>{{ username }}</td>
+            <td>{{ password }}</td>
+            <td>{{ email }}</td>
+        </tr>
+    </table>
+</body>
+</html>
