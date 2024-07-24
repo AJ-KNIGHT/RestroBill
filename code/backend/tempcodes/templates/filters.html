@@ -1,0 +1,21 @@
+{% extends "inherit-template/base.html" %}
+
+{% block title %}Filters in jinja{% endblock %}
+
+{% block content %}
+
+    <h1>Filters in jinja2 (flask framework)</h1>
+    <p>cannot use .upper() in html with jinja2 <br> for that the jinja2 filters came.
+    syntax :  var | filter_name</p>
+
+    <h4>Example for upper(),lower(),replace() and make custom filter</h4>
+    <p>normal : {{ text }}</p>
+    <p>Uppercase : {{ text | upper }}</p>
+    <p>Lowercase : {{ text | lower }}</p>
+    <p>Replace l with L : {{ text | replace('l','L') }}</p>
+    <p>custome :- </p>
+    <p>reverse_string : {{ text | reverse_string }}</p>
+    <p>repeat default=2 : {{ text | repeat }}</p>
+    <p>repeat with 5 : {{ text | repeat(5) }}</p>
+    <p>alternate_case (upper-lower-upper-etc) : {{ text | alternate_case }}</p>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "inherit-template/base.html" %}
+
+<!-- import html blocks from base.html -->
+{% block title %} Details {% endblock %}
+
+{% block content %}
+    <h1>details</h1>
+    <h3>Name : {{ name }}</h3>
+    <h3>Age : {{ age }}</h3>
+    <h3>Skills : -</h3>
+    <ul>
+        <!-- basic ---------------
+        {% for item in skills %}
+            {% if item == "Python" %}
+                <li style="color: red;">{{ item }}</li>
+            {% elif item == "Flask" %}
+                <li style="color: red;">{{ item }}</li>
+            {% else %}
+                <li>{{ item }}</li>
+            {% endif%}
+        {% endfor %} 
+        ------------------------------->
+        <!-- OR -->
+         {% for item in skills %}
+            <li {% if item == "Python" %} style="color: red;" {% elif item == "Flask" %} 
+            style="color: red;" {% endif %}>{{ item }}</li>
+         {% endfor %}
+    </ul>
+{% endblock %}

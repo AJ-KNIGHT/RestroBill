@@ -1,7 +1,7 @@
+/*------------ set font-family file ------------ */
 @font-face {
     font-family: Poppins-Regular;
     src: url('../fonts/poppins/Poppins-Regular.ttf'); 
-
     }
 
     @font-face {
@@ -19,20 +19,24 @@
     src: url('../fonts/poppins/Poppins-SemiBold.ttf'); 
     }
 
-    body, html {
-        height: 100%;
-        font-family: Poppins-Regular, sans-serif;
-    }
-    html {
-        box-sizing: border-box;
-        line-height: 1.15;
-    }
+/*------------ Style ------------ */
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
     }
 
+    body, html {
+        height: 100%;
+        font-family: Poppins-Regular, sans-serif;
+    }
+
+    html {
+        box-sizing: border-box;
+        line-height: 1.15;
+    }
+
+/*------------ login container ------------ */
     .main {
         display: flex;
         min-height: 100vh;
@@ -56,6 +60,8 @@
         overflow: hidden;
         border-radius: 10px;
     }
+
+/*------------ login form ------------ */
     .login-form{
         width: 100%;
     }
@@ -83,7 +89,6 @@
         line-height: 1.5;
         color: #333333;
         padding-left: 7px;
-
     }
 
     .input {
@@ -100,6 +105,7 @@
         padding: 0 7px 0 43px;
     }
 
+/*------------ logi buttom ------------ */
     .form-btn {
         display: flex;
         flex-wrap: wrap;
@@ -160,6 +166,7 @@
     .submit-btn:hover .submit-btn-1{
         left: 0;
     }
+
     .icon {
         position: absolute;
         display: block;
@@ -169,6 +176,7 @@
         left: 0;
         pointer-events: none;
       }
+
       .icon::after {
         content: attr(data-symbol);
         font-family: Material-Design-Iconic-Font;
@@ -184,6 +192,7 @@
         padding-left: 13px;
         padding-top: 3px;
       }
+
       .icon::before {
         content: "";
         display: block;
@@ -198,9 +207,11 @@
         -moz-transition: all 0.4s;
         transition: all 0.4s;
       }
+
       .input:focus + .icon::before {
         width: 100%;
       }
+
       .input:focus + .icon::after {
         color: #a64bf4;
       }
