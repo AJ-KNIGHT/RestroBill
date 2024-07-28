@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title%}title{% endblock %}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color:  rgb(44, 44, 44);
+        }
+        .navbar {
+            background-color: black;
+            border-radius: 4px;
+        }
+        .nav-div {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-logo {
+            margin-left: 25px
+        }
+        .nav-logo a {
+            color: white;
+            font-size: 18px;
+            font-weight: 550;
+            text-decoration: none;
+        }
+        .nav-logo a:hover {
+            color:  #4CAF50;
+            border-bottom: 2px solid #4CAF50;
+        }
+        .nav-div ul {
+            margin-right: 10px;
+        }
+        .nav-div li {
+            list-style: none;
+            display: inline-block;
+            padding: 5px 10px;
+            margin: 10px 5px;
+        }
+        .nav-div li a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-div li a:hover {
+            color:  #4CAF50;
+            border-bottom: 2px solid #4CAF50;
+            /* box-shadow: 1px 1px 20px yellow; */
+            
+        }
+    </style>
+{% block style %}
+{% endblock %}
+
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-div">
+                <div class="nav-logo"><a href="{{ url_for('home') }}">HOME</a></div>
+                <ul>
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    <li><a href="{{ url_for('about') }}">About</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

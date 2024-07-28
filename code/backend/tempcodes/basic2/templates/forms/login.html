@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title%} Login {% endblock %}
+
+
+{% block style %}
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background: rgb(44, 44, 44);
+    }
+
+    .container {
+        background-color: white;
+        margin: 100px auto 0;
+        text-align: center;
+        width: 400px;
+        padding: 40px 20px;
+        border-radius: 10px;
+    }
+
+    .container h1 {
+        color: black;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .input {
+        width: 100%;
+        padding: 12px 10px;
+        margin: 8px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .label {
+        display: block;
+        margin-left: 3px;
+        text-align: left;
+        font-size: 14px;
+    }
+
+    .btn {
+        background-color: #4CAF50;
+        width: 100%;
+        color: white;
+        margin: 8px 0;
+        padding: 14px 20px;
+        border: 0;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        background-color: #2494d4;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Login</h1>
+    <form action="{{ url_for('login') }}" method="POST">
+        <span class="label">Username</span>
+        <input class="input" type="text" name="username" placeholder="Enter your Username">
+        <span class="label">Password</span>
+        <input class="input" type="password" name="password" placeholder="Enter your Password">
+        <input class="btn" type="submit" value="Login">
+    </form>
+</div>
+{% endblock %}

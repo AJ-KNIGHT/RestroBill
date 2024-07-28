@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            width: 100%;
+            background-color: rgb(44, 44, 44);
+        }
+
+        .container {
+            background: linear-gradient(135deg, rgb(131, 240, 104), rgb(23, 197, 159));
+            margin: 50px auto 0;
+            padding: 20px 10px;
+            border-radius: 10px;
+            width: 500px;
+        }
+
+        .heading {
+            color: black;
+            text-align: center;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .container-content {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        span {
+            margin: 20px 10px;
+        }
+
+        a {
+            border-radius: 25px;
+            font-size: 17px;
+            font-weight: bold;
+            color: black;
+            background: white;
+            padding: 15px;
+        }
+
+        a:hover {
+            background: rgb(111, 59, 180);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1 class="heading">HOME</h1>
+        <div class="container-content">
+            <span><a href="{{ url_for('login') }}">Login</a></span>
+            <span><a href="{{ url_for('login') }}">Login</a></span>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

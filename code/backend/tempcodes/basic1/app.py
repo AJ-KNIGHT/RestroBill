@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, make_response
+from flask import Flask, render_template, request, make_response, redirect, url_for
 
 app = Flask(__name__, template_folder="templates")
 
@@ -61,6 +61,8 @@ def alternate_case(s):
     return "".join([c.upper() if i % 2 == 0 else c.lower() for i, c in enumerate(s)])
 # --------------------------------------------
 
+# dynamic urls
+
 # return a .html page with name endpoint
 @app.route('/<name>')
 def name(name):
@@ -71,8 +73,7 @@ def name(name):
 def multi(num):
     return render_template('multi.html', num = num)
 
-# app route custome rule
-app.add_url_rule('/home','/',index)
+
 
 # dynamic route : get name from endpoint
 @app.route('/about/<name>')
@@ -84,9 +85,17 @@ def about_me(name):
 def calc_num(num1):
     return f"<center><h1>number is {num1} </h1</center>"
 
+# also redirect in pycode
+# endpoint to return an url_for('function')
+@app.route('/redirect')
+def redirect_endpoint():
+    return redirect(url_for('index'))
+
+# app route custome rule
+app.add_url_rule('/home','/',index)
+
 
 #  request method:
-
 # GET -
 # url parameters are in a dict = request.args[]
 # use :
@@ -109,7 +118,7 @@ def calc_num(num1):
 #     pass
 
 
-# form access with Get
+# form access with Get old
 @app.route('/register-get')# for form page
 def register_get():
     return render_template('register-get.html')
@@ -123,7 +132,7 @@ def report_get():
     return render_template('registered-report.html', username=username ,password=password,
                            email=email, method=method)
 
-# form access with post
+# form access with post old
 @app.route('/register-post')# for form page
 def register_post():
     return render_template('register-post.html')
@@ -138,8 +147,16 @@ def report_post():
                            email=email, method=method)
 
 
+# Form usage with get and post adv
 
-
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template('forms/login.html')
+    elif request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        return "POST"
 
 
 if __name__ == '__main__':

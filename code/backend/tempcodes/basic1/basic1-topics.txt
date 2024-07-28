@@ -1,0 +1,17 @@
+
+routes with str and render_template
+
+use with curl (header,status,reponse)
+custom response,status code
+
+pass data from pycode to html (jinja2 render)
+
+jinja2 filters
+
+dynamic routes with str,int,float in url endpoit
+
+redirect with fuction name
+
+url rule
+
+basic form usage get and post

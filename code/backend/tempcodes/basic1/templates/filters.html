@@ -18,4 +18,6 @@
     <p>repeat default=2 : {{ text | repeat }}</p>
     <p>repeat with 5 : {{ text | repeat(5) }}</p>
     <p>alternate_case (upper-lower-upper-etc) : {{ text | alternate_case }}</p>
+<!-- dynamic url -->
+    <a href="{{ url_for('about') }}">about</a>
 {% endblock %}
