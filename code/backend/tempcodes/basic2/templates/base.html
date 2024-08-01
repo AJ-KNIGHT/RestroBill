@@ -25,10 +25,10 @@
             margin-left: 25px
         }
         .nav-logo a {
+            text-decoration: none;
             color: white;
             font-size: 18px;
             font-weight: 550;
-            text-decoration: none;
         }
         .nav-logo a:hover {
             color:  #4CAF50;
@@ -67,6 +67,7 @@
                 <ul>
                     <li><a href="{{ url_for('login') }}">Login</a></li>
                     <li><a href="{{ url_for('about') }}">About</a></li>
+                    <li><a href="{{ url_for('upload_file') }}">Upload file</a></li>
                 </ul>
             </div>
         </nav>

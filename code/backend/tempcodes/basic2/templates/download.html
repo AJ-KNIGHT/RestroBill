@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %} Download file {% endblock %}
+
+{% block style %}
+<style>
+    .container {
+        background-color: white;
+        color: black;
+        margin: 50px auto 0;
+        width: 600px;
+        padding: 20px;
+        border-radius: 4px;
+        text-align: center;
+    }
+    .container h1 {
+        text-align: center;
+        font-weight: 500;
+        margin: 20px 10px 25px 10px;
+    }
+    .container a {
+        text-decoration: none;
+        display: inline-block;
+        background-color: rgb(62, 182, 62);
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+    }
+    .container a:hover {
+        box-shadow: 1px 1px 20px rgb(13, 171, 182);
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <h1>Download</h1>
+    <a href="{{ url_for('download', filename=filename) }}">Download</a>
+</div>
+
+
+{% endblock %}

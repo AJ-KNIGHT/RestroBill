@@ -1,2 +1,9 @@
 
-form login normal
+form login auth with local var
+
+upload a text file , excel file show in page (read excel using pandas)
+
+convert excel to csv method 1
+convert excel to csv method 2 adv (save in server,downlaod page button and return the file)
+
+sample json data from F-end to back and save in B-end

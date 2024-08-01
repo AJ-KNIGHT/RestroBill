@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %} File Upload {% endblock %}
+
+{% block style %}
+<style>
+   .container {
+        background-color: white;
+        color: black;
+        margin: 50px auto 0;
+        width: 600px;
+        padding: 20px;
+        border-radius: 4px;
+        text-align: center;
+    }
+   .container h1 {
+        margin: 20px 10px 25px 10px;
+        font-weight: 500;
+        text-align: center;
+    }
+    .container form {
+        text-align: center;
+    }
+    .container .btn {
+        outline: 0;
+        border: 0;
+        background-color: rgb(62, 182, 62);
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+    }
+    .container .btn:hover {
+        box-shadow: 1px 1px 20px rgb(13, 171, 182);
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <h1>Upload Text or Excel file</h1>
+    <form action="{{ url_for('upload_file') }}" method="POST" enctype="multipart/form-data">
+        <input class="input-file" type="file" name="file" accept="text/plain, .xls, .xlsx, 
+        application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required="required">
+        <!-- text/plain for excel and text file , set accept as wanted file type -->
+         <input class="btn" type="submit" value="Upload file">
+    </form>
+
+    <h1>Excel file to csv file</h1>
+    <form action="{{ url_for('convert_csv') }}" method="POST" enctype="multipart/form-data">
+        <input class="input-file" type="file" name="file" accept=".xls, .xlsx, 
+        application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required="required">
+        <!-- text/plain for excel and text file , set accept as wanted file type -->
+         <input class="btn" type="submit" value="Convert">
+    </form>
+
+    <h1>Excel file to csv file Advanced </h1>
+    <form action="{{ url_for('convert_csv2') }}" method="POST" enctype="multipart/form-data">
+        <input class="input-file" type="file" name="file" accept=".xls, .xlsx, 
+        application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required="required">
+        <!-- text/plain for excel and text file , set accept as wanted file type -->
+         <input class="btn" type="submit" value="Convert">
+    </form>
+    <h1>Javascript Json request</h1>
+    <button class="btn" id="post_button">Send Post Request</button>
+
+</div>
+<script type="text/Javascript">
+    const postButton = document.getElementById('post_button');
+
+    const jsonData ={name: 'anas', greeting: 'Hello'};
+
+    postButton.addEventListener('click', ()=> {
+        fetch('{{ url_for("json_sample") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
+            },
+            body: JSON.stringify(jsonData)
+        })
+            .then(response => response.json())
+            .then(data => console.log('Success:', data))
+            .catch((error) => {
+                console.error('Error:', error)
+            });
+    });
+</script>
+
+
+{% endblock %}

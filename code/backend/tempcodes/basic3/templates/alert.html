@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %} Alert {% endblock %}
+
+{% block inhead %}
+<style>
+    .container {
+        text-align: center;
+    }
+    .container h1 {
+        margin: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Alert Message within 5 sec Onload </h1>
+</div>
+<script src="/js/alert.js"></script>
+{% endblock %}

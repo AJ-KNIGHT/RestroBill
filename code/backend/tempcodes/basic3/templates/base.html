@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/base-style.css">
+    <title>{% block title%}title{% endblock %}</title>
+
+{% block inhead %}
+{% endblock %}
+</head>
+<body class="n-body">
+    <header>
+        <nav class="n-navbar">
+            <div class="n-nav-div">
+                <div class="n-nav-logo"><a href="{{ url_for('index') }}">Home</a></div>
+                <ul>
+                    <li><a href="{{ url_for('alert') }}">Alert Msg</a></li>
+                    <li><a href="{{ url_for('bootstrap_basic') }}">Bootstrap</a></li>
+                    <li><a href="#">3</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
