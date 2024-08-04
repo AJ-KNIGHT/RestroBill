@@ -1,0 +1,16 @@
+req = flask-sqlalchemy, flask-migrate
+firebase req = pyrebase4
+
+Database :
+Database as class in py
+sqlalchemy - ORM to convert class into table like structure for db
+
+for remove circular import use these file structure
+
+--  after setting it run in current dir -only once- : flask db init
+
+-- For evey change makes in db class
+    : flask db migrate
+    : flask db upgrade
+
+view .db use sqlite extension

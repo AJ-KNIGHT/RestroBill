@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %} Data {% endblock %}
+
+
+{% block inhead %}
+<style>
+    .container {
+        text-align: center;
+    }
+    .container h1 {
+        margin: 20px;
+        color: white;
+    }
+    .container p {
+        color: white;
+        margin: 10px;
+        font-size: 14px;
+    }
+    .container a {
+        display: inline-block;
+        text-decoration: none;
+        color: black;
+        padding: 10px;
+        background-color: rgb(64, 160, 243);
+        border-radius: 10px;
+        margin: 10px;
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <h1>Session : -</h1>
+    <p>Status : {{ status_session }}</p>
+    <a href="{{ url_for('set_session') }}">Set session data</a>
+    <a href="{{ url_for('get_session') }}">Get session data</a>
+    <a href="{{ url_for('clear_session') }}">Clear session data</a>
+
+    <h1>Cookie : -</h1>
+    <p>Status : {{ status_cookie }}</p>
+    <a href="{{ url_for('set_cookie') }}">Set cookie</a> 
+    <a href="{{ url_for('get_cookie') }}">Get cookie</a>
+    <a href="{{ url_for('remove_cookie') }}">Remove cookie</a>
+</div>
+
+{% endblock %}
+

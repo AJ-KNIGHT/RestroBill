@@ -3,3 +3,10 @@ static file handling:
 img, css, js
 
 bootstrap basics install set in base
+
+sessions
+
+cookies
+
+message flashing in flask
+
