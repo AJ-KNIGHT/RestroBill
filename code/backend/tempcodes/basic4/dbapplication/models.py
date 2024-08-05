@@ -10,4 +10,6 @@ class Person(db.Model):
     job = db.Column(db.Text)
 
     def __repr__(self):
-        return f'Name: {self.name}, Age : {self.age}'
+        # print(type(self))
+        return f'{self.name}{self.age}{self.job}'
+        

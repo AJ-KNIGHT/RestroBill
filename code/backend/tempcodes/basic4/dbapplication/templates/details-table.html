@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %} Details {% endblock %}
+
+{% block inhead %} {% endblock %}
+
+{% block content %}
+
+<h1>User Details in Table</h1>
+
+<table>
+    <tr>
+        <th>Pid</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Job</th>
+    </tr>
+    {% for person in people %}
+        <tr>
+            <td>{{ person.pid }}</td>
+            <td>{{ person.name }}</td>
+            <td>{{ person.age }}</td>
+            <td>{{ person.job }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

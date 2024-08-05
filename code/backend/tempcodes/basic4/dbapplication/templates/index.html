@@ -10,9 +10,14 @@
 <h2>Table Data</h2>
 <ul>
     {% for person in people %}
-        <li>{{ person }}</li>
+        <li>Name : {{ person.name }}, Age : {{ person.age }}, Job : {{ person.job }}
+            <button onclick="deletePerson({{ person.pid }})">Delete</button>
+            <a href="{{ url_for('details', pid=person.pid) }}">Details</a>
+        </li>
     {% endfor %}
 </ul>
+
+<h1> Show Users Table <a href="{{ url_for('details_table') }}">Click here</a></h1>
 
 <h3>New Person</h3>
 <form action="{{ url_for('index') }}" method="POST">
@@ -21,5 +26,22 @@
     <input type="text" name="job" placeholder="Job"><br>
     <input type="submit" value="Create">
 </form>
+<script type="text/javascript">
+    function deletePerson(pid) {
+        fetch('{{ url_for("delete", pid=pid) }}' + pid, {
+            method: 'DELETE'
+        }).then(response => {
+            if (response.ok) {
+                window.location.reload();
+            }
+            else {
+                console.error('Falied to delete item with pid : ', pid);
+            }
+        })
+            .catch(error => {
+                console.error('Error during fecthing: ',error)
+            });
+    }
+</script>
 
 {% endblock %}
