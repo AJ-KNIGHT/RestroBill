@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .container{
+            display: flex;
+            justify-content:space-evenly;
+            background-color: whitesmoke;
+            min-height: 100vh;
+            
+        }
+        
+        .cards{
+            background-color: rgb(162, 117, 180);
+            height: 250px;
+            width: 250px;
+            margin: 150px 50px 50px 50px;
+            border-radius: 15px;
+            
+            
+        }
+        .cards .icon {
+            width: 150px;
+            height: 150px;
+            border-radius:50% ;
+            background-color: white;
+            margin: 20px auto 20px;
+            background-repeat: no-repeat;
+            background-size: 100px;
+            background-position:center ;
+        }
+
+        .icon-database{
+            background-image: url(database-icon.png);
+
+        }
+
+        .icon-user{
+            background-image: url(user.png);
+        }
+
+        .icon-report{
+            background-image: url(report.png);
+        }
+
+        .cards h3{
+            color: white;
+            font-size: 30px;
+            text-align: center;
+            margin-top: 20px;
+
+
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="cards">
+            <div class="icon icon-database"></div>
+            <h3>DATABASE</h3>
+
+        </div>
+        <div class="cards">
+            <div class="icon icon-user"></div>
+            <h3>USER</h3>
+        </div>
+        <div class="cards">
+            <div class="icon icon-report"></div>
+            <h3>REPORT</h3>
+        </div>
+    </div>
+</body>
+</html>
