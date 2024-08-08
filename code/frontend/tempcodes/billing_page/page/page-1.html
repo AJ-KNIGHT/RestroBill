@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .container{
+            height: 100vh;
+            background-color:whitesmoke;
+            overflow: auto;
+            
+        }
+        .container .search{
+            display: flex;
+            justify-content: center;
+            padding-top:100px;
+        }
+        .container input{
+
+            width: 600px;
+            text-align: center;
+            height: 50px;
+            color: rgba(237, 212, 255, 1);
+            border: solid 1px transparent;
+            border-radius: 25px;
+            outline: none;
+            box-shadow: 0 0px 10px rgba(0, 0, 0, 0.094);
+        }
+
+        .container-2{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+        }
+        
+        .container-2 .options{
+            background-color: yellowgreen;
+            width: 500px;
+            height: 400px;
+            margin-top: 30px;
+            border-radius: 25px;
+            text-align: center;
+            display: flex;
+            justify-content: space-evenly;
+            box-shadow: 0 0px 10px rgba(0, 0, 0, 0.094);
+
+        }
+        .container-2 .options h3{
+            color: aliceblue;
+            margin: 15px;
+
+        }
+        /* .product{
+            margin: 15px;
+        } */
+    </style>
+    <title>page</title>
+</head>
+<body>
+    <div class="container">
+        <div class="search"><input type="text" placeholder="search"></div>
+        <div class="container-2">
+            <div class="options">
+                <h3 class="product">PRODUCT</h3>
+                <h3 class="qty">QUANTITY</h3>
+                <h3 class="price">PRICE</h3>
+                
+            </div>
+        </div>
+    </div>
+</body>
+</html>
