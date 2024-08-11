@@ -1,0 +1,6 @@
+req = flask flask-sqlalchemy, flask-migrate, flask-login, flask-bcrypt
+
+login authentication with db
+signup , login , protect some endpoint
+
+

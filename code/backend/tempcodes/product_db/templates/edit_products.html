@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DB Products</title>
+</head>
+<body>
+    <h1>Products</h1>
+    <table style="text-align: center;">
+        <tr>
+            <th>Pid</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+        </tr>
+        {% for product in products %}
+            <tr>
+                <td>{{ product.pid }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.category }}</td>
+                <td>{{ product.price }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <form action="{{ url_for('edit_products') }}" method="POST">
+        <input type="text" name="name" placeholder="Product Name" required="required"> <br>
+        <input type="text" name="category" placeholder="Category" required="required"> <br>
+        <input type="number" name="price" placeholder="Price" required="required"> <br>
+        <input type="submit" value="Add">
+    </form>
+</body>
+</html>
