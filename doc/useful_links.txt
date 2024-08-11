@@ -1,0 +1,15 @@
+git repo : https://github.com/AJ-KNIGHT/Restaurant-Billing-Webapp
+
+code refer :
+
+https://medium.com/@choihalim/python-authenticating-and-authorizing-users-in-flask-applications-2db06fd2fcb5
+
+https://www.sitepoint.com/flask-login-user-authentication/
+
+refer :
+
+https://github.com/keshavgbpecdelhi/Web-Development
+
+https://www.sitepoint.com/
+
+https://www.sitepoint.com/flask-introduction/
