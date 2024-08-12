@@ -10,13 +10,17 @@
             box-sizing: border-box;
         }
         .container{
+            display: flex;
             height: 100vh;
             background-color:whitesmoke;
             overflow: auto;
+            flex-direction: column;
+            min-height: 100vh;
             
         }
         .container .search{
             display: flex;
+            margin: auto 50px auto 50px;
             justify-content: center;
             padding-top:100px;
         }
@@ -33,43 +37,34 @@
         }
 
         .container-2{
-            display: flex;
-            justify-content: center;
-            align-items: center;
+           display: flex;
+           background-color: aqua;
+           width: 600px;
+           height: 400px;
+           align-self: center;
+           margin-bottom: 50px;
+           border-radius: 15px;
+
             
         }
-        
-        .container-2 .options{
-            background-color: yellowgreen;
-            width: 500px;
-            height: 400px;
-            margin-top: 30px;
-            border-radius: 25px;
-            text-align: center;
-            display: flex;
-            justify-content: space-evenly;
-            box-shadow: 0 0px 10px rgba(0, 0, 0, 0.094);
-
-        }
         .container-2 .options h3{
-            color: aliceblue;
-            margin: 15px;
-
+           justify-content: space-evenly;
         }
-        /* .product{
-            margin: 15px;
-        } */
+        
     </style>
-    <title>page</title>
+    <title>BILLING PAGE</title>
 </head>
 <body>
     <div class="container">
         <div class="search"><input type="text" placeholder="search"></div>
         <div class="container-2">
             <div class="options">
-                <h3 class="product">PRODUCT</h3>
-                <h3 class="qty">QUANTITY</h3>
-                <h3 class="price">PRICE</h3>
+                <h3>PRODUCT</h3>
+                <h3>QUANTITY</h3>
+                <h3>PRICE</h3>
+                
+            </div>
+            <div class="sections">
                 
             </div>
         </div>
