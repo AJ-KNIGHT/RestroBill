@@ -1,73 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-        *{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        .container{
-            display: flex;
-            height: 100vh;
-            background-color:whitesmoke;
-            overflow: auto;
-            flex-direction: column;
-            min-height: 100vh;
-            
-        }
-        .container .search{
-            display: flex;
-            margin: auto 50px auto 50px;
-            justify-content: center;
-            padding-top:100px;
-        }
-        .container input{
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      .container {
+        display: flex;
+        height: 100vh;
+        background-color: whitesmoke;
+        overflow: auto;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      .container .search {
+        display: flex;
+        margin: auto 50px auto 50px;
+        justify-content: center;
+        padding-top: 100px;
+      }
+      .container input {
+        width: 600px;
+        text-align: center;
+        height: 50px;
+        color: rgba(237, 212, 255, 1);
+        border: solid 1px transparent;
+        border-radius: 25px;
+        outline: none;
+        box-shadow: 0 0px 10px rgba(0, 0, 0, 0.094);
+      }
 
-            width: 600px;
-            text-align: center;
-            height: 50px;
-            color: rgba(237, 212, 255, 1);
-            border: solid 1px transparent;
-            border-radius: 25px;
-            outline: none;
-            box-shadow: 0 0px 10px rgba(0, 0, 0, 0.094);
-        }
+      .container-2 {
+        flex-wrap: wrap;
+        display: flex;
+        flex-direction: column;
+        background-color: aqua;
+        min-width: 500px;
+        height: 400px;
+        align-self: center;
+        margin-bottom: 50px;
+        border-radius: 15px;
+        padding: 10px;
+        box-shadow: 0 0px 10px rgba(0, 0, 0, 0.094);
+      }
 
-        .container-2{
-           display: flex;
-           background-color: aqua;
-           width: 600px;
-           height: 400px;
-           align-self: center;
-           margin-bottom: 50px;
-           border-radius: 15px;
+      .container-2 .options {
+        flex-wrap: wrap;
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 10px;
+      }
+      .container-2 .options h2 {
+        color: white;
+        margin: 0 10px;
+      }
 
-            
-        }
-        .container-2 .options h3{
-           justify-content: space-evenly;
-        }
-        
+      .container-2 .sections {
+        display: flex;
+        justify-content: space-between;
+        height: 50px;
+        width: 600px;
+        background-color: red;
+        border-radius: 10px;
+        margin: 1px;
+      }
+
+      .sections h3 {
+        color: whitesmoke;
+        margin: auto 40px auto 40px;
+      }
+
+      .item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .item span {
+        color: white;
+        margin: 5px;
+        font-size: 25px;
+        font-weight: bolder;
+      }
+      .delete{
+        background-color: transparent;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .delete span{
+        margin-left: 5px;
+      }
     </style>
     <title>BILLING PAGE</title>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div class="search"><input type="text" placeholder="search"></div>
-        <div class="container-2">
-            <div class="options">
-                <h3>PRODUCT</h3>
-                <h3>QUANTITY</h3>
-                <h3>PRICE</h3>
-                
+      <div class="search"><input type="text" placeholder="search" /></div>
+      <div class="container-2">
+        <div class="options">
+          <h2>PRODUCT</h2>
+          <h2>QUANTITY</h2>
+          <h2>PRICE</h2>
+        </div>
+        <div class="sections">
+          <div class="delete">
+            <span>delete</span>
+          </div>
+          <div class="sections">
+            <h3>name1</h3>
+            <div class="item">
+              <span>-</span>
+              <span>1</span>
+              <span>+</span>
+            </div>
+            <h3>123</h3>
+            </div>
+          </div>
+
+          <div class="sections">
+            <div class="delete">
+              <span>delete</span>
             </div>
             <div class="sections">
-                
+              <h3>name1</h3>
+              <div class="item">
+                <span>-</span>
+                <span>1</span>
+                <span>+</span>
+              </div>
+              <h3>123</h3>
+              </div>
             </div>
+
+            <div class="sections">
+                <div class="delete">
+                  <span>delete</span>
+                </div>
+                <div class="sections">
+                  <h3>name1</h3>
+                  <div class="item">
+                    <span>-</span>
+                    <span>1</span>
+                    <span>+</span>
+                  </div>
+                  <h3>123</h3>
+                  </div>
+                </div>
         </div>
+      </div>
     </div>
-</body>
+  </body>
 </html>
