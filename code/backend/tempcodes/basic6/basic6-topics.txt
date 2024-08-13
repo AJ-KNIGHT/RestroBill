@@ -2,6 +2,8 @@ req = flask flask-sqlalchemy, flask-migrate, flask-login, flask-bcrypt
 
 blurprints (modularity)
 
+multiple blurprints
+
 
 
 

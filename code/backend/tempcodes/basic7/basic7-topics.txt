@@ -1,0 +1,70 @@
+req = flask flask-sqlalchemy, flask-migrate, flask-login, flask-bcrypt
+
+blurprints (modularity)
+
+multiple blurprints
+
+docker image
+
+#dockerfile
+```
+FROM python:3.10-slim-buster
+
+WORKDIR /flask-app
+
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
+
+COPY . .
+
+WORKDIR /flask-app/blueprintapp
+
+RUN flask db init
+RUN flask db migrate
+RUN  flask db upgrade
+
+WORKDIR /flask-app
+
+CMD [ "python3", "run.py" ]
+```
+
+
+commands :
+
+#build
+docker build --tag blueprint-docker .
+
+#show builded images
+docker images
+
+#run
+# docker run -d -p <inner-port>:<external-port> docker-image-name
+
+docker run -d -p 5000:5000 blueprint-docker
+
+#show docker running process
+docker ps
+
+#stop docker running image
+# docker stop <container-id>
+
+docker stop 29bdd38a8b44
+
+#save docker image file
+# docker save -o <filename.tar> <docker-image-name>
+
+docker save -o blueprintdocker.tar blueprint-docker
+
+## for server --------------------------------
+
+#load docker image file in server
+# docker load -i <docker-file.tar>
+
+docker load -i blueprintdocker.tar
+
+#run in server with docker file
+# docker run -d -p <inner-port>:<external-port> docker-image-name
+
+docker run -d -p 5000:5000 blueprint-docker
+
+----------------------------------------------
