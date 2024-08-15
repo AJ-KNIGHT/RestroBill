@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Home</h1>
+    <input type="text" class="text-area">
+    <button onclick="sendText()">send text data</button>
+    <button onclick="performPost()">Send json data</button>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+
+    <script>
+        function performPost(){
+            $.ajax({
+                type: 'POST',
+                url: "{{ url_for('get_text') }}",
+                data: {
+                    "name": "Amal"
+                },
+                success: function (response) {
+                    console.log("post json request done!")
+                }
+            })
+        }
+
+        // $(document).ready(function () {
+        //     $(".btn").click(function () {
+        //         console.log($(".text-area").val())
+        //     })
+        // })
+
+
+        function sendText(){
+            $.ajax({
+                type: 'POST',
+                url: "{{ url_for('get_text') }}",
+                data: JSON.stringify ({
+                    text: $(".text-area").val()
+                }),
+                success: function (response) {
+                        console.log("post text request done!")
+                }
+            })
+        }
+
+    </script>
+</body>
+</html>

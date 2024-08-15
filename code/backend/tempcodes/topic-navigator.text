@@ -1,0 +1,41 @@
+# Basic 1
+
+routes str and render_template,
+curl (header,status,reponse), 
+jinja2 render jinja2 filters
+dynamic routes with str,int,float in url endpoit
+redirect, url rule, form1 get and post
+
+
+# Basic 2
+
+form login auth with local var
+upload a text file , excel file show in page (read excel using pandas)
+convert file and return,sample json data from F-end to back and save in B-end
+
+
+# Basic 3
+
+static file handling, bootstrap, sessions, cookies
+message flashing in flask
+
+
+# Basic 4
+
+Database models sqlite, firebase realtime db
+
+
+# Basic 5
+
+login authentication with db
+signup , login , protect some endpoint
+
+
+# Basic 6
+
+blurprints (modularity), multiple blurprints
+
+
+# Basic 7
+
+docker usage

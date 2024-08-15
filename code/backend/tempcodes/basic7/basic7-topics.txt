@@ -1,10 +1,7 @@
 req = flask flask-sqlalchemy, flask-migrate, flask-login, flask-bcrypt
+docker required
 
-blurprints (modularity)
-
-multiple blurprints
-
-docker image
+docker usage
 
 #dockerfile
 ```

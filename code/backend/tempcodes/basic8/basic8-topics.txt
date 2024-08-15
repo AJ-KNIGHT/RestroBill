@@ -1,0 +1,11 @@
+Ajax usage
+
+send post request with out reload the page 
+
+Ajax-1 = send json and text-field data with ajax
+
+Ajax-2 = get json data and list with divs in the page with ajax
+
+Ajax-3 = advanced
+
+ 

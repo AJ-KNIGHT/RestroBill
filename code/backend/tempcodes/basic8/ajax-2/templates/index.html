@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask AJAX Example</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+
+    <h1>Item List Ajax-1</h1>
+    <p>list data from json</p>
+    <div id="data-container">
+        <!-- Data will be loaded here -->
+    </div>
+    <button id="refresh-button">Refresh Data</button>
+
+    <h1>Items List Ajax-2</h1>
+    <p>list data from list</p>
+    <button id="fetch-items">Fetch Items</button>
+    <div id="items-container"></div>
+
+    <script>
+        // Ajax-1
+        $(document).ready(function () {
+            $('#refresh-button').click(function () {
+                $.ajax({
+                    url: '/get_data_json',  // URL of the Flask route
+                    type: 'GET',
+                    success: function (data) {
+                        // Clear the current content
+                        $('#data-container').empty();
+
+                        // Populate the div with new data
+                        data.items.forEach(function (item) { // data.key.forEach for json
+                            $('#data-container').append('<div>' + item + '</div>');  // Adjust based on your data structure
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            });
+        });
+
+        // Ajax-2
+        $(document).ready(function() {
+            $('#fetch-items').click(function() {
+                $.ajax({
+                    url: '/get_data_list',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        $('#items-container').empty(); // Clear previous items
+                        response.forEach(function(item) {  // data.forEach for list
+                            $('#items-container').append('<p>' + item + '</p>');
+                        });
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
