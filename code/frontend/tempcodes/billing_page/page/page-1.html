@@ -1,157 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      .container {
-        display: flex;
-        height: 100vh;
-        background-color: whitesmoke;
-        overflow: auto;
-        flex-direction: column;
-        min-height: 100vh;
-      }
-      .container .search {
-        display: flex;
-        margin: auto 50px auto 50px;
-        justify-content: center;
-        padding-top: 100px;
-      }
-      .container input {
-        width: 600px;
-        text-align: center;
-        height: 50px;
-        color: rgba(237, 212, 255, 1);
-        border: solid 1px transparent;
-        border-radius: 25px;
-        outline: none;
-        box-shadow: 0 0px 10px rgba(0, 0, 0, 0.094);
-      }
 
-      .container-2 {
-        flex-wrap: wrap;
-        display: flex;
-        flex-direction: column;
-        background-color: aqua;
-        min-width: 500px;
-        height: 400px;
-        align-self: center;
-        margin-bottom: 50px;
-        border-radius: 15px;
-        padding: 10px;
-        box-shadow: 0 0px 10px rgba(0, 0, 0, 0.094);
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-      .container-2 .options {
-        flex-wrap: wrap;
-        display: flex;
-        justify-content: space-around;
-        margin-bottom: 10px;
-      }
-      .container-2 .options h2 {
-        color: white;
-        margin: 0 10px;
-      }
+    .container {
+      display: flex;
+      height: 100vh;
+      background-color: whitesmoke;
+      overflow: auto;
+      flex-direction: column;
+      min-height: 100vh;
+    }
 
-      .container-2 .sections {
-        display: flex;
-        justify-content: space-between;
-        height: 50px;
-        width: 600px;
-        background-color: red;
-        border-radius: 10px;
-        margin: 1px;
-      }
+    .container .search {
+      display: flex;
+      margin: auto 50px auto 50px;
+      justify-content: center;
+      padding-top: 20px;
+    }
 
-      .sections h3 {
-        color: whitesmoke;
-        margin: auto 40px auto 40px;
-      }
+    .container input {
+      width: 600px;
+      text-align: center;
+      height: 50px;
+      color: rgba(237, 212, 255, 1);
+      border: solid 1px transparent;
+      border-radius: 25px;
+      outline: none;
+      box-shadow: 0 0px 10px rgba(0, 0, 0, 0.094);
+    }
 
-      .item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-      .item span {
-        color: white;
-        margin: 5px;
-        font-size: 25px;
-        font-weight: bolder;
-      }
-      .delete{
-        background-color: transparent;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      .delete span{
-        margin-left: 5px;
-      }
-    </style>
-    <title>BILLING PAGE</title>
-  </head>
-  <body>
-    <div class="container">
-      <div class="search"><input type="text" placeholder="search" /></div>
-      <div class="container-2">
-        <div class="options">
-          <h2>PRODUCT</h2>
-          <h2>QUANTITY</h2>
-          <h2>PRICE</h2>
-        </div>
-        <div class="sections">
-          <div class="delete">
-            <span>delete</span>
-          </div>
-          <div class="sections">
-            <h3>name1</h3>
-            <div class="item">
-              <span>-</span>
-              <span>1</span>
-              <span>+</span>
-            </div>
-            <h3>123</h3>
-            </div>
-          </div>
+    .container-2 {
+      flex-wrap: wrap;
+      display: flex;
+      flex-direction: column;
+      background-color: #e9ecef;
+      width: 500px;
+      height: 400px;
+      align-self: center;
+      margin-bottom: 30px;
+      border-radius: 15px;
+      padding: 10px;
+      box-shadow: 0 0px 10px rgba(0, 0, 0, 0.094);
+    }
 
-          <div class="sections">
-            <div class="delete">
-              <span>delete</span>
-            </div>
-            <div class="sections">
-              <h3>name1</h3>
-              <div class="item">
-                <span>-</span>
-                <span>1</span>
-                <span>+</span>
-              </div>
-              <h3>123</h3>
-              </div>
-            </div>
+    .table-list {
+      background-color: #343a40;
+      color: white;
+      line-height: 2;
+      border-collapse: collapse;
+      margin: 5px;
+      border-radius: 10px;
 
-            <div class="sections">
-                <div class="delete">
-                  <span>delete</span>
-                </div>
-                <div class="sections">
-                  <h3>name1</h3>
-                  <div class="item">
-                    <span>-</span>
-                    <span>1</span>
-                    <span>+</span>
-                  </div>
-                  <h3>123</h3>
-                  </div>
-                </div>
-        </div>
-      </div>
+
+    }
+
+
+    .table-list td {
+      text-align: center;
+      border-top: 1px solid rgb(231, 225, 225);
+    }
+
+    .table-list tr:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+    }
+
+
+    .table-list td {
+      text-align: center;
+      border-top: 1px solid rgb(231, 225, 225);
+      padding: 5px;
+    }
+
+    .table-list input {
+      width: 60px;
+      height: 25px;
+      padding: 5px;
+      border: 1px solid rgb(232, 225, 238);
+      border-radius: 5px;
+      background-color: rgba(255, 255, 255, 0.8);
+      color: #343a40;
+      font-size: 14px;
+    }
+  </style>
+  <title>BILLING PAGE</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="search"><input type="text" placeholder="search" /></div>
+    <div class="container-2">
+      <table class="table-list">
+        <tr>
+          <th>SI NO</th>
+          <th>PRODUCT</th>
+          <th>QUANTITY</th>
+          <th>PRICE</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>soup</td>
+          <td><input type="number"></td>
+          <td>130</td>
+        </tr>
+      </table>
+
+
+
     </div>
-  </body>
+  </div>
+</body>
+
 </html>
