@@ -5,8 +5,9 @@ from flask_migrate import Migrate
 db = SQLAlchemy()
 
 def create_app():
-    app = Flask(__name__, template_folder='templates')
+    app = Flask(__name__, template_folder='templates', static_folder='static', static_url_path='/')
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./app.db'
+    app.secret_key = 'secret-key'
 
     db.init_app(app)
 
