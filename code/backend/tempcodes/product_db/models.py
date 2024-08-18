@@ -23,12 +23,13 @@ class Products(db.Model):
 
 class Users(db.Model):
     __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(100))
-    email = db.Column(db.String(100))
-    phone = db.Column(db.String(100))
 
-    def __init__(self, name, email, phone):
-        self.name = name
-        self.email = email
-        self.phone = phone
+    uid = db.Column(db.Integer, primary_key = True)
+    username = db.Column(db.String, unique=True, nullable=False)
+    password = db.Column(db.String, nullable=False)
+    role = db.Column(db.String(6))
+
+    def __init__(self, username, password, role):
+        self.username = username
+        self.password = password
+        self.role = role

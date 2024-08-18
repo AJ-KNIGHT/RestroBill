@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/user-mng-style.css">
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+    <title>User Management</title>
+
+</head>
+
+<body>
+    <div class="main-body">
+        <div class="main">
+            <div class="head-div">
+                <h1> User Management </h1>
+            </div>
+            <div class="container">
+                <div class="row-head">
+                    <h2>Manage <b>Users</b></h2>
+                    <button id="insert-popup" type="button">Add New User</button>
+                </div>
+
+                <!-- flash mesg -->
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                {% for message in messages %}
+                <div class="flash-msg-div">
+                    <div class="flash-msg">
+                        <span>
+                            {{message}}
+                        </span>
+
+                        <button type="button">
+                            <span>X</span>
+                        </button>
+
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+
+                <!-- table -->
+                <div class="row-body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th> Username</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="user-list">
+                            <!-- Product rows will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Update Popup -->
+        <div class="popup-container popup-container-update">
+            <div class="popup-div">
+                <div class="close-btn-div">
+                    <button id="close-popup-update"><span class="close-icon">x</span></button>
+                </div>
+                <div class="popup-head">
+                    <h4>Edit Information</h4>
+                </div>
+                <div class="form-div">
+                    <form action="{{ url_for('update') }}" method="POST">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" name="username">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" name="password"
+                                placeholder="Enter new password">
+                        </div>
+                        <div class="form-btn">
+                            <input type="submit" value="Update">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Insert Popup -->
+        <div class="popup-container popup-container-insert">
+            <div class="popup-div">
+                <div class="close-btn-div">
+                    <button id="close-popup-insert"><span class="close-icon">x</span></button>
+                </div>
+                <div class="popup-head">
+                    <h4>Add User</h4>
+                </div>
+                <div class="form-div">
+                    <form action="{{ url_for('insert') }}" method="POST">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" name="username" placeholder="Enter username">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" name="password" placeholder="Enter password">
+                        </div>
+                        <div class="form-btn">
+                            <input type="submit" value="Add User">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+<script src="/js/user-mng.js"></script>
+</html>

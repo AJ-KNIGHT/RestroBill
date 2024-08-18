@@ -51,16 +51,22 @@ def register_routes(app, db):
     def users_index():
         all_data = Users.query.all()
 
-        return render_template('flaskcrud/user_index.html', employees = all_data)
+        return render_template('user-mng.html')
+
+    @app.route('/users/get_users')
+    def get_users():
+        all_users = Users.query.all()
+        users_list = [{'uid': user.uid, 'username': user.username} for user in all_users]
+        return jsonify(users_list)
     
     @app.route('/users/insert', methods = ['POST'])
     def insert():
         if request.method == 'POST':
-            name = request.form['name']
-            email = request.form['email']
-            phone = request.form['phone']
+            username = request.form['username']
+            password = request.form['password']
+            role = 'user'
 
-            my_data = Users(name, email, phone)
+            my_data = Users(username, password, role)
             db.session.add(my_data)
             db.session.commit()
 
@@ -74,9 +80,8 @@ def register_routes(app, db):
         if request.method == 'POST':
             my_data = Users.query.get(request.form.get('id'))
 
-            my_data.name = request.form['name']
-            my_data.email = request.form['email']
-            my_data.phone = request.form['phone']
+            my_data.username = request.form['username']
+            my_data.password = request.form['password']
 
             db.session.commit()
             flash('Employee updated successfully')

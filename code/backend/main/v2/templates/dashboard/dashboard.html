@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/dashboard/main.css">
+    <link rel="stylesheet" href="/css/dashboard/navbar.css">
+    <title>Dashboard</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-div">
+                <div class="nav-logo">
+                    <img src="/images/restaurant-icon.png">
+                </div>
+                <div class="nav-head">
+                    <h2>Aboos Restaurant</h2>
+                </div>
+                <div class="nav-links">
+                    <ul>
+                        <li><a href="#">Dashboard</a></li>
+                        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    </ul>
+                    <div class="nav-logo">
+                        <img src="/images/profile-icon.png">
+                    </div>
+                </div>
+            </div>
+        </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="cards" onclick="window.location='';">
+            <div class="icon icon-database"></div>
+            <h3>DATABASE MANAGEMENT</h3>
+
+        </div>
+        <div class="cards" onclick="window.location='/dashboard/user-management';">
+            <div class="icon icon-user"></div>
+            <h3>USER MANAGEMENT</h3>
+        </div>
+        <div class="cards" onclick="window.location='#';">
+            <div class="icon icon-report"></div>
+            <h3>REPORT</h3>
+        </div>
+    </div>
+</body>
+</html>

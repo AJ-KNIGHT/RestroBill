@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/dashboard/usr-mng.css">
+    <link rel="stylesheet" href="/css/dashboard/navbar.css">
+    <title>User Management</title>
+
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-div">
+                <div class="nav-logo">
+                    <img src="/images/restaurant-icon.png">
+                </div>
+                <div class="nav-head">
+                    <h2>Aboos Restaurant</h2>
+                </div>
+                <div class="nav-links">
+                    <ul>
+                        <li><a href="/dashboard">Dashboard</a></li>
+                        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    </ul>
+                    <div class="nav-logo">
+                        <img src="/images/profile-icon.png">
+                    </div>
+                </div>
+            </div>
+        </nav>
+        </div>
+    </header>
+    <div class="main">
+        <div class="head-div">
+            <h1> User Management </h1>
+        </div>
+        <div class="container">
+            <div class="row-head">
+                <h2>Manage <b>Users</b></h2>
+                <button id="insert-popup" type="button">Add New User</button>
+            </div>
+            {% with messages = get_flashed_messages() %}
+
+            {% if messages %}
+
+            {% for message in messages %}
+            <!-- flash mesg -->
+            <div class="flash-msg-div">
+                <div class="flash-msg">
+                    <span>
+                        {{ message }}
+                    </span>
+
+                    <button type="button">
+                        <span>X</span>
+                    </button>
+
+                </div>
+            </div>
+            {% endfor %}
+
+            {% endif %}
+
+            {% endwith %}
+
+            <!-- table -->
+            <div class="row-body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Role</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.role }}</td>
+                            <td>
+                                <button type="button" data-uid="{{ user.uid }}" class="btn btn-edit update-popup">Edit</button>
+                                <!-- <a id="update-popup" class="btn btn-edit">Edit</a> -->
+                                <button type="button" class="btn btn-delete"><a
+                                        href="/user/delete/{{ user.uid }}">Delete</a></button>
+                                <!-- <a href="/user/delete/{{ user.uid }}" class="btn btn-delete">Delete</a> -->
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- Update Popup -->
+            <div class="popup-container popup-container-update">
+                <div class="popup-div">
+                    <div class="close-btn-div">
+                        <button id="close-popup-update"><span class="close-icon">x</span></button>
+                    </div>
+                    <div class="popup-head">
+                        <h4>Edit Information</h4>
+                    </div>
+                    <div class="form-div">
+                        <form action="{{ url_for('user_update') }}" method="POST">
+                            <input type="hidden" id="input-uid" name="uid" value="1">
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" name="username" placeholder="Enter new username">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" name="password"
+                                    placeholder="Enter new password">
+                            </div>
+                            <div class="form-btn">
+                                <input type="submit" value="Update">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Insert Popup -->
+            <div class="popup-container popup-container-insert">
+                <div class="popup-div">
+                    <div class="close-btn-div">
+                        <button id="close-popup-insert"><span class="close-icon">x</span></button>
+                    </div>
+                    <div class="popup-head">
+                        <h4>Add User</h4>
+                    </div>
+                    <div class="form-div">
+                        <form action="{{ url_for('user_insert') }}" method="POST">
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" name="username" placeholder="Enter username">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" name="password" placeholder="Enter password">
+                            </div>
+                            <div class="form-btn">
+                                <input type="submit" value="Add User">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="/js/usr-mng.js"></script>
+
+</html>
