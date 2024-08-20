@@ -155,7 +155,7 @@
     height: 100%;
     overflow: hidden;
     outline: 0;
-    background-color: #000000e0;
+    background-color: #00000070;;
     transition: opacity .15s linear;
 }
 .popup-container-update { 
@@ -248,4 +248,8 @@
 }
 .form-btn input:hover {
     background-color: #0069d9;
+}
+
+.blur {
+    filter: blur(5px)
 }
