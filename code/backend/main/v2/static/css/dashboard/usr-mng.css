@@ -112,8 +112,8 @@
 
 /* flash msg */
 .flash-msg-div {
-    /* display: block; */
-    display: none;
+    display: block;
+    /* display: none; */
     width: 100%;
     padding: 0 15px;
 }
@@ -131,9 +131,14 @@
     outline: 0;
     border: 0;
     background-color: transparent;
+    color: #28a745;
 }
 .flash-msg button span {
     font-size: 15px;
+    font-weight: bold;
+}
+.flash-msg button:hover {
+    color: black;
 }
 
 /* popups */
@@ -182,16 +187,16 @@
     margin-right: 4px;
     margin-top: 4px;
     background-color: transparent;
-    font-size: 25px;
+    font-size: 18px;
     font-weight: bold;
     cursor: pointer;
     border-radius: 31px;
-    padding: 0px 15px 8px 15px;
+    padding: 1px 10px 7px 10px;
     color: #8d9191;
 }
 .close-btn-div button:hover {
-    background-color: #2d2f2f;
-    color: #e8e8e6;
+    background-color: rgba(0, 0, 0, 0.541);
+    color: white;
 }
 .close-btn-div button span {
     display: inline-block;

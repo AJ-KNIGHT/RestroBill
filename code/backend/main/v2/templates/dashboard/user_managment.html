@@ -54,7 +54,7 @@
                         {{ message }}
                     </span>
 
-                    <button type="button">
+                    <button type="button" class="close-flash">
                         <span>X</span>
                     </button>
 
@@ -82,7 +82,7 @@
                             <td>{{ user.username }}</td>
                             <td>{{ user.role }}</td>
                             <td>
-                                <button type="button" data-uid="{{ user.uid }}" class="btn btn-edit update-popup">Edit</button>
+                                <button type="button" data-uid="{{ user.uid }}" data-username="{{ user.username }}" class="btn btn-edit update-popup">Edit</button>
                                 <!-- <a id="update-popup" class="btn btn-edit">Edit</a> -->
                                 <button type="button" class="btn btn-delete"><a
                                         href="/user/delete/{{ user.uid }}">Delete</a></button>
@@ -107,7 +107,7 @@
                             <input type="hidden" id="input-uid" name="uid" value="1">
                             <div class="form-group">
                                 <label for="username">Username</label>
-                                <input type="text" class="form-control" name="username" placeholder="Enter new username">
+                                <input type="text" id="input-username" class="form-control" name="username" placeholder="Enter new username">
                             </div>
 
                             <div class="form-group">

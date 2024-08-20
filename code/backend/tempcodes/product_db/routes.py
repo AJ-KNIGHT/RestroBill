@@ -1,5 +1,6 @@
 from flask import render_template, request, jsonify, flash, redirect, url_for
 from models import Products, Users
+import json
 
 def register_routes(app, db):
     @app.route('/')
@@ -98,3 +99,47 @@ def register_routes(app, db):
         flash('Employee deleted successfully')
 
         return redirect(url_for('users_index'))
+
+    # live search with list
+
+    # list_items = ["Apple", "Avocado", "Banana", "Blueberry",
+    #               "Blackberry", "Cherry", "Coconut", "Orange", "Olive"]
+
+    # @app.route('/search')
+    # def product_search():
+    #     text = request.args['searchText']
+    #     result = [item for item in list_items if str(text).lower() in item.lower()]
+    #     # return json.dumps({"results": result})
+    #     return jsonify(results=result)
+
+    @app.route('/search-page')
+    def product_search_page():
+        return render_template('product_search.html')
+    @app.route('/search-page/main')
+    def product_search_main():
+        return render_template('product_search_main.html')
+    
+    @app.route('/search')
+    def product_search():
+        products = Products.query.all()
+        products_list = [product.to_dict() for product in products]
+
+        # text = request.args['searchText']
+        # product_names = [n.name for n in products_list]
+        # print(names)
+        # result = [item for item in product_names if str(text).lower() in item.lower()]
+        # result = [item for item in products_list if str(text).lower() in item['name'].lower()]
+        # # print(result)
+        # # return ('', 204)
+
+        text = request.args.get('searchText', '').lower()
+        result = [item for item in products_list if text in item['name'].lower()]
+        return jsonify(results=result)
+
+
+
+
+        # # return json.dumps({"results": result})
+        # return jsonify(results=result)
+
+    

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search page</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100vh;
+            background-color: dimgray;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 600px;
+            height: 400px;
+            background-color: aqua;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+
+        }
+
+        #search-bar {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        #cart-div {
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .item,
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+        }
+
+        button {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="container">
+            <div class="searchbox">
+                <h1>Product Search</h1>
+                <input type="text" id="search-bar" onkeyup="liveSearch(this.value)"
+                    placeholder="Search for products...">
+            </div>
+            <div class="list-items">
+
+            </div>
+            <h2>Cart</h2>
+            <div id="cart">
+
+            </div>
+            <button id="refresh-cart">Refresh Cart</button>
+        </div>
+    </div>
+    <script src="/js/jquery-3.7.1.min.js"></script>
+    <script>
+        //  ₹
+        let cart = {};
+
+// Function to perform live search
+function liveSearch(value) {
+    value = value.trim();
+    if (value !== "") {
+        $.ajax({
+            url: "/search",
+            data: { searchText: value },
+            dataType: "json",
+            success: function(data) {
+                let res = "";
+                data.results.forEach(item => {
+                    res += `<div class='item' data-id='${item.id}' data-price='${item.price}'>
+                                <span>${item.name} - ₹${item.price.toFixed(2)}</span>
+                                <button class='add-to-cart'>Add to Cart</button>
+                            </div>`;
+                });
+                $(".list-items").html(res);
+                $(".add-to-cart").click(function() {
+                    const itemId = $(this).parent().data("id");
+                    const itemName = $(this).siblings("span").text();
+                    const itemPrice = $(this).parent().data("price");
+                    addToCart(itemId, itemName, itemPrice);
+                });
+            }
+        });
+    } else {
+        $(".list-items").html("");
+    }
+}
+
+// Function to add items to the cart
+function addToCart(id, name, price) {
+    if (!cart[id]) {
+        cart[id] = { name: name, price: price, qty: 1 };
+    } else {
+        cart[id].qty += 1;
+    }
+    updateCartDisplay();
+}
+
+// Function to update the cart display
+function updateCartDisplay() {
+    let cartHtml = "";
+    let total = 0;
+    for (const id in cart) {
+        const item = cart[id];
+        const itemTotal = item.price * item.qty;
+        total += itemTotal;
+        cartHtml += `<div class='cart-item' data-id='${id}'>
+                        <span>${item.name} - ₹${item.price.toFixed(2)} x 
+                            <input type='number' class='qty' value='${item.qty}' min='1'>
+                        </span>
+                        <button class='remove-item'>Delete</button>
+                        <span class='item-total'>Total: ₹${itemTotal.toFixed(2)}</span>
+                    </div>`;
+    }
+    $("#cart").html(cartHtml);
+    $("#cart").append(`<div class='cart-total'>Grand Total: ₹${total.toFixed(2)}</div>`);
+
+    // Event listener for quantity change
+    $(".qty").on("change", function() {
+        const itemId = $(this).closest('.cart-item').data("id");
+        const newQty = parseInt($(this).val());
+        if (newQty >= 1) {
+            cart[itemId].qty = newQty;
+            updateCartDisplay();
+        } else {
+            $(this).val(1); // Reset to 1 if less than 1
+        }
+    });
+
+    // Event listener for removing an item from the cart
+    $(".remove-item").click(function() {
+        const itemId = $(this).closest('.cart-item').data("id");
+        delete cart[itemId];
+        updateCartDisplay();
+    });
+}
+
+// Event listener for refreshing the cart
+$("#refresh-cart").click(function() {
+    cart = {};
+    updateCartDisplay();
+});
+
+    </script>
+</body>
+
+</html>

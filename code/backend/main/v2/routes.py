@@ -101,7 +101,7 @@ def register_routes(app, db, bcrypt):
                 if 'username' in request.form.keys() and 'password' in request.form.keys():
                     data = Users.query.get(request.form.get('uid'))
 
-                    if (request.form['username'].strip() != ""):
+                    if (request.form['username'].strip() != "" and request.form['username'].strip() != data.username):
                         data.username = request.form['username']
 
                     elif (request.form['password'].strip() != ""):
@@ -111,16 +111,16 @@ def register_routes(app, db, bcrypt):
 
                     db.session.commit()
 
-                    flash('User updated successfully')
+                    flash('User data updated successfully')
                     return redirect(url_for('user_management'))
         else:
             return "Access Denied"
     
-    @app.route('/user/delete/<id>/', methods = ['GET', 'POST'])
+    @app.route('/user/delete/<uid>/', methods = ['GET', 'POST'])
     @login_required
-    def delete(id):
+    def user_delete(uid):
         if current_user.role == 'admin':
-            data = Users.query.get(id)
+            data = Users.query.get(uid)
             db.session.delete(data)
             db.session.commit()
 

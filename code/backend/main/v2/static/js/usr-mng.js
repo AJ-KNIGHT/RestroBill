@@ -12,6 +12,7 @@ document.getElementById('close-popup-insert').onclick = function () {
 const updatepopup = document.querySelector(".popup-container-update");
 const insertpopup = document.getElementById('insert-popup');
 const updatebuttons = document.querySelectorAll(".update-popup");
+const flashbuttons = document.querySelectorAll(".close-flash");
 
 // put data output
 const fuid_input = document.getElementById("update-usr-id");
@@ -20,7 +21,14 @@ const fuid_input = document.getElementById("update-usr-id");
 updatebuttons.forEach(button => {
     button.addEventListener("click", function () {
         document.getElementById("input-uid").value = this.getAttribute("data-uid");
+        document.getElementById("input-username").value = this.getAttribute("data-username");
         updatepopup.style.display = "flex";
+    });
+});
+
+flashbuttons.forEach(button => {
+    button.addEventListener("click", function () {
+        document.querySelector('.flash-msg-div').style.display = "none";
     });
 });
 
