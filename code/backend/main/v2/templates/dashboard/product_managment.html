@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/dashboard/mng.css">
     <link rel="stylesheet" href="/css/dashboard/navbar.css">
-    <title>User Management</title>
+    <title>Product Management</title>
 
 </head>
 
@@ -35,12 +35,12 @@
     </header>
         <div class="main">
             <div class="head-div">
-                <h1> User Management </h1>
+                <h1> Product Management </h1>
             </div>
             <div class="container">
                 <div class="row-head">
-                    <h2>Manage <b>Users</b></h2>
-                    <button id="insert-popup" type="button">Add New User</button>
+                    <h2>Manage <b>Products</b></h2>
+                    <button id="insert-popup" type="button">Add New Product</button>
                 </div>
                 {% with messages = get_flashed_messages() %}
 
@@ -71,23 +71,23 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Username</th>
-                                <th>Role</th>
+                                <th>Product Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for user in users %}
+                            {% for product in products %}
                             <tr>
-                                <td>{{ user.username }}</td>
-                                <td>{{ user.role }}</td>
+                                <td>{{ product.name }}</td>
+                                <td>{{ product.category }}</td>
+                                <td>{{ product.price }}</td>
                                 <td>
-                                    <button type="button" data-uid="{{ user.uid }}" data-username="{{ user.username }}"
-                                        class="btn btn-edit update-popup">Edit</button>
-                                    <!-- <a id="update-popup" class="btn btn-edit">Edit</a> -->
+                                    <button type="button" data-pid="{{ product.pid }}" data-name="{{ product.name }}"
+                                    data-category="{{ product.category }}" data-price="{{ product.price }}" class="btn btn-edit update-popup">Edit</button>
                                     <button type="button" class="btn btn-delete"><a
-                                            href="/user/delete/{{ user.uid }}">Delete</a></button>
-                                    <!-- <a href="/user/delete/{{ user.uid }}" class="btn btn-delete">Delete</a> -->
+                                            href="/user/delete/{{ product.pid}}">Delete</a></button>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -104,21 +104,27 @@
                     <button id="close-popup-update"><span class="close-icon">x</span></button>
                 </div>
                 <div class="popup-head">
-                    <h4>Edit User Information</h4>
+                    <h4>Edit Product Information</h4>
                 </div>
                 <div class="form-div">
-                    <form action="{{ url_for('user_update') }}" method="POST">
-                        <input type="hidden" id="input-uid" name="uid" value="1">
+                    <form action="{{ url_for('product_update') }}" method="POST">
+                        <input type="hidden" id="input-pid" name="pid" value="1">
                         <div class="form-group">
-                            <label for="username">Username</label>
-                            <input type="text" id="input-username" class="form-control" name="username"
-                                placeholder="Enter new username">
+                            <label for="name">Product Name</label>
+                            <input type="text" id="input-name" minlength="2" name="name"
+                                placeholder="Enter new product name">
                         </div>
 
                         <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" name="password"
-                                placeholder="Enter new password">
+                            <label for="category">Category</label>
+                            <input type="text" id="input-category" name="category" 
+                             minlength="2" placeholder="Enter category">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="price">Price</label>
+                            <input type="number" id="input-price" name="price"
+                                placeholder="Enter price">
                         </div>
                         <div class="form-btn">
                             <input type="submit" value="Update">
@@ -135,27 +141,32 @@
                     <button id="close-popup-insert"><span class="close-icon">x</span></button>
                 </div>
                 <div class="popup-head">
-                    <h4>Add User</h4>
+                    <h4>Add Product</h4>
                 </div>
                 <div class="form-div">
-                    <form action="{{ url_for('user_insert') }}" method="POST">
+                    <form action="{{ url_for('product_insert') }}" method="POST">
                         <div class="form-group">
-                            <label for="username">Username</label>
-                            <input type="text" class="form-control" name="username" placeholder="Enter username" required="required">
+                            <label for="name">Product Name</label>
+                            <input type="text" name="name" minlength="2" placeholder="Enter product name" required="required">
                         </div>
 
                         <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" name="password" placeholder="Enter password" required="required">
+                            <label for="category">Category</label>
+                            <input type="text" name="category" minlength="2" placeholder="Enter category" required="required">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="price">Category</label>
+                            <input type="number" name="price" placeholder="Enter price" required="required">
                         </div>
                         <div class="form-btn">
-                            <input type="submit" value="Add User">
+                            <input type="submit" value="Add Product">
                         </div>
                     </form>
                 </div>
             </div>
         </div>
 </body>
-<script src="/js/usr-mng.js"></script>
+<script src="/js/pdt-mng.js"></script>
 
 </html>

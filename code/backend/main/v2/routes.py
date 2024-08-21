@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, current_user, login_required
 
-from models import Users
+from models import Users, Products
 
 def register_routes(app, db, bcrypt):
 
@@ -129,21 +129,72 @@ def register_routes(app, db, bcrypt):
         else:
             return "Access Denied"
 
+
+    # product management
+    @app.route('/dashboard/product-management')
+    @login_required
+    def product_management():
+        if current_user.role == 'admin':
+            product_data = Products.query.all()
+            return render_template('/dashboard/product_managment.html', username=current_user.username, products=product_data)
+        else:
+            return "Access Denied"
+    
+    @app.route('/product/insert', methods = ['POST'])
+    @login_required
+    def product_insert():
+        if current_user.role == 'admin':
+            if request.method == 'POST':
+                if 'name' in request.form.keys() and 'category' in request.form.keys() and 'price' in request.form.keys():
+                    name = request.form['name']
+                    category = request.form['category']
+                    price = float(request.form['price'])
+
+                    new_product_data = Products(name=name, category=category, price=price)
+                    db.session.add(new_product_data)
+                    db.session.commit()
+
+                    flash('Product inserted successfully')
+
+                    return redirect(url_for('product_management'))
+        else:
+            return "Access Denied"
         
-    @app.route('/manage_user', methods=['GET', 'POST'])
-    def manage_user():
-        if request.method == 'GET':
-            return render_template('manage_user.html')
-        elif request.method == 'POST':
-            if 'username' in request.form.keys() and 'password' in request.form.keys() and 'role' in request.form.keys():
-                username = request.form['username']
-                password = request.form['password']
-                role = request.form['role']
+    @app.route('/product/update', methods = ['GET', 'POST'])
+    @login_required
+    def product_update():
+        if current_user.role == 'admin':
+            if request.method == 'POST':
+                if 'name' in request.form.keys() and 'category' in request.form.keys() and 'price' in request.form.keys():
+                    data = Products.query.get(request.form.get('pid'))
 
-                hashed_password = bcrypt.generate_password_hash(password)
+                    if (request.form['name'].strip() != "" and request.form['name'].strip() != data.name):
+                        data.name = request.form['name']
 
-                user = Users(username=username, password=hashed_password, role=role)
-                db.session.add(user)
-                db.session.commit()
+                    elif (request.form['category'].strip() != "" and request.form['category'].strip() != data.category):
+                        data.category = request.form['category']
+                    
+                    elif (request.form['price'] != 0 and float(request.form['price']) != data.price):
+                        data.price = float(request.form['price'])
 
-                return f"{username} : User Created!"
+                    db.session.commit()
+
+                    flash('Product data updated successfully')
+                    return redirect(url_for('product_management'))
+        else:
+            return "Access Denied"
+    
+    @app.route('/product/delete/<pid>/', methods = ['GET', 'POST'])
+    @login_required
+    def product_delete(pid):
+        if current_user.role == 'admin':
+            data = Products.query.get(pid)
+            db.session.delete(data)
+            db.session.commit()
+
+            flash('Product deleted successfully')
+            return redirect(url_for('product_management'))
+        else:
+            return "Access Denied"
+
+
