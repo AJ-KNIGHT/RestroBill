@@ -48,6 +48,14 @@ def register_routes(app, db, bcrypt):
     @login_required
     def billing():
         if current_user.role == 'user':
+            return render_template('dashboard/billing.html', username=current_user.username)
+        else:
+            return "Access Denied"
+        
+    @app.route('/billing-test')
+    @login_required
+    def billing_test():
+        if current_user.role == 'user':
             return render_template('billing.html', username=current_user.username)
         else:
             return "Access Denied"

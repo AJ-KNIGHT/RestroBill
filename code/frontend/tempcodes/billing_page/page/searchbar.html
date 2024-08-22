@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .search-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    width: 300px; /* Adjust width as needed */
+}
+
+.searchbar {
+    border: none;
+    outline: none;
+    flex: 1; /* Allows the input to take the remaining space */
+    padding: 8px;
+}
+
+.search-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 5px; /* Space around the icon */
+}
+
+.search-icon img {
+    width: 20px; /* Adjust size of the icon */
+    height: auto;
+}
+
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <input type="search" placeholder="Search here..." class="searchbar" />
+        <button class="search-icon">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Search_Icon.svg/750px-Search_Icon.svg.png" alt="Search Icon" />
+        </button>
+    </div>
+</body>
+</html>
