@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+/* Remove the default number input arrows in Firefox */
+.number-input input {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+/* Remove the default number input arrows in WebKit browsers (Chrome, Safari) */
+.number-input input::-webkit-inner-spin-button, 
+.number-input input::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+/* Additional styling for the input field */
+.number-input input {
+  width: 50px; /* Set a fixed width */
+  text-align: center; /* Center the text */
+  border: 1px solid #ccc; /* Border styling */
+  border-radius: 4px; /* Rounded corners */
+  padding: 6px; /* Padding for better appearance */
+  font-size: 16px; /* Font size */
+}
+
+/* Style the custom buttons */
+.number-input {
+  display: flex; /* Align items in a row */
+  align-items: center; /* Center vertically */
+}
+
+.number-input button {
+  background-color: #f2f2f2; /* Button background color */
+  border: none; /* No border */
+  color: #333; /* Text color */
+  padding: 8px 12px; /* Button padding */
+  text-align: center; /* Center text */
+  font-size: 16px; /* Font size */
+  margin: 4px 2px; /* Margin for spacing */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+.number-input button.minus {
+  border-radius: 4px 0 0 4px; /* Rounded left edge */
+}
+
+.number-input button.plus {
+  border-radius: 0 4px 4px 0; /* Rounded right edge */
+}
+  </style>
+  <title>BILLING PAGE</title>
+</head>
+
+<body>
+  <div class="number-input">
+    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus">-</button>
+    <input type="number" value="1" min="0" max="100" step="1">
+    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus">+</button>
+  </div>
+</body>
+
+</html>

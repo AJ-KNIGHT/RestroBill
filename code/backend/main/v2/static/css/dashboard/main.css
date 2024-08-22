@@ -6,13 +6,19 @@
 body {
     font-family: Arial, sans-serif;
 }
+.div-body {
+    width: 100vw;
+    height: 100vh;
+}
+
+
 
 /* ------------------------ dashboard style ------------------------ */
 .container{
     display: flex;
     justify-content:space-evenly;
     background-color: whitesmoke;
-    min-height: 100vh;
+    height: 89.05%;
 }
 .cards{
     /* background-color: #68d2e8d1; */
