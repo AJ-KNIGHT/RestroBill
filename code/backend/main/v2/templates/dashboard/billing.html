@@ -32,7 +32,23 @@
             </nav>
         </header>
         <div class="container">
-            <div class="search"><input type="text" placeholder="search products" /></div>
+            <div class="search"><input type="text" onkeyup="liveSearch(this.value)"
+                placeholder="search products" />
+                <div class="list-items">
+                    <!-- <div class="item">
+                       <span>Apple</span>
+                   </div>
+                   <div class="item">
+                       <span>Apple Lorem ipsum dolor sit amet consectetur</span>
+                   </div>
+                   <div class="item">
+                       <span>Apple</span>
+                   </div>
+                   <div class="item">
+                       <span>Apple Lorem ipsum dolor sit amet consectetur</span>
+                   </div> -->
+               </div>
+            </div>
             <div class="billig-div">
                 <table class="table-list">
                     <thead>
@@ -57,15 +73,16 @@
                                     <button class="plus">+</button>
                                 </div>
                             </td>
-                            <td>130</td>
-                            <td>1000</td>
+                            <td>₹130</td>
+                            <td>₹1000</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-
+    <script src="/js/jquery-3.7.1.min.js"></script>
     <script src="/js/billing.js"></script>
+
 </body>
 </html>

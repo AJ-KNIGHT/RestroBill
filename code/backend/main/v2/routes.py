@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
 
 from models import Users, Products
@@ -51,6 +51,15 @@ def register_routes(app, db, bcrypt):
             return render_template('dashboard/billing.html', username=current_user.username)
         else:
             return "Access Denied"
+
+    @app.route('/search')
+    def product_search():
+        products = Products.query.all()
+        products_list = [product.to_dict() for product in products]
+        text = request.args.get('searchText', '').lower()
+        result = [item for item in products_list if text in item['name'].lower()]
+        return jsonify(results=result)
+
         
     @app.route('/billing-test')
     @login_required
