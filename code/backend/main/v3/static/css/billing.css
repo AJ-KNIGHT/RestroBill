@@ -227,6 +227,17 @@ body {
     width: 50px;
 }
 
+
+.refresh-icon-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.refresh-icon {
+    padding: 2px;
+}
+
 .refresh-icon,
 .remove-icon {
     display: flex;
@@ -234,13 +245,30 @@ body {
     align-items: center;
 }
 
+.remove-icon {
+    height: 20px;
+border-radius: 5px;
+margin: 0 3px;
+}
+
 .refresh-icon img {
-    width: 16px;
+    width: 14px;
 }
 
 .remove-icon img {
     width: 8px;
 }
+
+.refresh-icon:hover {
+    background-color: #797979;
+    border-radius: 25%;
+}
+
+.remove-icon:hover {
+    background-color: #797979;
+    }
+
+
 
 
 

@@ -1,4 +1,6 @@
 
+//old code: 
+
 // // Minus button click event listener
 // document.querySelectorAll('.number-input .minus').forEach(button => {
 //     button.addEventListener('click', function () {
@@ -42,11 +44,11 @@
 // }
 
 
+// new code:
 
-
+// live search
 function liveSearch(value) {
     value = value.trim();
-
     if (value != "") {
         $.ajax({
             url: "search",
@@ -100,11 +102,27 @@ function addRow(name, price) {
     $(".list-items").html(""); // Clear the search results
     $(this).val(""); // Clear the input
     
-
-
     // Reattach event listeners for the new row's plus and minus buttons
-    qtyListeners();
+    // qtyListeners();
 }
+
+
+// Minus button click event listener
+document.querySelectorAll('.number-input .minus').forEach(button => {
+    button.addEventListener('click', function () {
+        this.closest('.number-input').querySelector('input').stepDown();
+    });
+});
+
+// Plus button click event listener  
+document.querySelectorAll('.number-input .plus').forEach(button => {
+    button.addEventListener('click', function () {
+        this.closest('.number-input').querySelector('input').stepUp();
+    });
+});
+
+
+
 
 // function qtyListeners() {
 //     // Minus button click event listener
@@ -123,29 +141,28 @@ function addRow(name, price) {
 //     });
 // }
 
-function qtyListeners() {
-    // Attach event listeners to the parent element for quantity buttons
-    document.querySelector('.table-list tbody').addEventListener('click', function (event) {
-        if (event.target.matches('.minus') || event.target.matches('.plus')) {
-            const input = event.target.closest('.number-input').querySelector('input');
-            const priceCell = event.target.closest('tr').querySelector('td:nth-child(6)'); // Selects the total price cell
-            const price = parseFloat(priceCell.previousElementSibling.textContent.replace('₹', '')); // Get the price per item
+// function qtyListeners() {
+//     // Attach event listeners to the parent element for quantity buttons
+//     document.querySelector('.table-list tbody').addEventListener('click', function (event) {
+//         if (event.target.matches('.minus') || event.target.matches('.plus')) {
+//             const input = event.target.closest('.number-input').querySelector('input');
+//             const priceCell = event.target.closest('tr').querySelector('td:nth-child(6)'); // Selects the total price cell
+//             const price = parseFloat(priceCell.previousElementSibling.textContent.replace('₹', '')); // Get the price per item
 
-            // Update quantity based on the button clicked
-            if (event.target.matches('.minus')) {
-                input.stepDown();
-            } else if (event.target.matches('.plus')) {
-                input.stepUp();
-            }
+//             // Update quantity based on the button clicked
+//             if (event.target.matches('.minus')) {
+//                 input.stepDown();
+//             } else if (event.target.matches('.plus')) {
+//                 input.stepUp();
+//             }
 
-            // Update total price based on the new quantity
-            const quantity = parseInt(input.value);
-            const totalPrice = (quantity * price).toFixed(2);
-            priceCell.textContent = `₹${totalPrice}`; // Update the total price cell
-        }
-    });
-}
-
+//             // Update total price based on the new quantity
+//             const quantity = parseInt(input.value);
+//             const totalPrice = (quantity * price).toFixed(2);
+//             priceCell.textContent = `₹${totalPrice}`; // Update the total price cell
+//         }
+//     });
+// }
 
 
 
@@ -177,13 +194,13 @@ function refreshTable() {
     }
 }
 
-function updateTotalPrice(row) {
-    const quantityInput = row.querySelector('input[type="number"]');
-    const priceCell = row.querySelector('td:nth-child(6)'); // Assuming the total price is in the 6th cell
-    const pricePerUnit = parseFloat(priceCell.previousElementSibling.textContent.replace('₹', '')); // Get the price from the previous cell
+// function updateTotalPrice(row) {
+//     const quantityInput = row.querySelector('input[type="number"]');
+//     const priceCell = row.querySelector('td:nth-child(6)'); // Assuming the total price is in the 6th cell
+//     const pricePerUnit = parseFloat(priceCell.previousElementSibling.textContent.replace('₹', '')); // Get the price from the previous cell
 
-    const quantity = parseInt(quantityInput.value);
-    const totalPrice = quantity * pricePerUnit;
+//     const quantity = parseInt(quantityInput.value);
+//     const totalPrice = quantity * pricePerUnit;
 
-    priceCell.textContent = `₹${totalPrice.toFixed(2)}`; // Update the total price cell
-}
+//     priceCell.textContent = `₹${totalPrice.toFixed(2)}`; // Update the total price cell
+// }
