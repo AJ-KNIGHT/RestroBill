@@ -211,7 +211,7 @@ body {
 }
 
 .number-input button:hover {
-    background-color: #717171;
+    background-color: #797979;
 
 }
 
@@ -247,8 +247,8 @@ body {
 
 .remove-icon {
     height: 20px;
-border-radius: 5px;
-margin: 0 3px;
+    border-radius: 5px;
+    margin: 0 3px;
 }
 
 .refresh-icon img {
@@ -266,7 +266,7 @@ margin: 0 3px;
 
 .remove-icon:hover {
     background-color: #797979;
-    }
+}
 
 
 

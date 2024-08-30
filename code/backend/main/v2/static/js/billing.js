@@ -1,18 +1,4 @@
 
-// // Minus button click event listener
-// document.querySelectorAll('.number-input .minus').forEach(button => {
-//     button.addEventListener('click', function () {
-//         this.closest('.number-input').querySelector('input').stepDown();
-//     });
-// });
-
-// // Plus button click event listener  
-// document.querySelectorAll('.number-input .plus').forEach(button => {
-//     button.addEventListener('click', function () {
-//         this.closest('.number-input').querySelector('input').stepUp();
-//     });
-// });
-
 // // live search
 // function liveSearch(value) {
 //     value = value.trim();
@@ -32,21 +18,23 @@
 //                    "</span> <span>  ₹" + data.results[i].price + "</span></div>";
 //                 }
 //                 $(".list-items").html(res);
+//                 $(".list-items").show();
 //             }
-            
+
 //         })
 //     }
 //     else {
-//         $(".list-items").html("");
+//             // $(".list-items").html(""); // Clear the search results
+//         $(".list-items").hide();
 //     }
 // }
 
 
+// new code:
 
-
+// live search
 function liveSearch(value) {
     value = value.trim();
-
     if (value != "") {
         $.ajax({
             url: "search",
@@ -56,101 +44,110 @@ function liveSearch(value) {
                 var res = "";
                 // console.log(data.results);
                 for (let i in data.results) {
-                    res += "<div class='item' data-name='" + data.results[i].name + 
-                            "' data-price='" + data.results[i].price + 
-                            "'><span>" + data.results[i].name + 
-                            "</span> <span>  ₹" + data.results[i].price + "</span></div>";
+                    res += "<div class='item' data-name='" + data.results[i].name +
+                        "' data-price='" + data.results[i].price +
+                        "'><span>" + data.results[i].name +
+                        "</span> <span>  ₹" + data.results[i].price + "</span></div>";
                 }
                 $(".list-items").html(res);
-                
+                $(".list-items").show();
+
                 // Add click event to each item
-                $(".list-items .item").on("click", function() {
+                $(".list-items .item").on("click", function () {
                     addRow($(this).data("name"), $(this).data("price"));
                 });
             }
         });
     } else {
-        $(".list-items").html("");
+        $(".list-items").hide();
     }
 }
 
-// Function to add item to billing table
+
 function addRow(name, price) {
-    var rowCount = $(".table-list tbody tr").length;
-    const quantity = 1;
-    var newRow = `
-        <tr>
-            <td><div class="remove-icon" onclick='removeRow(this)'><img src="/images/close.png"></div></td>
-            <td>${rowCount + 1}</td>
-            <td>${name}</td>
-            <td>
-                <div class="number-input">
-                    <button class="minus">-</button>
-                    <input type="number" value="${quantity}" min="0" max="100" step="1">
-                    <button class="plus">+</button>
-                </div>
-            </td>
-            <td>₹${price}</td>
-            <td>₹${(quantity * price).toFixed(2)}</td>
-        </tr>
-    `;
-    $(".table-list tbody").append(newRow);
+    // Check if the item already exists in the table
+    const existingRow = $(".table-list tbody tr").filter(function () {
+        return $(this).find("td:nth-child(3)").text() === name;
+    });
 
-    // Set the value of the input to an empty string
-    $(".list-items").html(""); // Clear the search results
-    $(this).val(""); // Clear the input
-    
+    if (existingRow.length) {
+        // If item exists, increment the quantity
+        const quantityInput = existingRow.find("input[type='number']");
+        const currentQuantity = parseInt(quantityInput.val());
+        quantityInput.val(currentQuantity + 1);
+        updateTotalPrice(existingRow);
+    } else {
+        // If item doesn't exist, add a new row
 
+        var rowCount = $(".table-list tbody tr").length;
+        const newSiNo = rowCount + 1;
+        const quantity = 1;
+        var newRow = `
+            <tr>
+                <td><div class="remove-icon" onclick='removeRow(this)'><img src="/images/close.png"></div></td>
+                <td>${newSiNo}</td>
+                <td>${name}</td>
+                <td>
+                    <div class="number-input">
+                        <button class="minus">-</button>
+                        <input type="number" value="${quantity}" min="0" max="100" step="1">
+                        <button class="plus">+</button>
+                    </div>
+                </td>
+                <td>₹${price}</td>
+                <td>₹${(quantity * price).toFixed(2)}</td>
+            </tr>
+        `;
+        $(".table-list tbody").append(newRow);
 
-    // Reattach event listeners for the new row's plus and minus buttons
-    qtyListeners();
+        // Set the value of the input to an empty string
+        // $(".list-items").html(""); // Clear the search results
+        $(".list-items").hide();
+        $(this).val(""); // Clear the input
+
+        // Reattach event listeners for the new row's plus and minus buttons
+        qtyListeners();
+        reIndexSiNumbers();
+    }
 }
 
-// function qtyListeners() {
-//     // Minus button click event listener
-//     document.querySelectorAll('.number-input .minus').forEach(button => {
-//         button.addEventListener('click', function () {
-//             this.closest('.number-input').querySelector('input').stepDown();
-//             updateTotalPrice(event.target.closest('tr')); 
-//         });
-//     });
-
-//     // Plus button click event listener  
-//     document.querySelectorAll('.number-input .plus').forEach(button => {
-//         button.addEventListener('click', function () {
-//             this.closest('.number-input').querySelector('input').stepUp();
-//         });
-//     });
-// }
-
-function qtyListeners() {
-    // Attach event listeners to the parent element for quantity buttons
-    document.querySelector('.table-list tbody').addEventListener('click', function (event) {
-        if (event.target.matches('.minus') || event.target.matches('.plus')) {
-            const input = event.target.closest('.number-input').querySelector('input');
-            const priceCell = event.target.closest('tr').querySelector('td:nth-child(6)'); // Selects the total price cell
-            const price = parseFloat(priceCell.previousElementSibling.textContent.replace('₹', '')); // Get the price per item
-
-            // Update quantity based on the button clicked
-            if (event.target.matches('.minus')) {
-                input.stepDown();
-            } else if (event.target.matches('.plus')) {
-                input.stepUp();
-            }
-
-            // Update total price based on the new quantity
-            const quantity = parseInt(input.value);
-            const totalPrice = (quantity * price).toFixed(2);
-            priceCell.textContent = `₹${totalPrice}`; // Update the total price cell
-        }
+function reIndexSiNumbers() {
+    $(".table-list tbody tr").each(function (i, row) {
+        $(row).find("td:nth-child(2)").text(i + 1); // Update SI number based on index
     });
 }
 
+function qtyListeners() {
+    // Event delegation for both click and keypress events
+    $('.number-input .minus, .number-input .plus').on('click keypress', handleQuantityChange);
+    $('.number-input input').on('keypress', handleQuantityChange);
 
+    function handleQuantityChange(event) {
+        const input = $(this).closest('.number-input').find('input');
+        const quantity = parseInt(input.val());
 
+        if (!isNaN(quantity)) {
+            if (event.type === 'keypress' && event.key !== 'Enter') {
+                // Ignore non-Enter keypresses
+                return;
+            }
+
+            const change = $(this).hasClass('minus') ? -1 : (event.type === 'click' ? 1 : 0);
+            const newQuantity = Math.max(quantity + change, 1); // Ensure minimum quantity is 1
+            input.val(newQuantity);
+
+            updateTotalPrice($(this).closest('tr')); // Update total price based on the row
+            if (event.type === 'keydown' && event.key === 'Escape') {
+                $('.search input').val('');
+                $(".list-items").hide(); // Hide search results
+                return;
+            }
+        }
+    }
+};
 
 // enter to select the first item
-$(".search input").on("keydown", function(event) {
+$(".search input").on("keydown", function (event) {
     if (event.key === "Enter") {
         var firstItem = $(".list-items .item").first();
         if (firstItem.length) {
@@ -163,14 +160,18 @@ $(".search input").on("keydown", function(event) {
 
 // Function to remove a row from the billing table
 function removeRow(button) {
-    const row = button.closest('tr');
-    row.parentNode.removeChild(row);
+    const rowToRemove = $(button).closest('tr');
+    rowToRemove.remove();
+    // Re-index remaining SI numbers
+    $(".table-list tbody tr").each(function (i, row) {
+        $(row).find("td:nth-child(2)").text(i + 1); // Update SI number based on index
+    });
 }
 
 // // Function to refresh the billing table by removing all rows
 function refreshTable() {
     const tableBody = document.querySelector('.table-list tbody');
-    
+
     // Remove all rows from the tbody
     while (tableBody.rows.length > 0) {
         tableBody.deleteRow(0);
@@ -178,12 +179,30 @@ function refreshTable() {
 }
 
 function updateTotalPrice(row) {
-    const quantityInput = row.querySelector('input[type="number"]');
-    const priceCell = row.querySelector('td:nth-child(6)'); // Assuming the total price is in the 6th cell
-    const pricePerUnit = parseFloat(priceCell.previousElementSibling.textContent.replace('₹', '')); // Get the price from the previous cell
-
-    const quantity = parseInt(quantityInput.value);
+    const $row = $(row);
+    const quantity = parseInt($row.find('input[type="number"]').val());
+    const pricePerUnit = parseFloat($row.find('td:nth-child(5)').text().replace('₹', ''));
     const totalPrice = quantity * pricePerUnit;
-
-    priceCell.textContent = `₹${totalPrice.toFixed(2)}`; // Update the total price cell
+    $row.find('td:nth-child(6)').text(`₹${totalPrice.toFixed(2)}`);
 }
+
+// keyboard shortcuts
+// $(document).keydown(function(event) {
+//     if (event.ctrlKey) {
+//       switch (event.key) {
+//         case 'o':
+//           // Handle Ctrl+S for saving
+//           console.log("Ctrl+o pressed");
+//           break;
+//         case '.':
+//           // Handle Ctrl+N for creating a new item
+//           console.log("Ctrl+. pressed");
+//           break;
+//         case 'd':
+//           // Handle Ctrl+D for deleting the selected item
+//           console.log("Ctrl+d pressed");
+//           break;
+//         // Add more shortcuts as needed
+//       }
+//     }
+//   });
