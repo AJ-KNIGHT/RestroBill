@@ -31,6 +31,7 @@
 
 
 // new code:
+let cart = {};
 
 // live search
 function liveSearch(value) {
@@ -45,6 +46,7 @@ function liveSearch(value) {
                 // console.log(data.results);
                 for (let i in data.results) {
                     res += "<div class='item' data-name='" + data.results[i].name +
+                        "' data-pid='" + data.results[i].pid +
                         "' data-price='" + data.results[i].price +
                         "'><span>" + data.results[i].name +
                         "</span> <span>  ₹" + data.results[i].price + "</span></div>";
@@ -64,7 +66,7 @@ function liveSearch(value) {
 }
 
 
-function addRow(name, price) {
+function addRow(name, price, pid) {
     // Check if the item already exists in the table
     const existingRow = $(".table-list tbody tr").filter(function () {
         return $(this).find("td:nth-child(3)").text() === name;
@@ -105,9 +107,13 @@ function addRow(name, price) {
         $(".list-items").hide();
         $(this).val(""); // Clear the input
 
+          // Update cart object with SI number as key and [pid, quantity] as value
+        cart[newSiNo] = [pid, quantity];
+
         // Reattach event listeners for the new row's plus and minus buttons
         qtyListeners();
         reIndexSiNumbers();
+        console.log(cart)
     }
 }
 
@@ -136,6 +142,11 @@ function qtyListeners() {
             const newQuantity = Math.max(quantity + change, 1); // Ensure minimum quantity is 1
             input.val(newQuantity);
 
+
+                // Update cart quantity based on the SI number
+            const siNo = parseInt($(this).closest('tr').find('td:nth-child(2)').text());
+            cart[siNo][1] = newQuantity; 
+
             updateTotalPrice($(this).closest('tr')); // Update total price based on the row
             if (event.type === 'keydown' && event.key === 'Escape') {
                 $('.search input').val('');
@@ -143,6 +154,7 @@ function qtyListeners() {
                 return;
             }
         }
+        console.log(cart);
     }
 };
 
@@ -161,21 +173,27 @@ $(".search input").on("keydown", function (event) {
 // Function to remove a row from the billing table
 function removeRow(button) {
     const rowToRemove = $(button).closest('tr');
+    const siNo = parseInt(rowToRemove.find("td:nth-child(2)").text());
+    delete cart[siNo];
+
     rowToRemove.remove();
     // Re-index remaining SI numbers
     $(".table-list tbody tr").each(function (i, row) {
         $(row).find("td:nth-child(2)").text(i + 1); // Update SI number based on index
     });
+    console.log(cart);
 }
 
 // // Function to refresh the billing table by removing all rows
 function refreshTable() {
     const tableBody = document.querySelector('.table-list tbody');
+    cart = {};
 
     // Remove all rows from the tbody
     while (tableBody.rows.length > 0) {
         tableBody.deleteRow(0);
     }
+    console.log(cart);
 }
 
 function updateTotalPrice(row) {
@@ -185,6 +203,21 @@ function updateTotalPrice(row) {
     const totalPrice = quantity * pricePerUnit;
     $row.find('td:nth-child(6)').text(`₹${totalPrice.toFixed(2)}`);
 }
+
+// $("#cashPrintButton").click(function() {
+//     $.ajax({
+//       url: "/print-cart", // Replace with your actual endpoint
+//       type: "POST",
+//       data: JSON.stringify(cart),
+//       success: function(response) {
+//         console.log(response.message); // Handle successful response
+//       },
+//       error: function(error) {
+//         console.error(error); // Handle errors
+//       }
+//     });
+//   });
+
 
 // keyboard shortcuts
 // $(document).keydown(function(event) {

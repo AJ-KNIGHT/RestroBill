@@ -33,7 +33,7 @@ def register_routes(app, db, bcrypt):
         logout_user()
         return render_template('login.html')
 
-
+# ---------------- billing page -----------------------
 
     # billing page
     # @app.route('/billig/<uid>')
@@ -68,6 +68,39 @@ def register_routes(app, db, bcrypt):
             return render_template('billing.html', username=current_user.username)
         else:
             return "Access Denied"
+
+
+    @app.route('/print-cart', methods=['POST'])
+    @login_required
+    def print_cart():
+        cart_data = request.get_json()  # Receive the cart data from the frontend
+        # Process the cart data and generate the print content
+        print_content = generate_print_content(cart_data)
+        # Send the print content to the printer (using a library like PyPDF2 or reportlab)
+        print_to_printer(print_content)
+        return jsonify({'message': 'Print initiated successfully'})
+
+    def generate_print_content(cart_data):
+        # Generate the print content based on the cart data
+        # For example, create a formatted string with item details and total
+        print_content = "**Your Order:**\n"
+        for si_no, item_data in cart_data.items():
+            print_content += f"- Item {si_no}: {item_data[0]} (Qty: {item_data[1]})\n"
+        print_content += f"**Total:** ₹{calculate_total(cart_data)}"
+        return print_content
+
+    def calculate_total(cart_data):
+        total = 0
+        for item_data in cart_data.values():
+            total += int(item_data[1]) * int(item_data[0][1])  # Assuming item_data[0][1] is the price
+        return total
+
+    def print_to_printer(print_content):
+        # Replace this with your actual printing logic using a library like PyPDF2 or reportlab
+        print(print_content)  # For testing, print to console
+        # ... actual printing code ...
+
+
 
 # ---------------- dashboard page -----------------------
     @app.route('/dashboard')
