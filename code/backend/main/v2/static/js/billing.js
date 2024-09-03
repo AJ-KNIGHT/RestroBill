@@ -38,7 +38,7 @@ function liveSearch(value) {
     value = value.trim();
     if (value != "") {
         $.ajax({
-            url: "search",
+            url: "/search",
             data: { searchText: value },
             dataType: "json",
             success: function (data) {
@@ -56,7 +56,7 @@ function liveSearch(value) {
 
                 // Add click event to each item
                 $(".list-items .item").on("click", function () {
-                    addRow($(this).data("name"), $(this).data("price"));
+                    addRow($(this).data("name"), $(this).data("price"), $(this).data("pid"));
                 });
             }
         });
@@ -107,13 +107,12 @@ function addRow(name, price, pid) {
         $(".list-items").hide();
         $(this).val(""); // Clear the input
 
-          // Update cart object with SI number as key and [pid, quantity] as value
-        cart[newSiNo] = [pid, quantity];
+        // Update cart object with SI number as key and [pid, quantity] as value
+        cart[newSiNo] = {"pid": pid, "qty": quantity};
 
         // Reattach event listeners for the new row's plus and minus buttons
         qtyListeners();
         reIndexSiNumbers();
-        console.log(cart)
     }
 }
 
@@ -123,40 +122,43 @@ function reIndexSiNumbers() {
     });
 }
 
-function qtyListeners() {
-    // Event delegation for both click and keypress events
-    $('.number-input .minus, .number-input .plus').on('click keypress', handleQuantityChange);
-    $('.number-input input').on('keypress', handleQuantityChange);
+// function qtyListeners() {
+//     // Event delegation for both click and keypress events
+//     $('.number-input .minus, .number-input .plus').on('click keypress', handleQuantityChange);
+//     $('.number-input input').on('keypress', handleQuantityChange);
 
-    function handleQuantityChange(event) {
-        const input = $(this).closest('.number-input').find('input');
-        const quantity = parseInt(input.val());
+//     function handleQuantityChange(event) {
+//         const input = $(this).closest('.number-input').find('input');
+//         const quantity = parseInt(input.val());
 
-        if (!isNaN(quantity)) {
-            if (event.type === 'keypress' && event.key !== 'Enter') {
-                // Ignore non-Enter keypresses
-                return;
-            }
+//         if (!isNaN(quantity)) {
+//             if (event.type === 'keypress' && event.key !== 'Enter') {
+//                 // Ignore non-Enter keypresses
+//                 return;
+//             }
 
-            const change = $(this).hasClass('minus') ? -1 : (event.type === 'click' ? 1 : 0);
-            const newQuantity = Math.max(quantity + change, 1); // Ensure minimum quantity is 1
-            input.val(newQuantity);
+//             const change = $(this).hasClass('minus') ? -1 : (event.type === 'click' ? 1 : 0);
+//             const newQuantity = Math.max(quantity + change, 1); // Ensure minimum quantity is 1
+//             input.val(newQuantity);
 
 
-                // Update cart quantity based on the SI number
-            const siNo = parseInt($(this).closest('tr').find('td:nth-child(2)').text());
-            cart[siNo][1] = newQuantity; 
+//             // Update cart quantity based on the SI number
+//             const siNo = parseInt($(this).closest('tr').find('td:nth-child(2)').text());
+//             cart[siNo].qty = newQuantity; 
 
-            updateTotalPrice($(this).closest('tr')); // Update total price based on the row
-            if (event.type === 'keydown' && event.key === 'Escape') {
-                $('.search input').val('');
-                $(".list-items").hide(); // Hide search results
-                return;
-            }
-        }
-        console.log(cart);
-    }
-};
+//             updateTotalPrice($(this).closest('tr')); // Update total price based on the row
+//             if (event.type === 'keydown' && event.key === 'Escape') {
+//                 $('.search input').val('');
+//                 $(".list-items").hide(); // Hide search results
+//                 return;
+//             }
+//         }
+//     }
+// };
+
+
+
+
 
 // enter to select the first item
 $(".search input").on("keydown", function (event) {
@@ -181,7 +183,6 @@ function removeRow(button) {
     $(".table-list tbody tr").each(function (i, row) {
         $(row).find("td:nth-child(2)").text(i + 1); // Update SI number based on index
     });
-    console.log(cart);
 }
 
 // // Function to refresh the billing table by removing all rows
@@ -193,7 +194,6 @@ function refreshTable() {
     while (tableBody.rows.length > 0) {
         tableBody.deleteRow(0);
     }
-    console.log(cart);
 }
 
 function updateTotalPrice(row) {
@@ -204,19 +204,57 @@ function updateTotalPrice(row) {
     $row.find('td:nth-child(6)').text(`₹${totalPrice.toFixed(2)}`);
 }
 
-// $("#cashPrintButton").click(function() {
+// Check if the cart is empty
+function isCartEmpty(cart) {
+    return Object.keys(cart).length === 0;
+}
+
+$("#print").click(function() {
+    if (isCartEmpty(cart)) {
+        alert("The cart is empty.");
+    } else {
+        // Proceed with the AJAX request
+        $.ajax({
+            url: "/print-bill",
+            type: "POST",
+            data: JSON.stringify(cart),
+            contentType: "application/json",
+            dataType: "json",
+            success: function(response) {
+                console.log(response.message);
+            },
+            error: function(error) {
+                console.error(error);
+            }
+        });
+        alert("Printing...");
+    }
+});
+
+// $("#print").click(function() {
 //     $.ajax({
-//       url: "/print-cart", // Replace with your actual endpoint
-//       type: "POST",
-//       data: JSON.stringify(cart),
-//       success: function(response) {
-//         console.log(response.message); // Handle successful response
-//       },
-//       error: function(error) {
-//         console.error(error); // Handle errors
-//       }
+//         url: "/print-bill",
+//         type: "POST",
+//         contentType: "application/json",
+//         data: JSON.stringify(cart),
+//         dataType: "json",
+//         success: function(response) {
+//             console.log(response.message);
+//         },
+//         error: function(error) {
+//             console.error("Error:", error.status, error.statusText);
+//             // Handle the error based on the status code
+//             if (error.status === 401) {
+//                 alert("Access denied. Please log in.");
+//             } else {
+//                 alert("An error occurred. Please try again.");
+//             }
+//         }
 //     });
-//   });
+// });
+
+
+
 
 
 // keyboard shortcuts

@@ -33,6 +33,12 @@ class Products(db.Model, UserMixin):
     
     def get_id(self):
         return self.pid
+    
+    def get_product(self, pid):
+        return {
+            'name': self.name,
+            'price': self.price
+        }
 
     def __repr__(self):
         return f'{self.name}{self.category}{self.price}'

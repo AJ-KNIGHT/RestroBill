@@ -13,7 +13,7 @@ def index():
             return jsonify({'seconds': seconds})
 
         elif request.method == 'POST':
-            card_text = json.loads(request.data)['text']        # .form or .json (not used form then use data)
+            card_text = json.loads(request.data)['text']        # .form or .json (not used form, then use data)
             new_text = f"I got : {card_text}"
             return jsonify({'data': new_text})
         
