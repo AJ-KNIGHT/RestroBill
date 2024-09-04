@@ -53,13 +53,12 @@ function addRow(name, price, pid) {
         const quantityInput = existingRow.querySelector("input[type='number']");
         let currentQuantity = parseInt(quantityInput.value, 10);
         quantityInput.value = currentQuantity + 1;
-        updateTotalPrice(existingRow);
+        updatePrice(existingRow);
     } else {
         // If item doesn't exist, add a new row
         const rowCount = document.querySelectorAll(".table-list tbody tr").length;
         const newSiNo = rowCount + 1;
         const quantity = 1;
-
         const newRow = document.createElement('tr');
         newRow.id = `row-${newSiNo}`;
         newRow.innerHTML = `
@@ -86,6 +85,7 @@ function addRow(name, price, pid) {
         qtyListeners();
         reIndexSiNumbers();
     }
+    updateTotal(calculateTotal());
 }
 
 function reIndexSiNumbers() {
@@ -116,33 +116,49 @@ function handleQuantityChange(event) {
         if (event.type === 'keypress' && event.key !== 'Enter') {
             // Ignore non-Enter keypresses
             return;
+        } else if (event.type === 'keypress' && event.key === 'Enter') {
+            newQuantity = input.value;
+
+        } else {
+            // Determine the change in quantity based on the event
+            const change = event.target.classList.contains('minus') ? -1 : 1;
+            const newQuantity = Math.max(quantity + change, 1); // Allow quantity to be zero
+            input.value = newQuantity;
         }
-        // Determine the change in quantity based on the event
-        const change = event.target.classList.contains('minus') ? -1 : 1;
-        const newQuantity = Math.max(quantity + change, 0); // Allow quantity to be zero
-        input.value = newQuantity;
         const row = event.currentTarget.closest('tr');
         const siNo = parseInt(row.cells[1].textContent, 10);
+
         if (newQuantity === 0) {
-            // Remove the row if the quantity becomes zero
-            removeRow(event.currentTarget.querySelector('.remove-icon'));
-            return; // Exit the function early
+            const removeIcon = event.currentTarget.closest('tr').querySelector('.remove-icon');
+            if (removeIcon) {
+                removeRow(removeIcon);
+            } else {
+                console.error('Remove icon not found');
+            }
+            return;
         } else {
             cart[siNo].qty = newQuantity;
         }
-        updateTotalPrice(row);
+        updatePrice(row);
+        updateTotal(calculateTotal());
     }
 }
 
-function updateTotalPrice(row) {
+function updatePrice(row) {
     const quantity = parseInt(row.querySelector("input[type='number']").value, 10);
     const price = parseFloat(row.cells[4].textContent.replace('₹', ''));
     row.cells[5].textContent = `₹${(quantity * price).toFixed(2)}`;
 }
 
 function removeRow(element) {
-    element.closest('tr').remove();
-    reIndexSiNumbers();
+    const row = element.closest('tr'); // Find the closest <tr> ancestor
+    if (row) {
+        row.remove(); // Remove the entire row
+        reIndexSiNumbers(); // Call function to re-index the rows
+        updateTotal(calculateTotal());
+    } else {
+        console.error('Row not found');
+    }
 }
 
 
@@ -153,7 +169,8 @@ document.querySelector(".search input").addEventListener("keydown", function(eve
         if (firstItem) {
             const name = firstItem.getAttribute("data-name");
             const price = firstItem.getAttribute("data-price");
-            addRow(name, price);
+            const pid = firstItem.getAttribute("data-pid");
+            addRow(name, price, pid);
             document.querySelector(".list-items").innerHTML = "";
             this.value = "";
         }
@@ -170,6 +187,7 @@ function refreshTable() {
     while (tableBody.rows.length > 0) {
         tableBody.deleteRow(0);
     }
+    updateTotal(0);
 }
 
 // Check if the cart is empty
@@ -177,7 +195,26 @@ function isCartEmpty(cart) {
     return Object.keys(cart).length === 0;
 }
 
-// Get the print button element
+function calculateTotal() {
+    let total = 0;
+    const rows = document.querySelectorAll(".table-list tbody tr");
+    rows.forEach(row => {
+        const priceCell = row.cells[5].textContent.replace('₹', '');
+        total += parseFloat(priceCell);
+    });
+    return total.toFixed(2); // Return the total with two decimal places
+}
+
+function updateTotal(newprice) {
+    const totalElement = document.getElementById("total");
+    totalElement.textContent = `₹${newprice}`;
+}
+
+
+
+
+
+// print 
 document.getElementById("print").addEventListener("click", function() {
     console.log(cart);
     if (isCartEmpty(cart)) {
@@ -201,14 +238,6 @@ document.getElementById("print").addEventListener("click", function() {
         });
     }
 });
-
-
-$("#print").click(function() {
-
-});
-
-
-
 
 
 // keyboard shortcuts

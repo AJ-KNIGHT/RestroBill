@@ -275,14 +275,18 @@ body {
     background-color: #797979;
 }
 
-.print-div {
-    /* background-color: #c9c9ca; */
-    background-color: whitesmoke;
+
+/* side div  */
+.side-div {
+    background-color: #c9c9ca;
+    /* background-color: whitesmoke; */
     display: flex;
     flex-direction: column;
-    width: 200px;
+    align-items: center;
+    justify-content: space-around;
+    width: 250px;
+    height: 150px;
     /* height: 400px; */
-    height: 60px;
     align-self: center;
     margin: 0 10px 30px;
     border-radius: 15px;
@@ -290,25 +294,32 @@ body {
     box-shadow: 0 0px 10px rgba(0, 0, 0, 0.094);
     position: absolute;
     /* right: 25px; */
-    right: 15px;
+    right: 0px;
     bottom: 0px;
 }
 
-.print-div button {
+.side-div button {
     background-color: #28a745;
     color: white;
     font-weight: 400;
     text-align: center;
     vertical-align: middle;
     cursor: pointer;
-    padding: 10px 25px;
+    padding: 10px 70px;
     line-height: 1.5;
     border-radius: 10px;
     border: 0;
 }
 
-.print-div button:hover {
+.side-div button:hover {
     background-color: #218838;
+}
+
+.total-price {
+    width: 100%;
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 
