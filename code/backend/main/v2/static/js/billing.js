@@ -122,7 +122,38 @@ function reIndexSiNumbers() {
     });
 }
 
-//1
+// 1
+function qtyListeners() {
+    // Attach event listeners to all minus, plus, and input elements within the number-input class
+    $('.number-input').on('click keypress', '.minus, .plus, input', handleQuantityChange);
+    $('.number-input').on('click keypress', '.minus, .plus, input', handleQuantityChange);
+
+    function handleQuantityChange(event) {
+        const input = $(this).closest('.number-input').find('input');
+        const quantity = parseInt(input.val());
+        
+
+        if (!isNaN(quantity)) {
+            if (event.type === 'keypress' && event.key !== 'Enter') {
+                // Ignore non-Enter keypresses
+                return;
+            }
+
+            const change = $(this).hasClass('minus') ? -1 : (event.type === 'click' ? 1 : 0);
+            const newQuantity = Math.max(quantity + change, 1); // Ensure minimum quantity is 1
+            input.val(newQuantity);
+
+            // Update cart quantity based on the SI number
+            const siNo = parseInt($(this).closest('tr').find('td:nth-child(2)').text());
+            cart[siNo].qty = newQuantity;
+
+            updateTotalPrice($(this).closest('tr')); // Update total price based on the row
+        }
+    }
+};
+
+// 0
+
 // function qtyListeners() {
 //     // Attach event listeners to all minus, plus, and input elements within the number-input class
 //     $('.number-input').on('click keypress', '.minus, .plus, input', handleQuantityChange);
@@ -150,38 +181,38 @@ function reIndexSiNumbers() {
 //         }
 //     }
 // };
-
 // test
 
-function qtyListeners() {
-    // Attach event listeners to all minus, plus, and input elements within the number-input class
-    $('.number-input').on('click keypress', '.minus, .plus, input', handleQuantityChange);
+// function qtyListeners() {
+//     // Attach event listeners to all minus, plus, and input elements within the number-input class
+//     $('.number-input').on('click keypress', '.minus, .plus, input', handleQuantityChange);
 
-    function handleQuantityChange(event) {
-        const row = $(event.target).closest('tr');
-        const siNo = row.attr('id').replace('row-', ''); // Extract SI number from the ID
+//     function handleQuantityChange(event) {
+//         console.log("handler")
+//         const row = $(event.target).closest('tr');
+//         const siNo = row.attr('id').replace('row-', ''); // Extract SI number from the ID
     
-        const input = row.find('input[type="number"]');
-        const quantity = parseInt(input.val());
+//         const input = row.find('input[type="number"]');
+//         const quantity = parseInt(input.val());
     
-        if (!isNaN(quantity)) {
-            if (event.type === 'keypress' && event.key !== 'Enter') {
-                // Ignore non-Enter keypresses
-                return;
-            }
+//         if (!isNaN(quantity)) {
+//             if (event.type === 'keypress' && event.key !== 'Enter') {
+//                 // Ignore non-Enter keypresses
+//                 return;
+//             }
     
-            const change = $(this).hasClass('minus') ? -1 : (event.type === 'click' ? 1 : 0);
-            const newQuantity = Math.max(quantity + change, 1); // Ensure minimum quantity is 1
-            console.log(newQuantity)
-            input.val(newQuantity);
+//             const change = $(this).hasClass('minus') ? -1 : (event.type === 'click' ? 1 : 0);
+//             const newQuantity = Math.max(quantity + change, 1); // Ensure minimum quantity is 1
+//             console.log(newQuantity)
+//             input.val(newQuantity);
     
-            // Update cart quantity based on the SI number
-            cart[siNo].qty = newQuantity;
+//             // Update cart quantity based on the SI number
+//             cart[siNo].qty = newQuantity;
     
-            updateTotalPrice(row); // Update total price based on the row
-        }
-    }
-};
+//             updateTotalPrice(row); // Update total price based on the row
+//         }
+//     }
+// };
 
 // enter to select the first item
 $(".search input").on("keydown", function (event) {
