@@ -85,7 +85,7 @@ function addRow(name, price, pid) {
         qtyListeners();
         reIndexSiNumbers();
     }
-    updateTotal(calculateTotal());
+    // updateTotal(calculateTotal());
 }
 
 function reIndexSiNumbers() {
@@ -111,6 +111,7 @@ function handleQuantityChange(event) {
     const container = event.currentTarget.closest('.number-input');
     const input = container.querySelector('input');
     let quantity = parseInt(input.value, 10);
+    let newQuantity = 1;
 
     if (!isNaN(quantity)) {
         if (event.type === 'keypress' && event.key !== 'Enter') {
@@ -122,12 +123,11 @@ function handleQuantityChange(event) {
         } else {
             // Determine the change in quantity based on the event
             const change = event.target.classList.contains('minus') ? -1 : 1;
-            const newQuantity = Math.max(quantity + change, 1); // Allow quantity to be zero
+            newQuantity = Math.max(quantity + change, 0); // Allow quantity to be zero
             input.value = newQuantity;
         }
         const row = event.currentTarget.closest('tr');
         const siNo = parseInt(row.cells[1].textContent, 10);
-
         if (newQuantity === 0) {
             const removeIcon = event.currentTarget.closest('tr').querySelector('.remove-icon');
             if (removeIcon) {
