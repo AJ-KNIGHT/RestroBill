@@ -20,7 +20,7 @@ function liveSearch(value) {
                 }
                 document.querySelector(".list-items").innerHTML = res;
                 document.querySelector(".list-items").style.display = 'block';
-               // Add click event to each item
+                // Add click event to each item
                 document.querySelectorAll(".list-items .item").forEach(function (item) {
                     item.addEventListener("click", function () {
                         const name = item.getAttribute("data-name");
@@ -81,11 +81,11 @@ function addRow(name, price, pid) {
         if (typeof this !== 'undefined' && this instanceof HTMLInputElement) {
             this.value = "";
         }
-        cart[newSiNo] = {"pid": pid, "qty": quantity};
+        cart[newSiNo] = { "pid": pid, "qty": quantity };
         qtyListeners();
         reIndexSiNumbers();
     }
-    // updateTotal(calculateTotal());
+    updateTotal(calculateTotal());
 }
 
 function reIndexSiNumbers() {
@@ -163,7 +163,7 @@ function removeRow(element) {
 
 
 // enter to select the first item
-document.querySelector(".search input").addEventListener("keydown", function(event) {
+document.querySelector(".search input").addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
         const firstItem = document.querySelector(".list-items .item");
         if (firstItem) {
@@ -187,7 +187,7 @@ function refreshTable() {
     while (tableBody.rows.length > 0) {
         tableBody.deleteRow(0);
     }
-    updateTotal(0);
+    updateTotal("0.00");
 }
 
 // Check if the cart is empty
@@ -210,13 +210,29 @@ function updateTotal(newprice) {
     totalElement.textContent = `₹${newprice}`;
 }
 
+// profile popup toggle
+const profile_icon = document.querySelector(".profile-icon");
+const profile = document.querySelector(".profile-div");
 
+profile_icon.addEventListener("click", function (event) {
+    event.stopPropagation(); // Prevent this click from triggering the window click listener
+    if (profile.classList.contains("show")) {
+        profile.classList.remove("show"); // Close profile-div
+    } else {
+        profile.classList.add("show"); // Open profile-div
+    }
+});
 
+// Close profile-div when clicking outside of it
+window.addEventListener("click", function (event) {
+    if (!profile.contains(event.target) && event.target !== profile_icon) {
+        profile.classList.remove("show"); // Close profile-div
+    }
+});
 
 
 // print 
-document.getElementById("print").addEventListener("click", function() {
-    console.log(cart);
+document.getElementById("print").addEventListener("click", function () {
     if (isCartEmpty(cart)) {
         alert("The cart is empty.");
     } else {
@@ -224,20 +240,68 @@ document.getElementById("print").addEventListener("click", function() {
             url: "/print-bill",
             type: "POST",
             contentType: "application/json",
-            data: JSON.stringify(cart),
+            data: JSON.stringify(cart),  // Send the cart data to the backend
             dataType: "json",
-            success: function(response) {
-                console.log(response.message);
+            success: function (response) {
+                // Assuming the response contains a success message or the bill URL
+
+                if (response) {
+                    // 1. Show success message
+                    // alert("Bill printed successfully!");
+                    // if (response.bill_url) {
+                    //     window.open(response.bill_url, '_blank');
+                    // }
+
+                    if (response.billDetails && response.billDetails.length > 0) {
+                        printBill(response.billDetails);  // Call the printBill function
+                    } else {
+                        alert("No products to print.");
+                    }
+
+                    // // 3. Clear the cart and reset the billing table
+                    // refreshTable();  // Clears the table
+                    // updateTotal(0);  // Resets the total to 0
+                    // cart = {};  // Reset the cart
+                } else {
+                    // If there's an error message in the response, display it
+                    alert("Error: " + response.message);
+                }
             },
-            error: function(error) {
+            error: function (error) {
                 // Handle the error based on the status code
                 if (error.status === 401) {
                     alert("Access denied. Please log in.");
+                } else {
+                    alert("An error occurred while printing the bill.");
                 }
             }
         });
     }
 });
+
+
+function printBill(billDetails) {
+    let billWindow = window.open('', '_blank');
+    billWindow.document.write('<html><head><title>Bill</title></head><body>');
+    billWindow.document.write('<h1>Restaurant Bill</h1>');
+    billWindow.document.write('<table border="1" style="width:100%"><tr><th>Item</th><th>Quantity</th><th>Price</th><th>Total</th></tr>');
+    
+    billDetails.forEach(item => {
+        billWindow.document.write(`<tr>
+            <td>${item.name}</td>
+            <td>${item.qty}</td>
+            <td>₹${item.price}</td>
+            <td>₹${item.total}</td>
+        </tr>`);
+    });
+    
+    billWindow.document.write('</table>');
+    billWindow.document.write(`<h2>Total: ₹${billDetails.reduce((sum, item) => sum + item.total, 0)}</h2>`);
+    billWindow.document.write('</body></html>');
+    billWindow.document.close();
+    billWindow.print();
+}
+
 
 
 // keyboard shortcuts

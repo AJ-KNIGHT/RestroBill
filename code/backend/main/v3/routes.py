@@ -31,7 +31,7 @@ def register_routes(app, db, bcrypt):
     @login_required
     def logout():
         logout_user()
-        return render_template('login.html')
+        return redirect(url_for('login'))
 
 # ---------------- billing page -----------------------
 
@@ -76,9 +76,49 @@ def register_routes(app, db, bcrypt):
             if request.is_json:
 
                 # products = Products.query.all()
-                cart_data = request.get_json()
-                print(cart_data)
-                return ('print success', 205)
+                cart = request.get_json()
+                # print(cart_)
+                # return ('print success', 205)
+    
+                total_amount = 0
+                bill_details = []
+                
+                for si_no, item in cart.items():
+                    pid = item['pid']
+                    qty = item['qty']
+                    
+                    # Fetch product details from database
+                    product = Products.query.get(pid) 
+                    if product:
+                        product_data = product.to_dict()
+                        product_name = product_data['name']
+                        product_price = product_data['price']
+                        product_total = qty * product_price
+                        
+                        # Add product details to bill details
+                        bill_details.append({
+                            'name': product_name,
+                            'qty': qty,
+                            'price': product_price,
+                            'total': product_total
+                        })
+                        
+                        # Update the total amount
+                        total_amount += product_total
+                
+                # Prepare the response with bill details and total amount
+                # response = {
+                #     'billDetails': bill_details,
+                #     'totalAmount': total_amount
+                # }
+                # return jsonify(response)
+
+                return jsonify({
+                    'message': 'Bill generated successfully.',
+                    'billDetails': bill_details  # Send back product details for printing
+                })
+    
+
             
             else:
                 return ('', 401)

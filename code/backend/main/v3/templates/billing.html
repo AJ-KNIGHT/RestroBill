@@ -13,25 +13,29 @@
         <header>
             <nav class="navbar">
                 <div class="nav-div">
-                    <div class="nav-logo">
+                    <div class="nav-logo" onclick="window.location='/billing';">
                         <img src="/images/restaurant-icon.png">
                     </div>
                     <div class="nav-head">
                         <h2>Aboos Restaurant</h2>
                     </div>
                     <div class="nav-links">
-                        <ul>
-                            <li><a href="/billing">Home</a></li>
-                            <li><a href="{{ url_for('logout') }}">Logout</a></li>
-                        </ul>
+                         <!-- <ul>
+                            <li><a href="{{ url_for('logout') }}">Logout</a></li> 
+                            <li><span>User : {{ username }}</span></li>
+                        </ul> -->
                         <div class="nav-logo">
-                            <img src="/images/profile-icon.png">
+                            <img src="/images/profile-icon.png" class="profile-icon">
                         </div>
                     </div>
                 </div>
             </nav>
         </header>
         <div class="container">
+            <div class="profile-div">
+                <h3>{{ username }}</h3>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            </div>
             <div class="search"><input type="text" onkeyup="liveSearch(this.value)"
                 placeholder="search products" />
                 <div class="list-items">
