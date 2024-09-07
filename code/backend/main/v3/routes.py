@@ -243,11 +243,16 @@ def register_routes(app, db, bcrypt):
     def user_delete(uid):
         if current_user.role == 'admin':
             data = Users.query.get(uid)
-            db.session.delete(data)
-            db.session.commit()
-
-            flash('User deleted successfully')
-            return redirect(url_for('user_management'))
+            if data:
+                if uid.strip() != "1" and data.role != "admin":
+                    db.session.delete(data)
+                    db.session.commit()
+                    flash('User deleted successfully')
+                    return redirect(url_for('user_management'))
+                else:
+                    return "Cannot delete admin user"
+            else:
+                return "User not found"
         else:
             return "Access Denied"
 
