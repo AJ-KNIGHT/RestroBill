@@ -189,8 +189,6 @@ def register_routes(app, db, bcrypt):
         # Convert the rendered HTML to PDF using WeasyPrint
         # pdf = HTML(string=rendered_html).write_pdf()
 
-        # pdf = HTML(string=rendered_html).write_pdf(stylesheets=[css])
-
         # save pdf
         HTML(string=rendered_html).write_pdf('./output.pdf')
 
