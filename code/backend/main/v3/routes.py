@@ -1,5 +1,7 @@
-from flask import render_template, request, redirect, url_for, flash, jsonify
+from flask import render_template, request, redirect, url_for, flash, jsonify, make_response
 from flask_login import login_user, logout_user, current_user, login_required
+
+from weasyprint import HTML
 
 from models import Users, Products
 
@@ -173,6 +175,35 @@ def register_routes(app, db, bcrypt):
     #     # ... actual printing code ...
 
 
+    @app.route('/bill')
+    @login_required
+    def bill():
+        return render_template('bill.html')
+
+    @app.route('/generate_pdf')
+    @login_required
+    def generate_pdf():
+
+        # Render the HTML template
+        rendered_html = render_template('bill.html')
+        # Convert the rendered HTML to PDF using WeasyPrint
+        # pdf = HTML(string=rendered_html).write_pdf()
+
+        # pdf = HTML(string=rendered_html).write_pdf(stylesheets=[css])
+
+        # save pdf
+        HTML(string=rendered_html).write_pdf('./output.pdf')
+
+
+        # Create a response object with the PDF
+        # response = make_response(pdf)
+        # response.headers['Content-Type'] = 'application/pdf'
+        # response.headers['Content-Disposition'] = 'inline; filename=output.pdf'
+
+        # return response
+
+        return "Bill pdf ready"
+        
 
 # ---------------- dashboard page -----------------------
     @app.route('/dashboard')
