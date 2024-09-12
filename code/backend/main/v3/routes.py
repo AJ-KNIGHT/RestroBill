@@ -79,7 +79,7 @@ def register_routes(app, db, bcrypt):
 
                 # products = Products.query.all()
                 cart = request.get_json()
-                print(cart)
+                # print(cart)
                 # return ('print success', 205)
     
                 total_amount = 0
@@ -115,53 +115,34 @@ def register_routes(app, db, bcrypt):
                 # }
                 # return jsonify(response)
 
-                # return jsonify({
-                #     'message': 'Bill generated successfully.',
-                #     'billDetails': bill_details  # Send back product details for printing
-                # })
+                # tp = render_template('bill-template.html', items=bill_details, total=total_amount)
+                # response = {
+                #     'data': tp
+                # }
+                # return jsonify(response)
 
-                tp = render_template('bill-template.html', items=bill_details, total=total_amount)
+                rendered_html = render_template('bill-template.html', items=bill_details, total=total_amount)
+                # Convert the rendered HTML to PDF using WeasyPrint
+                # pdf = HTML(string=rendered_html).write_pdf()
 
-                response = {
-                    'data': tp
-                }
+                # save pdf
+                HTML(string=rendered_html).write_pdf('./output.pdf')
 
-                return jsonify(response)
+                # # Create a response object with the PDF
+                # response = make_response(pdf)
+                # response.headers['Content-Type'] = 'application/pdf'
+                # response.headers['Content-Disposition'] = 'inline; filename=output.pdf'
 
-                # return render_template('bill-template.html', items=bill_details, total=total_amount)
+                # return response
+            
+                return jsonify({
+                    'message': 'Bill generated successfully.'
+                })
 
             else:
                 return ('error', 401)
         else:
             return "Access Denied"
-
-    @app.route('/bill')
-    @login_required
-    def bill():
-        return render_template('bill.html')
-
-    @app.route('/generate_pdf')
-    @login_required
-    def generate_pdf():
-
-        # Render the HTML template
-        rendered_html = render_template('bill.html')
-        # Convert the rendered HTML to PDF using WeasyPrint
-        # pdf = HTML(string=rendered_html).write_pdf()
-
-        # save pdf
-        HTML(string=rendered_html).write_pdf('./output.pdf')
-
-
-        # Create a response object with the PDF
-        # response = make_response(pdf)
-        # response.headers['Content-Type'] = 'application/pdf'
-        # response.headers['Content-Disposition'] = 'inline; filename=output.pdf'
-
-        # return response
-
-        return "Bill pdf ready"
-        
 
 # ---------------- dashboard page -----------------------
     @app.route('/dashboard')

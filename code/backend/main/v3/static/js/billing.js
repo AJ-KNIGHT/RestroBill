@@ -76,7 +76,6 @@ function addRow(name, price, pid) {
             <td>₹${(quantity * price).toFixed(2)}</td>
         `;
         document.querySelector(".table-list tbody").appendChild(newRow);
-        document.querySelector(".list-items").style.display = "none";
         // Clear the input field, assuming `this` refers to the input field
         if (typeof this !== 'undefined' && this instanceof HTMLInputElement) {
             this.value = "";
@@ -85,6 +84,8 @@ function addRow(name, price, pid) {
         qtyListeners();
         reIndexSiNumbers();
     }
+    document.querySelector(".search input").value = '';
+    document.querySelector(".list-items").style.display = "none";
     updateTotal(calculateTotal());
 }
 
@@ -243,16 +244,16 @@ document.getElementById("print").addEventListener("click", function () {
             data: JSON.stringify(cart),  // Send the cart data to the backend
             dataType: "json",
             success: function (response) {
-                console.log(response);
+                // console.log(response);
 
-                var newTab =  window.open();
-                newTab.document.write(response.data);
-                newTab.document.close();
+                // var newTab =  window.open();
+                // newTab.document.write(response.data);
+                // newTab.document.close();
                 // Assuming the response contains a success message or the bill URL
 
-                // if (response) {
+                if (response) {
                     // 1. Show success message
-                    // alert("Bill printed successfully!");
+                    alert("Bill printed successfully!");
                     // if (response.bill_url) {
                     //     window.open(response.bill_url, '_blank');
                     // }
@@ -263,51 +264,51 @@ document.getElementById("print").addEventListener("click", function () {
                     //     alert("No products to print.");
                     // }
 
-                    // // 3. Clear the cart and reset the billing table
-                    // refreshTable();  // Clears the table
-                    // updateTotal(0);  // Resets the total to 0
-                    // cart = {};  // Reset the cart
-                // } else {
-                //     // If there's an error message in the response, display it
-                //     alert("Error: " + response.message);
-                // }
+                    // 3. Clear the cart and reset the billing table
+                    refreshTable();  // Clears the table
+                    updateTotal(0);  // Resets the total to 0
+                    cart = {};  // Reset the cart
+                } else {
+                    // If there's an error message in the response, display it
+                    alert("Error: " + response.message);
+                }
             },
             error: function (error) {
-                // // Handle the error based on the status code
-                // if (error.status === 401) {
-                //     alert("Access denied. Please log in.");
-                // } else {
-                //     alert("An error occurred while printing the bill.");
-                // }
+                // Handle the error based on the status code
+                if (error.status === 401) {
+                    alert("Access denied. Please log in.");
+                } else {
+                    alert("An error occurred while printing the bill.");
+                }
 
-                console.log("error");
+                // console.log("error");
             }
         });
     }
 });
 
 
-function printBill(billDetails) {
-    let billWindow = window.open('', '_blank');
-    billWindow.document.write('<html><head><title>Bill</title></head><body>');
-    billWindow.document.write('<h1>Restaurant Bill</h1>');
-    billWindow.document.write('<table border="1" style="width:100%"><tr><th>Item</th><th>Quantity</th><th>Price</th><th>Total</th></tr>');
+// function printBill(billDetails) {
+//     let billWindow = window.open('', '_blank');
+//     billWindow.document.write('<html><head><title>Bill</title></head><body>');
+//     billWindow.document.write('<h1>Restaurant Bill</h1>');
+//     billWindow.document.write('<table border="1" style="width:100%"><tr><th>Item</th><th>Quantity</th><th>Price</th><th>Total</th></tr>');
     
-    billDetails.forEach(item => {
-        billWindow.document.write(`<tr>
-            <td>${item.name}</td>
-            <td>${item.qty}</td>
-            <td>₹${item.price}</td>
-            <td>₹${item.total}</td>
-        </tr>`);
-    });
+//     billDetails.forEach(item => {
+//         billWindow.document.write(`<tr>
+//             <td>${item.name}</td>
+//             <td>${item.qty}</td>
+//             <td>₹${item.price}</td>
+//             <td>₹${item.total}</td>
+//         </tr>`);
+//     });
     
-    billWindow.document.write('</table>');
-    billWindow.document.write(`<h2>Total: ₹${billDetails.reduce((sum, item) => sum + item.total, 0)}</h2>`);
-    billWindow.document.write('</body></html>');
-    billWindow.document.close();
-    billWindow.print();
-}
+//     billWindow.document.write('</table>');
+//     billWindow.document.write(`<h2>Total: ₹${billDetails.reduce((sum, item) => sum + item.total, 0)}</h2>`);
+//     billWindow.document.write('</body></html>');
+//     billWindow.document.close();
+//     billWindow.print();
+// }
 
 
 
