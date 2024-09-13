@@ -1,0 +1,170 @@
+<!--
+This is a simple Secure Recipe Web App Web. This was developed for educational purposes only. 
+Author: oretnom23
+Email: oretnom23@gmail.com 
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> JS Market Billing System</title>
+    <link rel="stylesheet" href="./font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/styles.css">
+    <script src="./font-awesome/js/all.min.js"></script>
+    <script src="./js/jquery-3.6.0.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/script.js"></script>
+
+</head>
+
+<body class="bg-gradient bg-dark bg-opacity-50">
+    <script>
+        start_loader()
+    </script>
+    <main>
+        <div class="col-lg-12">
+            <h1 class="fw-bolder text-center" id="project-title">Market Billing System in JavaScript</h1>
+        </div>
+        <div class="container-fluid w-100">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <div class="card rounded-0 shadow mb-3">
+                        <div class="card-body">
+                            <div class="container-fluid">
+                                <h4 class="text-center fw-bold">Add Product Item</h4>
+                                <center>
+                                    <hr class="bg-primary border-2 w-25 bg-opacity-100">
+                                </center>
+                                <form action="" id="add-form">
+                                    <input type="hidden" name="name" value="">
+                                    <input type="hidden" name="price" value="">
+                                    <div class="form-group mb-3 position-relative">
+                                        <label for="find-product" class="control-label">Find Product</label>
+                                        <input type="search" id="find-product" class="form-control form-control-sm rounded-0" placeholder="i.e. Product 101">
+                                        <div class="list-group position-absolute w-100 overflow-auto d-none bg-light bg-gradient border" id="product-result"></div>
+                                    </div>
+                                    <dl>
+                                        <dt>Product:</dt>
+                                        <dd id="pname" class=" ps-3"></dd>
+                                        <dt>Price:</dt>
+                                        <dd id="pprice" class=" ps-3"></dd>
+                                    </dl>
+                                    <div class="form-group">
+                                        <label class="control-label" for="qty">QTY</label>
+                                        <input type="number" id="qty" name="qty" min='0' class="form-control form-control-sm rounded-0 text-end" required>
+                                    </div>
+                                </form>
+                                <hr>
+                                <div class="text-end">
+                                    <button class="btn btn-sm btn-primary rounded-0 bg-gradient" type="submit" form="add-form"><i class="fa fa-plus"></i> Add Item</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card rounded-0 shadow mb-3">
+                        <div class="card-body">
+                            <div class="container-fluid">
+                                <h4 class="text-center fw-bold">Total Amount</h4>
+                                <center>
+                                    <hr class="bg-primary border-2 w-25 bg-opacity-100">
+                                </center>
+                                <h3 class="fw-bolder text-center" id="total-amount">0.00</h3>
+                                <hr>
+                                <div class="text-center">
+                                    <button class="btn btn-sm btn-light border rounded-0 bg-gradient" type="button" id="checkout"><i class="fa fa-file-invoice-dollar"></i> Checkout</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                    <div class="card rounded-0 shadow">
+                        <div class="card-body">
+                            <div class="w-100 overflow-auto">
+                                <table class="table table-stripped table-bordered" id="item-list">
+                                    <colgroup>
+                                        <col width="5%">
+                                        <col width="15%">
+                                        <col width="30%">
+                                        <col width="25%">
+                                        <col width="25%">
+                                    </colgroup>
+                                    <thead>
+                                        <tr class="bg-primary bg-gradient text-light">
+                                            <th></th>
+                                            <th>QTY</th>
+                                            <th>Product</th>
+                                            <th>Price</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                            <div class="d-none" id="noItem">
+                                <center><small><em>No item listed yet.</em></small></center>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div class="modal fade" id="checkoutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="checkoutLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-0">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="checkoutLabel">Checkout</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <form action="" id="checkout-form">
+                            <div class="form-group">
+                                <label for="checkout-amount" class="control-label">Total Amount</label>
+                                <input type="text" id="checkout-amount" class="form-control form-control-lg text-end" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="checkout-tendered" class="control-label">Tendered Amount</label>
+                                <input type="number" min="0" id="checkout-tendered" class="form-control form-control-lg text-end" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="checkout-change" class="control-label">Change</label>
+                                <input type="text" id="checkout-change" class="form-control form-control-lg text-end" readonly>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary border btn-sm rounded-0" form="checkout-form">Submit</button>
+                    <button type="button" class="btn btn-light border btn-sm rounded-0" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<noscript id="prod-item-clone">
+<a href="javascript:void(0)" class="list-group-item prod-item">
+    <div class="lh-1">
+        <h4 class="prod_name"></h4>
+        <small class="text-muted">Price: <span class="prod_price">101.10</span></small>
+    </div>
+</a>
+</noscript>
+<noscript id="item-tr-clone">
+    <tr>
+        <td class="text-center">
+            <button class="btn btn-outline-danger btn-sm rounded-0 rem-item" type="button"><i class="fa fa-times"></i></button>
+        </td>
+        <td class="text-center"><input type="number" class="form-control form-control-sm rounded-0 border-0 border-bottom qty text-center"></td>
+        <td class="item-name">Item</td>
+        <td class="text-end item-price">0.00</td>
+        <td class="text-end item-total">0.00</td>
+    </tr>
+</noscript>
+
+</html>
