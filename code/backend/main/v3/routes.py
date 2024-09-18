@@ -25,9 +25,11 @@ def register_routes(app, db, bcrypt):
                     elif user.role == 'user':
                         return redirect(url_for('billing'))
                 else:
-                    return "Authentication Error"
+                    flash('username and password is incorrect')
+                    return redirect(url_for('login'))
             else:
-                return "form Error"
+                flash('username and password is incorrect')
+                return redirect(url_for('login'))
     
     @app.route('/logout/')
     @login_required
@@ -143,6 +145,11 @@ def register_routes(app, db, bcrypt):
                 return ('error', 401)
         else:
             return "Access Denied"
+
+    @app.route('/test')
+    @login_required
+    def test():
+        return render_template('test.html')
 
 # ---------------- dashboard page -----------------------
     @app.route('/dashboard')

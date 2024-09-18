@@ -232,60 +232,60 @@ window.addEventListener("click", function (event) {
 });
 
 
-// print 
-document.getElementById("print").addEventListener("click", function () {
-    if (isCartEmpty(cart)) {
-        alert("The cart is empty.");
-    } else {
-        $.ajax({
-            url: "/print-bill",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(cart),  // Send the cart data to the backend
-            dataType: "json",
-            success: function (response) {
-                // console.log(response);
+//// print 
+//document.getElementById("print").addEventListener("click", function () {
+    //if (isCartEmpty(cart)) {
+        //alert("The cart is empty.");
+    //} else {
+        //$.ajax({
+            //url: "/print-bill",
+            //type: "POST",
+            //contentType: "application/json",
+            //data: JSON.stringify(cart),  // Send the cart data to the backend
+            //dataType: "json",
+            //success: function (response) {
+                //// console.log(response);
 
-                // var newTab =  window.open();
-                // newTab.document.write(response.data);
-                // newTab.document.close();
-                // Assuming the response contains a success message or the bill URL
+                //// var newTab =  window.open();
+                //// newTab.document.write(response.data);
+                //// newTab.document.close();
+                //// Assuming the response contains a success message or the bill URL
 
-                if (response) {
-                    // 1. Show success message
-                    alert("Bill printed successfully!");
-                    // if (response.bill_url) {
-                    //     window.open(response.bill_url, '_blank');
-                    // }
+                //if (response) {
+                    //// 1. Show success message
+                    //alert("Bill printed successfully!");
+                    //// if (response.bill_url) {
+                    ////     window.open(response.bill_url, '_blank');
+                    //// }
 
-                    // if (response.billDetails && response.billDetails.length > 0) {
-                    //     printBill(response.billDetails);  // Call the printBill function
-                    // } else {
-                    //     alert("No products to print.");
-                    // }
+                    //// if (response.billDetails && response.billDetails.length > 0) {
+                    ////     printBill(response.billDetails);  // Call the printBill function
+                    //// } else {
+                    ////     alert("No products to print.");
+                    //// }
 
-                    // 3. Clear the cart and reset the billing table
-                    refreshTable();  // Clears the table
-                    updateTotal(0);  // Resets the total to 0
-                    cart = {};  // Reset the cart
-                } else {
-                    // If there's an error message in the response, display it
-                    alert("Error: " + response.message);
-                }
-            },
-            error: function (error) {
-                // Handle the error based on the status code
-                if (error.status === 401) {
-                    alert("Access denied. Please log in.");
-                } else {
-                    alert("An error occurred while printing the bill.");
-                }
+                    //// 3. Clear the cart and reset the billing table
+                    //refreshTable();  // Clears the table
+                    //updateTotal(0);  // Resets the total to 0
+                    //cart = {};  // Reset the cart
+                //} else {
+                    //// If there's an error message in the response, display it
+                    //alert("Error: " + response.message);
+                //}
+            //},
+            //error: function (error) {
+                //// Handle the error based on the status code
+                //if (error.status === 401) {
+                    //alert("Access denied. Please log in.");
+                //} else {
+                    //alert("An error occurred while printing the bill.");
+                //}
 
-                // console.log("error");
-            }
-        });
-    }
-});
+                //// console.log("error");
+            //}
+        //});
+    //}
+//});
 
 
 // function printBill(billDetails) {
@@ -309,7 +309,6 @@ document.getElementById("print").addEventListener("click", function () {
 //     billWindow.document.close();
 //     billWindow.print();
 // }
-
 
 
 // keyboard shortcuts

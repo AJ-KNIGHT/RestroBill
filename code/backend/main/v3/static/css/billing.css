@@ -126,7 +126,7 @@ body {
 }
 
 /* billing */
-.container2 {
+.billing-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -318,8 +318,9 @@ body {
 .total-price {
     width: 100%;
     color: black;
-    font-size: 18px;
+    font-size: 19px;
     font-weight: bold;
+    margin-left: 8px;
 }
 
 .profile-div {

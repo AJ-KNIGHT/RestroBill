@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/billing.css">
+    <link rel="stylesheet" href="/css/billing.css" />
     <title>BILLING PAGE</title>
 </head>
 
@@ -14,18 +14,14 @@
             <nav class="navbar">
                 <div class="nav-div">
                     <div class="nav-logo" onclick="window.location='/billing';">
-                        <img src="/images/restaurant-icon.png">
+                        <img src="/images/restaurant-icon.png" />
                     </div>
                     <div class="nav-head">
                         <h2>Aboos Restaurant</h2>
                     </div>
                     <div class="nav-links">
-                         <!-- <ul>
-                            <li><a href="{{ url_for('logout') }}">Logout</a></li> 
-                            <li><span>User : {{ username }}</span></li>
-                        </ul> -->
                         <div class="nav-logo">
-                            <img src="/images/profile-icon.png" class="profile-icon">
+                            <img src="/images/profile-icon.png" class="profile-icon" />
                         </div>
                     </div>
                 </div>
@@ -36,59 +32,47 @@
                 <h3>{{ username }}</h3>
                 <a href="{{ url_for('logout') }}">Logout</a>
             </div>
-            <div class="search"><input type="text" onkeyup="liveSearch(this.value)"
-                placeholder="search products" />
+            <div class="search">
+                <input type="text" onkeyup="liveSearch(this.value)" placeholder="search products" />
                 <div class="list-items">
                     <!-- list item here -->
-               </div>
-            </div>
-        <div class="container2">
-            <div class="billig-div">
-                <table class="table-list">
-                    <thead>
-                        <tr>
-                            <th><div class="refresh-icon-div">
-                                    <div class="refresh-icon" onclick="refreshTable()"><img src="/images/refresh.png"></div>
-                                </div>
-                            </th>
-                            <th class="sino-th">SI.NO</th>
-                            <th>PRODUCT</th>
-                            <th>QUANTITY</th>
-                            <th>M.R.P</th>
-                            <th>PRICE</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- <tr>
-                            <td><div class="remove-icon"><img src="/images/close.png"></div></td>
-                            <td>1</td>
-                            <td>soup</td>
-                            <td>
-                                <div class="number-input">
-                                    <button class="minus">-</button>
-                                    <input id="input" type="number" value="1" min="0" max="100" step="1">
-                                    <button class="plus">+</button>
-                                </div>
-                            </td>
-                            <td>₹130</td>
-                            <td>₹1000</td>
-                        </tr> -->
-                    </tbody>
-                </table>
-            </div>
-            <div class="side-div">
-                <div class="total-price">
-                    <span>Total Price: </span><span id="total">₹0.00</span>
-                </div>
-                <div>
-                    <button id="print">Print</button>
                 </div>
             </div>
-        </div>
+            <div class="billing-container">
+                <div class="billig-div">
+                    <table class="table-list">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <div class="refresh-icon-div">
+                                        <div class="refresh-icon" onclick="refreshTable()">
+                                            <img src="/images/refresh.png" />
+                                        </div>
+                                    </div>
+                                </th>
+                                <th class="sino-th">SI.NO</th>
+                                <th>PRODUCT</th>
+                                <th>QUANTITY</th>
+                                <th>M.R.P</th>
+                                <th>PRICE</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="side-div">
+                    <div class="total-price">
+                        <span>Total Price: </span><span id="total">₹0.00</span>
+                    </div>
+                    <div>
+                        <button id="print">Print</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <script src="/js/jquery-3.7.1.min.js"></script>
     <script src="/js/billing.js"></script>
-
 </body>
+
 </html>
