@@ -65,8 +65,58 @@
                         <span>Total Price: </span><span id="total">₹0.00</span>
                     </div>
                     <div>
-                        <button id="print">Print</button>
+                        <button id="checkout">Checkout</button>
                     </div>
+                </div>
+            </div>
+        </div>
+        <!-- Popup -->
+        <div class="popup-container">
+            <div class="popup-div">
+                <div class="close-btn-div">
+                    <button id="close-popup"><span class="close-icon">x</span></button>
+                </div>
+                <div class="popup-head">
+                    <h4>Checkout</h4>
+                </div>
+                <div class="form-div">
+                    <form action="" method="POST">
+                        <div class="pay-dis">
+                            <div class="form-group mar-r-5 w-50">
+                                <label for="payment">Payment Type</label>
+                                <select name="payment" value="Select payment type" required>
+                                    <option value="Select payment type" selected hidden disabled>Select payment type</option>
+                                    <option value="CASH">CASH</option>
+                                    <option value="UPI">UPI</option>
+                                    <option value="CARD">CARD</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group mar-l-5 w-50">
+                                <label for="discount">Discount</label>
+                                <input type="text" id="input-discount" minlength="2" name="discount"
+                                    placeholder="Discout" value="0.0">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="total">Total Amount</label>
+                            <input type="text" name="total" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="TenderedAmount">Tendered Amount</label>
+                            <input type="text" id="input-amount" name="TenderedAmount"
+                             minlength="2" placeholder="Enter amount" required>
+                        </div>
+
+                        <div class="form-group change">
+                            <label for="change">Change</label>
+                            <input type="number" name="change" readonly>
+                        </div>
+                        <div class="form-btn">
+                            <input type="submit" value="Print">
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

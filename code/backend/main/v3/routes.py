@@ -64,15 +64,6 @@ def register_routes(app, db, bcrypt):
         result = [item for item in products_list if text in item['name'].lower()]
         return jsonify(results=result)
 
-        
-    @app.route('/billing-test')
-    @login_required
-    def billing_test():
-        if current_user.role == 'user':
-            return render_template('billing.html', username=current_user.username)
-        else:
-            return "Access Denied"
-
     @app.route('/print-bill', methods=['POST'])
     @login_required
     def print_bill():

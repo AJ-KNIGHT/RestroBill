@@ -231,8 +231,31 @@ window.addEventListener("click", function (event) {
     }
 });
 
+// popup logic
 
-//// print 
+document.getElementById('checkout').onclick = function () {
+    document.querySelector('.popup-container').style.display = "flex";
+    document.querySelector('.container').classList.add("blur");
+
+}
+document.getElementById('close-popup').onclick = function () {
+    document.querySelector('.popup-container').style.display = "none";
+    document.querySelector('.container').classList.remove("blur");
+}
+const popup = document.querySelector(".popup-container");
+
+// When the user clicks anywhere outside of the popup, close it
+window.addEventListener("click", function (event) {
+    if (event.target === popup) {
+        popup.style.display = "none";
+        document.querySelector('.container').classList.remove("blur");
+    }
+});
+
+
+
+
+//// print
 //document.getElementById("print").addEventListener("click", function () {
     //if (isCartEmpty(cart)) {
         //alert("The cart is empty.");
@@ -293,7 +316,7 @@ window.addEventListener("click", function (event) {
 //     billWindow.document.write('<html><head><title>Bill</title></head><body>');
 //     billWindow.document.write('<h1>Restaurant Bill</h1>');
 //     billWindow.document.write('<table border="1" style="width:100%"><tr><th>Item</th><th>Quantity</th><th>Price</th><th>Total</th></tr>');
-    
+
 //     billDetails.forEach(item => {
 //         billWindow.document.write(`<tr>
 //             <td>${item.name}</td>
@@ -302,7 +325,7 @@ window.addEventListener("click", function (event) {
 //             <td>₹${item.total}</td>
 //         </tr>`);
 //     });
-    
+
 //     billWindow.document.write('</table>');
 //     billWindow.document.write(`<h2>Total: ₹${billDetails.reduce((sum, item) => sum + item.total, 0)}</h2>`);
 //     billWindow.document.write('</body></html>');
