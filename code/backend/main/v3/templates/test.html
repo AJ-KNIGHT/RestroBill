@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/favicon.png" type="image/png">
     <title>test</title>
     <style>
         body {
@@ -21,7 +22,7 @@
         }
 
         h2 {
-            margin: 10px 0 0;
+            margin: 0;
             font-size: 18px;
         }
 
@@ -90,11 +91,18 @@
             /* Ensures content doesn't overflow the cell */
             text-overflow: ellipsis;
         }
+        img {
+            margin-top: 5px;
+            width: 80px;
+        }
     </style>
 </head>
 
 <body>
        <div class="bill">
+           <div>
+               <img src="/images/bill-icon.png">
+           </div>
         <h2>Aboos Restaurant</h2>
         <span class="mar-b-20 addr">Palakkad Road, Pattambi</span>
         <span class="dotted-top dotted-down p-2">Bill</span>
@@ -146,7 +154,7 @@
         styleElement.innerHTML = styles;
         document.head.appendChild(styleElement);
 
-        
+
         document.getElementById('btn').onclick = function () {
             window.print();
 }
