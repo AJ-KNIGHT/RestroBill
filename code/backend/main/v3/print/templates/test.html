@@ -4,19 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bill</title>
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+    <title>test</title>
     <style>
-        @page {
-            size: 80mm auto;
-            margin: 10mm;
-        }
-
         body {
             font-family: Arial, sans-serif;
             font-size: 14px;
         }
-
-        .bill {
+                .bill {
             border: 1px solid black;
             margin: 0 auto;
             width: 250px;
@@ -27,7 +22,7 @@
         }
 
         h2 {
-            margin: 10px 0 0;
+            margin: 0;
             font-size: 18px;
         }
 
@@ -80,7 +75,7 @@
         tr {
             border-bottom: 2px solid black;
             border-collapse: collapse;
-            font-size: 13.5px;
+            font-size: 14px;
         }
 
         th,
@@ -101,15 +96,13 @@
             width: 80px;
         }
     </style>
-
-    </style>
 </head>
 
 <body>
-    <div class="bill">
-        <div>
+       <div class="bill">
+           <div>
                <img src="/images/bill-icon.png">
-        </div>
+           </div>
         <h2>Aboos Restaurant</h2>
         <span class="mar-b-20 addr">Palakkad Road, Pattambi</span>
         <span class="dotted-top dotted-down p-2">Bill</span>
@@ -118,40 +111,53 @@
             <span>Staff Name: amal</span>
         </div>
         <table>
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Name</th>
-                    <th>Qty</th>
-                    <th>MRP</th>
-                    <th>Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in items %}
-                    <tr>
-                        <td>{{ loop.index }}</td>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.qty }}</td>
-                        <td>₹{{ item.price }}</td>
-                        <td>₹{{ item.total }}</td>
-                    </tr>
-                {% endfor %}  
-            </tbody>
-            <!-- <tr>
+            <tr>
+                <th>No</th>
+                <th>Name</th>
+                <th>Qty</th>
+                <th>MRP</th>
+                <th>Price</th>
+            </tr>
+            <tr>
                 <td>1</td>
                 <td>Tea</td>
                 <td>1</td>
                 <td>₹10</td>
                 <td>₹10</td>
-            </tr> -->
+            </tr>
         </table>
         <h4>
-            <span>Total amount : ₹{{ total }}</span>
+            <span>Total: ₹1000</span>
         </h4>
-        <span class="dotted-top dotted-down p-2 mar-b-30">Number of items: {{ items | length }}</span>
-        <!-- <span class="dotted-top dotted-down p-2 mar-b-30">Number of items: {{ length }}</span> -->
+        <span class="dotted-top dotted-down p-2 mar-b-30">Number of items: 1</span>
     </div>
-</body>
+    <button id='btn'>Print</button>
 
+    <script>
+        var styles = `
+            @media print {
+                    @page {
+                        size: 88mm portrait;
+                        margin: 0;
+                        padding: 0;
+                    }
+                    body {
+                        width: 300px;
+                        margin: 0;
+                        padding: 0;
+                    }
+                };
+            `
+
+        var styleElement = document.createElement('style');
+        styleElement.type = 'text/css';
+        styleElement.innerHTML = styles;
+        document.head.appendChild(styleElement);
+
+
+        document.getElementById('btn').onclick = function () {
+            window.print();
+}
+    </script>
+</body>
 </html>
