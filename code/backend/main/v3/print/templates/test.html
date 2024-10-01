@@ -4,25 +4,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/images/favicon.png" type="image/png">
-    <title>test</title>
+    <title>Bill</title>
     <style>
+        @page {
+            size: 88mm auto;
+            margin: 0;
+        }
+
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            .bill {
+                margin: 0;
+                padding: 0;
+                border: none;
+                width: 88mm;
+            }
+        }
+
         body {
             font-family: Arial, sans-serif;
             font-size: 14px;
         }
-                .bill {
+
+        .bill {
             border: 1px solid black;
             margin: 0 auto;
-            width: 250px;
-            /* Reduce the width for a receipt-like layout */
+            width: 88mm;
             height: auto;
             text-align: center;
             padding: 5px;
         }
 
         h2 {
-            margin: 0;
+            margin: 10px 0 0;
             font-size: 18px;
         }
 
@@ -52,16 +70,8 @@
             padding: 2px;
         }
 
-        .mar-b-10 {
-            margin-bottom: 10px;
-        }
-
         .mar-b-20 {
             margin-bottom: 20px;
-        }
-
-        .mar-b-30 {
-            margin-bottom: 30px;
         }
 
         table {
@@ -71,26 +81,21 @@
             table-layout: fixed;
         }
 
-        table,
-        tr {
+        table, tr {
             border-bottom: 2px solid black;
             border-collapse: collapse;
-            font-size: 14px;
+            font-size: 13.5px;
         }
 
-        th,
-        td {
+        th, td {
             padding: 10px 0;
             word-wrap: break-word;
-            /* Wraps long words */
             white-space: normal;
-            /* Allows wrapping of content */
             width: 50px;
-            /* Limits content width */
             overflow: hidden;
-            /* Ensures content doesn't overflow the cell */
             text-overflow: ellipsis;
         }
+
         img {
             margin-top: 5px;
             width: 80px;
@@ -99,10 +104,10 @@
 </head>
 
 <body>
-       <div class="bill">
-           <div>
-               <img src="/images/bill-icon.png">
-           </div>
+    <div class="bill">
+        <div>
+            <img src="/images/bill-icon.png">
+        </div>
         <h2>Aboos Restaurant</h2>
         <span class="mar-b-20 addr">Palakkad Road, Pattambi</span>
         <span class="dotted-top dotted-down p-2">Bill</span>
@@ -111,53 +116,76 @@
             <span>Staff Name: amal</span>
         </div>
         <table>
-            <tr>
-                <th>No</th>
-                <th>Name</th>
-                <th>Qty</th>
-                <th>MRP</th>
-                <th>Price</th>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>Tea</td>
-                <td>1</td>
-                <td>₹10</td>
-                <td>₹10</td>
-            </tr>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Name</th>
+                    <th>Qty</th>
+                    <th>MRP</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.qty }}</td>
+                        <td>₹{{ item.price }}</td>
+                        <td>₹{{ item.total }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
         </table>
         <h4>
-            <span>Total: ₹1000</span>
+            <span>Total amount : ₹{{ total }}</span>
         </h4>
-        <span class="dotted-top dotted-down p-2 mar-b-30">Number of items: 1</span>
+        <span class="dotted-top dotted-down p-2 mar-b-30">Number of items: {{ items | length }}</span>
     </div>
-    <button id='btn'>Print</button>
+
+    <button onclick="openPrintWindow()">Print</button>
 
     <script>
-        var styles = `
-            @media print {
-                    @page {
-                        size: 88mm portrait;
-                        margin: 0;
-                        padding: 0;
-                    }
-                    body {
-                        width: 300px;
-                        margin: 0;
-                        padding: 0;
-                    }
-                };
-            `
+        function openPrintWindow() {
+            // Get the bill content
+            var billContent = document.querySelector('.bill').outerHTML;
 
-        var styleElement = document.createElement('style');
-        styleElement.type = 'text/css';
-        styleElement.innerHTML = styles;
-        document.head.appendChild(styleElement);
+            // Open a new window
+            var printWindow = window.open('', '', 'width=88mm,height=auto');
 
+            // Write the bill content into the new window
+            printWindow.document.write(`
+                <html>
+                    <head>
+                        <title>Print Bill</title>
+                        <style>
+                            @page { size: 88mm auto; margin: 0; }
+                            body { font-family: Arial, sans-serif; font-size: 14px; }
+                            .bill { width: 88mm; padding: 5px; border: 1px solid black; margin: 0 auto; text-align: center; }
+                            h2 { font-size: 18px; margin: 10px 0 0; }
+                            .addr { font-weight: normal; font-size: 10px; }
+                            .dotted-top { border-top: 3px dotted black; }
+                            .dotted-down { border-bottom: 3px dotted black; }
+                            span { font-weight: bold; display: block; }
+                            table { margin: 0 auto; width: 97%; text-align: center; table-layout: fixed; }
+                            table, tr { border-bottom: 2px solid black; border-collapse: collapse; font-size: 13.5px; }
+                            th, td { padding: 10px 0; white-space: normal; overflow: hidden; text-overflow: ellipsis; }
+                            img { width: 80px; margin-top: 5px; }
+                        </style>
+                    </head>
+                    <body>
+                        ${billContent}
+                    </body>
+                </html>
+            `);
 
-        document.getElementById('btn').onclick = function () {
-            window.print();
-}
+            // Trigger the print dialog after content is loaded
+            printWindow.document.close();
+            printWindow.focus();
+            printWindow.print();
+            printWindow.onafterprint = printWindow.close;
+        }
     </script>
 </body>
+
 </html>

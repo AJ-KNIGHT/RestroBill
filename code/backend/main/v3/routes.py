@@ -142,6 +142,11 @@ def register_routes(app, db, bcrypt):
     def test():
         return render_template('test.html')
 
+    @app.route('/bill')
+    @login_required
+    def bill():
+        return render_template('bill-template.html')
+
 # ---------------- dashboard page -----------------------
     @app.route('/dashboard')
     @login_required

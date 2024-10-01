@@ -518,10 +518,6 @@ body {
     width: 50%;
 }
 
-.change {
-    display: none;
-}
-
 .blur {
     filter: blur(5px)
 }
