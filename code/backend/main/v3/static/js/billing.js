@@ -1,4 +1,4 @@
-let cart = {};
+var cart = {};
 
 // live search
 function liveSearch(value) {
@@ -80,7 +80,6 @@ function addRow(name, price, pid) {
         if (typeof this !== 'undefined' && this instanceof HTMLInputElement) {
             this.value = "";
         }
-        cart[newSiNo] = { "pid": pid, "qty": quantity };
         qtyListeners();
         reIndexSiNumbers();
     }
@@ -134,24 +133,23 @@ function handleQuantityChange(event) {
                 console.error('Remove icon not found');
             }
             return;
-        } else {
-            cart[siNo].qty = newQuantity;
         }
         updatePrice(row);
         updateTotal(calculateTotal());
     }
 }
 
-function updatePrice(row) {
+function updatePrice(row,) {
     const quantity = parseInt(row.querySelector("input[type='number']").value, 10);
-    const price = parseFloat(row.cells[4].textContent.replace('₹', ''));
-    row.cells[5].textContent = `₹${(quantity * price).toFixed(2)}`;
+    const mrp = parseFloat(row.cells[4].textContent.replace('₹', ''));
+    row.cells[5].textContent = `₹${(quantity * mrp).toFixed(2)}`;
 }
 
 function removeRow(element) {
     const row = element.closest('tr'); // Find the closest <tr> ancestor
     if (row) {
         row.remove(); // Remove the entire row
+        console.log(row.cells[2].textContent);
         reIndexSiNumbers(); // Call function to re-index the rows
         updateTotal(calculateTotal());
     } else {
@@ -186,11 +184,6 @@ function refreshTable() {
         tableBody.deleteRow(0);
     }
     updateTotal("0.00");
-}
-
-// Check if the cart is empty
-function isCartEmpty(cart) {
-    return Object.keys(cart).length === 0;
 }
 
 function calculateTotal() {
@@ -233,25 +226,23 @@ const checkout_popup = document.querySelector('.popup-container');
 const body_container = document.querySelector('.container');
 var inputAmount = document.getElementById('input-amount');
 var change = document.getElementById('change');
+var main_total = 0;
 var discountInput = document.getElementById('input-discount');
-var totalAmount_main = document.getElementById('total-Amount')
+var totalAmount_content = document.getElementById('total-Amount')
 var totalAmount = 0;
 var payment = document.getElementById('payment');
 
 // Popup logic
 document.getElementById('checkout').onclick = function () {
-    if (Object.keys(cart).length === 0) {
-        alert("Cart is empty");
-    } else {
-        checkout_popup.style.display = "flex";
-        body_container.classList.add("blur");
-        totalAmount_main.value = document.getElementById('total').textContent;
-        totalAmount = Number(totalAmount_main.value.replace(/₹/g, '').trim());
-        inputAmount.value = totalAmount; // Set inputAmount to totalAmount
-        payment.value = "Select payment type";
-        change.value = "₹0.00";
-        discountInput.value = "0.0";
-    }
+    checkout_popup.style.display = "flex";
+    body_container.classList.add("blur");
+    main_total = document.getElementById('total').textContent;
+    totalAmount_content.value = main_total;
+    totalAmount = Number(totalAmount_content.value.replace(/₹/g, '').trim());
+    inputAmount.value = totalAmount; // Set inputAmount to totalAmount
+    payment.value = "Select payment type";
+    change.value = "₹0.00";
+    discountInput.value = "0.0";
 }
 
 document.getElementById('close-popup').onclick = function () {
@@ -272,12 +263,8 @@ window.addEventListener("click", function (event) {
 // Add an event listener for input changes on inputAmount
 inputAmount.addEventListener('input', function() {
     let amount = Number(this.value);
-    let discountValue = Number(discountInput.value) || 0; // Get discount value or 0 if empty
-
-    // Calculate effective total after discount
-    let effectiveTotal = totalAmount - discountValue;
-    if (amount >= effectiveTotal) {
-        change.value = "₹" + (amount - effectiveTotal).toFixed(2);
+    if (amount > totalAmount) {
+        change.value = "₹" + (amount - totalAmount).toFixed(2);
     } else {
         change.value = "₹0.00"; // Reset change if amount is less than effective total
     }
@@ -292,14 +279,20 @@ discountInput.addEventListener('input', function() {
         alert("Discount cannot exceed total amount.");
         this.value = "0.0";
         discountValue = "0.0";
+        totalAmount_content.value = main_total;
+    } else if (discountValue <= 0) {
+        totalAmount_content.value = main_total;
+        this.value = "0.0";
+    } else {
+        totalAmount_content.value = "₹" + (Number(main_total.replace(/₹/g, '').trim()) - discountValue).toFixed(2);
     }
-    totalAmount_main.value = "₹" + (totalAmount - discountValue).toFixed(2);
-    totalAmount = Number(totalAmount_main.value.replace(/₹/g, '').trim());
-    inputAmount.value = Number(totalAmount_main.value.replace(/₹/g, '').trim());
+    totalAmount = Number(totalAmount_content.value.replace(/₹/g, '').trim());
+    inputAmount.value = Number(totalAmount_content.value.replace(/₹/g, '').trim());
     inputAmount.dispatchEvent(new Event('input'));
 });
 
 function print_validate() {
+    let status = false
     if (inputAmount.value < totalAmount) {
         alert("Tendered Amount is less than Total Amount");
     } else if (payment.value === "Select payment type") {
@@ -307,13 +300,52 @@ function print_validate() {
     }
     else {
         alert("print");
+        status = true;
     }
+    return status;
 }
+// add item list to cart
+function getCart() {
+    const table = document.getElementById("billing_table");
+    const rows = table.querySelectorAll("tbody tr");
+
+    rows.forEach(row => {
+        const cells = row.querySelectorAll("td");
+        const sino = cells[1].innerText;
+        const product = cells[2].innerText;
+        const qty = cells[3].querySelector("input").value;
+        const mrp = cells[4].innerText;
+        const price = cells[5].innerText;
+
+        if (!cart.list) {
+            cart.list = {};
+        }
+        // Add row to JSON object with 'sino' as the key
+        cart.list[sino] = {
+            "product": product,
+            "qty": qty,
+            "mrp": mrp,
+            "price": price
+        };
+    });
+}
+
 
 
 // print
 document.getElementById("print").addEventListener("click", function () {
-    print_validate();
+    if (print_validate()) {
+        getCart();
+        cart["payment"] = {
+        "paytype": payment.value,
+        "discount": discountInput.value,
+        "total": totalAmount,
+        "tendered" : inputAmount.value,
+        "change": change.value
+        };
+    //console.log(cart);
+    }
+
 });
 
 //// print

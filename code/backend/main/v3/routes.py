@@ -72,34 +72,10 @@ def register_routes(app, db, bcrypt):
 
                 # products = Products.query.all()
                 cart = request.get_json()
-                # print(cart)
-                # return ('print success', 205)
-    
-                total_amount = 0
-                bill_details = []
-                
-                for si_no, item in cart.items():
-                    pid = item['pid']
-                    qty = item['qty']
-                    
-                    # Fetch product details from database
-                    product = Products.query.get(pid) 
-                    if product:
-                        product_data = product.to_dict()
-                        product_name = product_data['name']
-                        product_price = product_data['price']
-                        product_total = qty * product_price
-                        
-                        # Add product details to bill details
-                        bill_details.append({
-                            'name': product_name,
-                            'qty': qty,
-                            'price': product_price,
-                            'total': product_total
-                        })
-                        
-                        # Update the total amount
-                        total_amount += product_total
+
+                print(cart)
+                return ('print success', 205)
+ 
                 
                 # Prepare the response with bill details and total amount
                 # response = {
@@ -114,12 +90,12 @@ def register_routes(app, db, bcrypt):
                 # }
                 # return jsonify(response)
 
-                rendered_html = render_template('bill-template.html', items=bill_details, total=total_amount)
+                # rendered_html = render_template('bill-template.html', items=bill_details, total=total_amount)
                 # Convert the rendered HTML to PDF using WeasyPrint
                 # pdf = HTML(string=rendered_html).write_pdf()
 
                 # save pdf
-                HTML(string=rendered_html).write_pdf('./output.pdf')
+                # HTML(string=rendered_html).write_pdf('./output.pdf')
 
                 # # Create a response object with the PDF
                 # response = make_response(pdf)
@@ -128,9 +104,9 @@ def register_routes(app, db, bcrypt):
 
                 # return response
             
-                return jsonify({
-                    'message': 'Bill generated successfully.'
-                })
+                # return jsonify({
+                    # 'message': 'Bill generated successfully.'
+                # })
 
             else:
                 return ('error', 401)
