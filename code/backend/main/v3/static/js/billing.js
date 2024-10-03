@@ -299,7 +299,6 @@ function print_validate() {
         alert("Payment type is not selected");
     }
     else {
-        alert("print");
         status = true;
     }
     return status;
@@ -336,14 +335,55 @@ function getCart() {
 document.getElementById("print").addEventListener("click", function () {
     if (print_validate()) {
         getCart();
-        cart["payment"] = {
-        "paytype": payment.value,
-        "discount": discountInput.value,
-        "total": totalAmount,
-        "tendered" : inputAmount.value,
-        "change": change.value
-        };
-    //console.log(cart);
+        if (Object.keys(cart).length === 0) {
+            alert("Product item not Selected");
+        } else {
+            cart["payment"] = {
+                "paytype": payment.value,
+                "discount": discountInput.value,
+                "total": totalAmount,
+                "tendered" : inputAmount.value,
+                "change": change.value
+                };
+            
+            $.ajax({
+                url: "/print-bill",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(cart),  // Send the cart data to the backend
+                dataType: "json",
+                success: function (response) {
+                    console.log(response);
+
+                    // var newTab =  window.open();
+                    // newTab.document.write(response.data);
+                    // newTab.document.close();
+                    // Assuming the response contains a success message or the bill URL
+
+                    if (response) {
+                        // 1. Show success message
+                        alert("Bill printed successfully!");
+                        refreshTable();  // Clears the table
+                        updateTotal(0);  // Resets the total to 0
+                        cart = {};  // Reset the cart
+                    } else {
+                        // If there's an error message in the response, display it
+                        alert("Error: " + response.message);
+                    }
+                },
+                error: function (error) {
+                    // Handle the error based on the status code
+                    if (error.status === 401) {
+                        alert("Access denied. Please log in.");
+                    } else {
+                        alert("An error occurred while printing the bill.");
+                    }
+
+                    console.log("error");
+                }
+            });
+        }
+    // console.log(cart);
     }
 
 });

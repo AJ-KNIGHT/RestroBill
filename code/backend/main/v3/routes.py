@@ -74,13 +74,13 @@ def register_routes(app, db, bcrypt):
                 cart = request.get_json()
 
                 print(cart)
-                return ('print success', 205)
+                # return ('print success', 200)
  
                 
                 # Prepare the response with bill details and total amount
                 # response = {
-                #     'billDetails': bill_details,
-                #     'totalAmount': total_amount
+                #     'billDetails': "done"
+                    
                 # }
                 # return jsonify(response)
 
@@ -104,9 +104,9 @@ def register_routes(app, db, bcrypt):
 
                 # return response
             
-                # return jsonify({
-                    # 'message': 'Bill generated successfully.'
-                # })
+                return jsonify({
+                    'message': 'Bill generated successfully.'
+                })
 
             else:
                 return ('error', 401)
