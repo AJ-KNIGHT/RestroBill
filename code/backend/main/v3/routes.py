@@ -1,7 +1,8 @@
 from flask import render_template, request, redirect, url_for, flash, jsonify, make_response
 from flask_login import login_user, logout_user, current_user, login_required
 
-from weasyprint import HTML
+from weasyprint import HTML, CSS
+from datetime import datetime
 
 from models import Users, Products
 
@@ -72,8 +73,6 @@ def register_routes(app, db, bcrypt):
 
                 # products = Products.query.all()
                 cart = request.get_json()
-
-                print(cart)
                 # return ('print success', 200)
  
                 
@@ -84,26 +83,86 @@ def register_routes(app, db, bcrypt):
                 # }
                 # return jsonify(response)
 
-                # tp = render_template('bill-template.html', items=bill_details, total=total_amount)
+                # tp = render_template('bill-template.html', items=cart['list'], payment=cart['payment'])
                 # response = {
                 #     'data': tp
                 # }
                 # return jsonify(response)
 
-                # rendered_html = render_template('bill-template.html', items=bill_details, total=total_amount)
-                # Convert the rendered HTML to PDF using WeasyPrint
-                # pdf = HTML(string=rendered_html).write_pdf()
 
-                # save pdf
-                # HTML(string=rendered_html).write_pdf('./output.pdf')
+        # v1
+                now = datetime.now()
+                formatted_date_time = now.strftime("%d/%m/%y %I:%M %p")
 
+                # rendered_html = HTML(string=render_template('bill-template.html',
+                    # items=cart['list'],
+                    # payment=cart['payment'],
+                    # username=current_user.username,
+                    # date_time=formatted_date_time))
+                # # Convert the rendered HTML to PDF using WeasyPrint
+                # # pdf = HTML(string=rendered_html).write_pdf()
+
+                # # save pdf
+                # # HTML(string=rendered_html).write_pdf('./output.pdf')
+
+                # pdf_settings = {
+                    # 'width': '88mm',    # Set the width to 88mm
+                    # 'height': 'auto'
+                                # # Set height to auto to adjust based on content
+                # }
+                # rendered_html.write_pdf('./output.pdf', stylesheets=None, **pdf_settings)
                 # # Create a response object with the PDF
                 # response = make_response(pdf)
                 # response.headers['Content-Type'] = 'application/pdf'
                 # response.headers['Content-Disposition'] = 'inline; filename=output.pdf'
 
                 # return response
-            
+
+        # v2
+                import cairo
+                page_width_mm = 88
+                dpi = 3.7795275591  # 1 mm = 3.7795 pixels
+
+                # Convert mm to pixels (Cairo uses pixels)
+                page_width_px = page_width_mm * dpi
+
+                # Optional: Render HTML using Jinja2 template
+                html_content = render_template('bill-template.html', 
+                                               items=cart['list'], 
+                                               payment=cart['payment'], 
+                                               username=current_user.username, 
+                                               date_time=formatted_date_time)
+
+                # Create WeasyPrint HTML object
+                html = HTML(string=html_content)
+
+                # Generate a temporary PDF to measure the height of the content
+                pdf_bytes = html.write_pdf()
+
+                # Measure the height of the content (in pixels) using PyCairo or from the temporary PDF if needed.
+                # In this case, we're assuming a certain height or calculate it programmatically:
+                page_height_px = len(html_content) * 20  # Adjust based on content
+
+                # Create a Cairo PDF surface with custom dimensions (page_width_px and dynamic height)
+                surface = cairo.PDFSurface('output.pdf', page_width_px, page_height_px)
+
+                # Create a Cairo context
+                context = cairo.Context(surface)
+
+                # Set the CSS for page size and other formatting
+                custom_css = CSS(string='''
+                    @page { size: 88mm auto; margin: 0; }
+                    body { width: 88mm; margin: 0; padding: 0; font-size: 12px; }
+                ''')
+
+                # Render the WeasyPrint content onto the Cairo surface
+                html.write_pdf(surface, stylesheets=[custom_css])
+
+                # Finish and close the surface
+                surface.finish()
+
+                print("PDF generated successfully with width 88mm.")
+
                 return jsonify({
                     'message': 'Bill generated successfully.'
                 })
@@ -116,7 +175,25 @@ def register_routes(app, db, bcrypt):
     @app.route('/test')
     @login_required
     def test():
-        return render_template('test.html')
+        cart = {'list': {
+                '1': {'product': 'Tea', 'qty': '2', 'mrp': '₹10', 'price': '₹20.00'},
+                '2': {'product': 'Boiled Egg', 'qty': '4', 'mrp': '₹8', 'price': '₹32.00'},
+                '3': {'product': 'Coffee', 'qty': '1', 'mrp': '₹13', 'price': '₹13.00'},
+                '4': {'product': 'Chicken Biriyani', 'qty': '1', 'mrp': '₹100', 'price': '₹100.00'}
+            },
+            'payment': {
+                'paytype': 'CASH', 'discount': '5', 'total': 160, 'tendered': '200', 'change': '₹40.00'}
+            }
+        now = datetime.now()
+        formatted_date_time = now.strftime("%d/%m/%y %I:%M %p")
+        
+        rendered_html = render_template('test.html',
+            items=cart['list'],
+            payment=cart['payment'],
+            username=current_user.username,
+            date_time=formatted_date_time)
+        
+        return rendered_html
 
     @app.route('/bill')
     @login_required

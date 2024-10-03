@@ -363,9 +363,9 @@ document.getElementById("print").addEventListener("click", function () {
                     if (response) {
                         // 1. Show success message
                         alert("Bill printed successfully!");
-                        refreshTable();  // Clears the table
-                        updateTotal(0);  // Resets the total to 0
-                        cart = {};  // Reset the cart
+                        //refreshTable();  // Clears the table
+                        //updateTotal(0);  // Resets the total to 0
+                        //cart = {};  // Reset the cart
                     } else {
                         // If there's an error message in the response, display it
                         alert("Error: " + response.message);

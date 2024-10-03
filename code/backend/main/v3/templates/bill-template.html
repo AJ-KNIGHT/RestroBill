@@ -6,20 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bill</title>
     <style>
-        @page {
-            size: 80mm auto;
-            margin: 10mm;
+        * {
+            margin: 0;
+            padding: 0;
         }
-
+        
         body {
             font-family: Arial, sans-serif;
             font-size: 14px;
+            width: 88mm;;
         }
 
         .bill {
             border: 1px solid black;
             margin: 0 auto;
-            width: 250px;
+            width: 84mm;
             /* Reduce the width for a receipt-like layout */
             height: auto;
             text-align: center;
@@ -114,19 +115,18 @@
         }
     </style>
 
-    </style>
 </head>
 
 <body>
     <div class="bill">
         <div>
-               <img src="/images/bill-icon.png">
+               <img src="{{ url_for('static', filename='images/bill-icon.png', _external=True) }}">
         </div>
         <h2>Aboos Restaurant</h2>
         <span class="mar-b-20 addr">Palakkad Road, Pattambi</span>
         <span class="dotted-top dotted-down p-2">Bill</span>
         <div class="p-10 dotted-down">
-            <span>Date: {{ data }}</span>
+            <span>Date: {{ date_time }}</span>
 <!--
             <span>Date: 08/09/24 02:20 PM</span>
 -->
@@ -143,29 +143,29 @@
                 </tr>
             </thead>
             <tbody>
-                {% for item in items %}
+                {% for key, item in items.items() %}
                     <tr>
                         <td>{{ loop.index }}</td>
-                        <td>{{ item.name }}</td>
+                        <td>{{ item.product }}</td>
                         <td>{{ item.qty }}</td>
-                        <td>₹{{ item.price }}</td>
-                        <td>₹{{ item.total }}</td>
+                        <td>{{ item.mrp }}</td>
+                        <td>{{ item.price }}</td>
                     </tr>
                 {% endfor %}  
             </tbody>
         </table>
         <h4 class="mar-b-10">
-            <span>Total amount : ₹{{ total }}</span>
+            <span>Total amount : ₹{{ payment['total'] }}</span>
         </h4>
         <div class="pay mar-b-10">
-        <div>
-            <span>Payment : {{ paytype }}</span>
-            <span>Discount : {{ discount }}</span>
-        </div>
-        <div>
-            <span>Tendered : {{ t_amount }}</span>
-            <span>Change : {{ change }}</span>
-        </div>
+            <div>
+                <span>Payment : {{ payment['paytype'] }}</span>
+                <span>Discount : {{ payment['discount'] }}</span>
+            </div>
+            <div>
+                <span>Tendered : {{ payment['tendered'] }}</span>
+                <span>Change : {{ payment['change'] }}</span>
+            </div>
         </div>
         <span class="dotted-top dotted-down p-2 mar-b-30">Number of items: {{ items | length }}</span>
     </div>
