@@ -1,5 +1,7 @@
-from flask import render_template, request, redirect, url_for, flash, jsonify
+from flask import render_template, request, redirect, url_for, flash, jsonify, make_response
 from flask_login import login_user, logout_user, current_user, login_required
+
+from weasyprint import HTML
 
 from models import Users, Products
 
@@ -23,15 +25,17 @@ def register_routes(app, db, bcrypt):
                     elif user.role == 'user':
                         return redirect(url_for('billing'))
                 else:
-                    return "Authentication Error"
+                    flash('username and password is incorrect')
+                    return redirect(url_for('login'))
             else:
-                return "form Error"
+                flash('username and password is incorrect')
+                return redirect(url_for('login'))
     
     @app.route('/logout/')
     @login_required
     def logout():
         logout_user()
-        return render_template('login.html')
+        return redirect(url_for('login'))
 
 # ---------------- billing page -----------------------
 
@@ -60,15 +64,6 @@ def register_routes(app, db, bcrypt):
         result = [item for item in products_list if text in item['name'].lower()]
         return jsonify(results=result)
 
-        
-    @app.route('/billing-test')
-    @login_required
-    def billing_test():
-        if current_user.role == 'user':
-            return render_template('billing.html', username=current_user.username)
-        else:
-            return "Access Denied"
-
     @app.route('/print-bill', methods=['POST'])
     @login_required
     def print_bill():
@@ -76,63 +71,81 @@ def register_routes(app, db, bcrypt):
             if request.is_json:
 
                 # products = Products.query.all()
-                cart_data = request.get_json()
-                print(cart_data)
-                return ('print success', 205)
+                cart = request.get_json()
+                # print(cart)
+                # return ('print success', 205)
+    
+                total_amount = 0
+                bill_details = []
+                
+                for si_no, item in cart.items():
+                    pid = item['pid']
+                    qty = item['qty']
+                    
+                    # Fetch product details from database
+                    product = Products.query.get(pid) 
+                    if product:
+                        product_data = product.to_dict()
+                        product_name = product_data['name']
+                        product_price = product_data['price']
+                        product_total = qty * product_price
+                        
+                        # Add product details to bill details
+                        bill_details.append({
+                            'name': product_name,
+                            'qty': qty,
+                            'price': product_price,
+                            'total': product_total
+                        })
+                        
+                        # Update the total amount
+                        total_amount += product_total
+                
+                # Prepare the response with bill details and total amount
+                # response = {
+                #     'billDetails': bill_details,
+                #     'totalAmount': total_amount
+                # }
+                # return jsonify(response)
+
+                # tp = render_template('bill-template.html', items=bill_details, total=total_amount)
+                # response = {
+                #     'data': tp
+                # }
+                # return jsonify(response)
+
+                rendered_html = render_template('bill-template.html', items=bill_details, total=total_amount)
+                # Convert the rendered HTML to PDF using WeasyPrint
+                # pdf = HTML(string=rendered_html).write_pdf()
+
+                # save pdf
+                HTML(string=rendered_html).write_pdf('./output.pdf')
+
+                # # Create a response object with the PDF
+                # response = make_response(pdf)
+                # response.headers['Content-Type'] = 'application/pdf'
+                # response.headers['Content-Disposition'] = 'inline; filename=output.pdf'
+
+                # return response
             
+                return jsonify({
+                    'message': 'Bill generated successfully.'
+                })
+
             else:
-                return ('', 401)
+                return ('error', 401)
         else:
             return "Access Denied"
 
-    # if request.is_json:
+    @app.route('/test')
+    @login_required
+    def test():
+        return render_template('test.html')
 
-    #     if request.method == 'GET':
-    #         seconds = time()
-    #         return jsonify({'seconds': seconds})
-
-    #     elif request.method == 'POST':
-    #         card_text = json.loads(request.data)['text']        # .form or .json (not used form then use data)
-    #         new_text = f"I got : {card_text}"
-    #         return jsonify({'data': new_text})
-        
-    # return render_template('index.html')
-
-
-# ai code:
-    # @app.route('/print-bill', methods=['POST'])
-    # @login_required
-    # def print_cart():
-    #     products = Products.query.all()
-    #     products_list = [product.to_dict() for product in products]
-    #     cart_data = request.get_json()  # Receive the cart data from the frontend
-    #     # Process the cart data and generate the print content
-    #     print_content = generate_print_content(cart_data)
-    #     # Send the print content to the printer (using a library like PyPDF2 or reportlab)
-    #     print_to_printer(print_content)
-    #     return jsonify({'message': 'Print initiated successfully'})
-
-    # def generate_print_content(cart_data):
-    #     # Generate the print content based on the cart data
-    #     # For example, create a formatted string with item details and total
-    #     print_content = "**Your Order:**\n"
-    #     for si_no, item_data in cart_data.items():
-    #         print_content += f"- Item {si_no}: {item_data[0]} (Qty: {item_data[1]})\n"
-    #     print_content += f"**Total:** ₹{calculate_total(cart_data)}"
-    #     return print_content
-
-    # def calculate_total(cart_data):
-    #     total = 0
-    #     for item_data in cart_data.values():
-    #         total += int(item_data[1]) * int(item_data[0][1])  # Assuming item_data[0][1] is the price
-    #     return total
-
-    # def print_to_printer(print_content):
-    #     # Replace this with your actual printing logic using a library like PyPDF2 or reportlab
-    #     print(print_content)  # For testing, print to console
-    #     # ... actual printing code ...
-
-
+    @app.route('/bill')
+    @login_required
+    def bill():
+        return render_template('bill-template.html')
 
 # ---------------- dashboard page -----------------------
     @app.route('/dashboard')
@@ -203,11 +216,16 @@ def register_routes(app, db, bcrypt):
     def user_delete(uid):
         if current_user.role == 'admin':
             data = Users.query.get(uid)
-            db.session.delete(data)
-            db.session.commit()
-
-            flash('User deleted successfully')
-            return redirect(url_for('user_management'))
+            if data:
+                if uid.strip() != "1" and data.role != "admin":
+                    db.session.delete(data)
+                    db.session.commit()
+                    flash('User deleted successfully')
+                    return redirect(url_for('user_management'))
+                else:
+                    return "Cannot delete admin user"
+            else:
+                return "User not found"
         else:
             return "Access Denied"
 

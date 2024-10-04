@@ -94,11 +94,12 @@ def register_routes(app, db, bcrypt):
                 now = datetime.now()
                 formatted_date_time = now.strftime("%d/%m/%y %I:%M %p")
 
-                # rendered_html = HTML(string=render_template('bill-template.html',
-                    # items=cart['list'],
-                    # payment=cart['payment'],
-                    # username=current_user.username,
-                    # date_time=formatted_date_time))
+                rendered_html = render_template('bill-template.html',
+                    items=cart['list'],
+                    payment=cart['payment'],
+                    username=current_user.username,
+                    date_time=formatted_date_time)
+
                 # # Convert the rendered HTML to PDF using WeasyPrint
                 # # pdf = HTML(string=rendered_html).write_pdf()
 
@@ -118,48 +119,7 @@ def register_routes(app, db, bcrypt):
 
                 # return response
 
-        # v2
-                import cairo
-                page_width_mm = 88
-                dpi = 3.7795275591  # 1 mm = 3.7795 pixels
-
-                # Convert mm to pixels (Cairo uses pixels)
-                page_width_px = page_width_mm * dpi
-
-                # Optional: Render HTML using Jinja2 template
-                html_content = render_template('bill-template.html', 
-                                               items=cart['list'], 
-                                               payment=cart['payment'], 
-                                               username=current_user.username, 
-                                               date_time=formatted_date_time)
-
-                # Create WeasyPrint HTML object
-                html = HTML(string=html_content)
-
-                # Generate a temporary PDF to measure the height of the content
-                pdf_bytes = html.write_pdf()
-
-                # Measure the height of the content (in pixels) using PyCairo or from the temporary PDF if needed.
-                # In this case, we're assuming a certain height or calculate it programmatically:
-                page_height_px = len(html_content) * 20  # Adjust based on content
-
-                # Create a Cairo PDF surface with custom dimensions (page_width_px and dynamic height)
-                surface = cairo.PDFSurface('output.pdf', page_width_px, page_height_px)
-
-                # Create a Cairo context
-                context = cairo.Context(surface)
-
-                # Set the CSS for page size and other formatting
-                custom_css = CSS(string='''
-                    @page { size: 88mm auto; margin: 0; }
-                    body { width: 88mm; margin: 0; padding: 0; font-size: 12px; }
-                ''')
-
-                # Render the WeasyPrint content onto the Cairo surface
-                html.write_pdf(surface, stylesheets=[custom_css])
-
-                # Finish and close the surface
-                surface.finish()
+            #v2
 
                 print("PDF generated successfully with width 88mm.")
 

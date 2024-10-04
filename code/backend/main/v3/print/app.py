@@ -7,6 +7,10 @@ app = Flask(__name__, template_folder='templates', static_folder='static', stati
 def index():
     return render_template("test.html")
 
+@app.route('/bill')
+def bill():
+    return render_template("bill.html")
+
 if __name__ == '__main__':
 
     app.run(debug=True)
