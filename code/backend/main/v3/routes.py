@@ -73,6 +73,7 @@ def register_routes(app, db, bcrypt):
 
                 # products = Products.query.all()
                 cart = request.get_json()
+                print(cart)
                 # return ('print success', 200)
  
                 
