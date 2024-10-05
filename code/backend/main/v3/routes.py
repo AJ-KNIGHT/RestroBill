@@ -120,6 +120,7 @@ def register_routes(app, db, bcrypt):
                 # return response
 
             #v2
+            # html2canvas or pdfmake ijs
 
                 print("PDF generated successfully with width 88mm.")
 
