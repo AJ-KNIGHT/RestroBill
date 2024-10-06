@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+    <title>Auth Error</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            text-align: center;
+        }
+        
+        h1 , h3{
+            font-family: sans-serif;
+            color: #133e13;
+        }
+        h1{
+            margin: 40px auto 0;
+        }
+        h3{
+            margin: -50px 0 0;
+            color: #fe0b00;
+        }
+
+        .img-div {
+            width: 500px;
+            margin: 0 auto;
+        }
+        .img-div img {
+            width: 500px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>AUTHENTICATION ERROR</h1>
+        <div class="img-div">
+            <img src="/images/error.jpg">
+        </div>
+<!--
+        {% if user_role %}
+            {% if user_role == 'user' %}
+                <h3>You haven't enough </h3>
+            {% endif %}
+        {% endif %}
+-->
+        <h3>Login Again To Continue</h3>
+    </div>
+</body>
+</html>

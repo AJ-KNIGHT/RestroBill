@@ -1,9 +1,13 @@
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, jsonify, make_response
 from flask_login import login_user, logout_user, current_user, login_required
+
+from datetime import datetime
 
 from models import Users, Products
 
 def register_routes(app, db, bcrypt):
+
+# ---------------- login page -----------------------
 
     @app.route('/', methods=['GET', 'POST'])
     def login():
@@ -23,17 +27,19 @@ def register_routes(app, db, bcrypt):
                     elif user.role == 'user':
                         return redirect(url_for('billing'))
                 else:
-                    return "Authentication Error"
+                    flash('username and password is incorrect')
+                    return redirect(url_for('login'))
             else:
-                return "form Error"
+                flash('username and password is incorrect')
+                return redirect(url_for('login'))
     
     @app.route('/logout/')
     @login_required
     def logout():
         logout_user()
-        return render_template('login.html')
+        return redirect(url_for('login'))
 
-
+# ---------------- billing page -----------------------
 
     # billing page
     # @app.route('/billig/<uid>')
@@ -50,16 +56,76 @@ def register_routes(app, db, bcrypt):
         if current_user.role == 'user':
             return render_template('billing.html', username=current_user.username)
         else:
-            return "Access Denied"
+            redirect(url_for('auth_error'))
+
+    @app.route('/search')
+    @login_required
+    def product_search():
+        products = Products.query.all()
+        products_list = [product.to_dict() for product in products]
+        text = request.args.get('searchText', '').lower()
+        result = [item for item in products_list if text in item['name'].lower()]
+        return jsonify(results=result)
+
+    @app.route('/print-bill', methods=['POST'])
+    @login_required
+    def print_bill():
+        if current_user.role == 'user':
+            if request.is_json:
+                cart = request.get_json()
+                # get date and time in fomat Date: 08/09/24 02:20 PM
+                now = datetime.now()
+                formatted_date_time = now.strftime("%d/%m/%y %I:%M %p")
+
+                context = {
+                    'items': cart['list'],
+                    'payment': cart['payment'],
+                    'username': current_user.username,
+                    'date_time': formatted_date_time
+                }
+
+                rendered_html = render_template('bill-template.html', **context)
+
+                return rendered_html, 200  # Return the HTML and a success status code
+
+            else:
+                return jsonify({'error': 'Request must be JSON'}), 400  # Handle non-JSON requests
+
+        else:
+            return redirect(url_for('auth_error'))
+
+    @app.route('/test')
+    @login_required
+    def test():
+        cart = {'list': {
+                '1': {'product': 'Tea', 'qty': '2', 'mrp': '₹10', 'price': '₹20.00'},
+                '2': {'product': 'Boiled Egg', 'qty': '4', 'mrp': '₹8', 'price': '₹32.00'},
+                '3': {'product': 'Coffee', 'qty': '1', 'mrp': '₹13', 'price': '₹13.00'},
+                '4': {'product': 'Chicken Biriyani', 'qty': '1', 'mrp': '₹100', 'price': '₹100.00'}
+            },
+            'payment': {
+                'paytype': 'CASH', 'discount': '5', 'total': 160, 'tendered': '200', 'change': '₹40.00'}
+            }
+        now = datetime.now()
+        formatted_date_time = now.strftime("%d/%m/%y %I:%M %p")
+        
+        rendered_html = render_template('test.html',
+            items=cart['list'],
+            payment=cart['payment'],
+            username=current_user.username,
+            date_time=formatted_date_time)
+        
+        return rendered_html
 
 # ---------------- dashboard page -----------------------
+
     @app.route('/dashboard')
     @login_required
     def dashboard():
         if current_user.role == 'admin':
             return render_template('/dashboard/dashboard.html', username=current_user.username)
         else:
-            return "Access Denied"
+            return redirect(url_for('auth_error'))
 
     # user management
     @app.route('/dashboard/user-management')
@@ -69,7 +135,7 @@ def register_routes(app, db, bcrypt):
             user_data = Users.query.all()
             return render_template('/dashboard/user_managment.html', username=current_user.username, users=user_data)
         else:
-            return "Access Denied"
+            return redirect(url_for('auth_error'))
     
     @app.route('/user/insert', methods = ['POST'])
     @login_required
@@ -91,7 +157,7 @@ def register_routes(app, db, bcrypt):
 
                     return redirect(url_for('user_management'))
         else:
-            return "Access Denied"
+            return redirect(url_for('auth_error'))
         
     @app.route('/user/update', methods = ['GET', 'POST'])
     @login_required
@@ -114,21 +180,25 @@ def register_routes(app, db, bcrypt):
                     flash('User data updated successfully')
                     return redirect(url_for('user_management'))
         else:
-            return "Access Denied"
+            return redirect(url_for('auth_error'))
     
     @app.route('/user/delete/<uid>/', methods = ['GET', 'POST'])
     @login_required
     def user_delete(uid):
         if current_user.role == 'admin':
             data = Users.query.get(uid)
-            db.session.delete(data)
-            db.session.commit()
-
-            flash('User deleted successfully')
-            return redirect(url_for('user_management'))
+            if data:
+                if uid.strip() != "1" and data.role != "admin":
+                    db.session.delete(data)
+                    db.session.commit()
+                    flash('User deleted successfully')
+                    return redirect(url_for('user_management'))
+                else:
+                    return "Cannot delete admin user"
+            else:
+                return "User not found"
         else:
-            return "Access Denied"
-
+            return redirect(url_for('auth_error'))
 
     # product management
     @app.route('/dashboard/product-management')
@@ -138,7 +208,7 @@ def register_routes(app, db, bcrypt):
             product_data = Products.query.all()
             return render_template('/dashboard/product_managment.html', username=current_user.username, products=product_data)
         else:
-            return "Access Denied"
+            return redirect(url_for('auth_error'))
     
     @app.route('/product/insert', methods = ['POST'])
     @login_required
@@ -158,7 +228,7 @@ def register_routes(app, db, bcrypt):
 
                     return redirect(url_for('product_management'))
         else:
-            return "Access Denied"
+            return redirect(url_for('auth_error'))
         
     @app.route('/product/update', methods = ['GET', 'POST'])
     @login_required
@@ -182,7 +252,7 @@ def register_routes(app, db, bcrypt):
                     flash('Product data updated successfully')
                     return redirect(url_for('product_management'))
         else:
-            return "Access Denied"
+            return redirect(url_for('auth_error'))
     
     @app.route('/product/delete/<pid>/', methods = ['GET', 'POST'])
     @login_required
@@ -195,6 +265,12 @@ def register_routes(app, db, bcrypt):
             flash('Product deleted successfully')
             return redirect(url_for('product_management'))
         else:
-            return "Access Denied"
+            return redirect(url_for('auth_error'))
+
+# ---------------- Error pages -----------------------
+
+    @app.route('/auth_error')
+    def auth_error():
+        return render_template("error/auth-error.html")
 
 

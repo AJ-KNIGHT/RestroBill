@@ -25,9 +25,9 @@ def create_app():
         return Users.query.get(uid)
 
     # custom Unautorized access page
-    # @login_manager.unauthorized_handler
-    # def unauthorized_callback():
-    #     return redirect(url_for('index'))
+    @login_manager.unauthorized_handler
+    def unauthorized_callback():
+        return redirect(url_for('auth_error'))
 
     bcrypt = Bcrypt(app)
 

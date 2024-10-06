@@ -106,7 +106,29 @@
         padding: 0 7px 0 43px;
     }
 
-/*------------ logi buttom ------------ */
+/*------------ flash msg ------------ */
+
+.flash-msg-div {
+    display: block;
+    /* display: none; */
+    width: 100%;
+    padding: 0 15px;
+}
+
+.flash-msg {
+    display: flex;
+    justify-content: center;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    color: #db1d1d;
+    background-color: #edd4d4;
+    border-color: #e6c3c3;
+    padding: 10px;
+    margin: -5px 0 5px;
+    
+}
+
+/*------------ login button ------------ */
     .form-btn {
         display: flex;
         flex-wrap: wrap;

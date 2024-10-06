@@ -23,8 +23,16 @@ class Products(db.Model, UserMixin):
     category = db.Column(db.String(20), nullable=False)
     price = db.Column(db.Float, nullable=False)
 
-    def __repr__(self):
-        return f'{self.name}{self.category}{self.price}'
+    def to_dict(self):
+        return {
+            'pid': self.pid,
+            'name': self.name,
+            'category': self.category,
+            'price': self.price
+        }
     
     def get_id(self):
         return self.pid
+
+    def __repr__(self):
+        return f'{self.name}{self.category}{self.price}'
