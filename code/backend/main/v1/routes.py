@@ -56,7 +56,7 @@ def register_routes(app, db, bcrypt):
         if current_user.role == 'user':
             return render_template('billing.html', username=current_user.username)
         else:
-            redirect(url_for('auth_error'))
+            return redirect(url_for('auth_error', msg="Only the users can access this page. Please try logging in again to continue."))
 
     @app.route('/search')
     @login_required
@@ -92,7 +92,7 @@ def register_routes(app, db, bcrypt):
                 return jsonify({'error': 'Request must be JSON'}), 400  # Handle non-JSON requests
 
         else:
-            return redirect(url_for('auth_error'))
+            return redirect(url_for('auth_error', msg="Only the users can access this page. Please try logging in again to continue."))
 
     @app.route('/test')
     @login_required
@@ -109,7 +109,7 @@ def register_routes(app, db, bcrypt):
         now = datetime.now()
         formatted_date_time = now.strftime("%d/%m/%y %I:%M %p")
         
-        rendered_html = render_template('test.html',
+        rendered_html = render_template('bill-template.html',
             items=cart['list'],
             payment=cart['payment'],
             username=current_user.username,
@@ -125,7 +125,7 @@ def register_routes(app, db, bcrypt):
         if current_user.role == 'admin':
             return render_template('/dashboard/dashboard.html', username=current_user.username)
         else:
-            return redirect(url_for('auth_error'))
+            return redirect(url_for('auth_error', msg="Only the admin can access this page. Please try logging in again to continue."))
 
     # user management
     @app.route('/dashboard/user-management')
@@ -135,7 +135,7 @@ def register_routes(app, db, bcrypt):
             user_data = Users.query.all()
             return render_template('/dashboard/user_managment.html', username=current_user.username, users=user_data)
         else:
-            return redirect(url_for('auth_error'))
+            return redirect(url_for('auth_error', msg="Only the admin can access this page. Please try logging in again to continue."))
     
     @app.route('/user/insert', methods = ['POST'])
     @login_required
@@ -157,7 +157,7 @@ def register_routes(app, db, bcrypt):
 
                     return redirect(url_for('user_management'))
         else:
-            return redirect(url_for('auth_error'))
+            return redirect(url_for('auth_error', msg="Only the admin can access this page. Please try logging in again to continue."))
         
     @app.route('/user/update', methods = ['GET', 'POST'])
     @login_required
@@ -180,7 +180,7 @@ def register_routes(app, db, bcrypt):
                     flash('User data updated successfully')
                     return redirect(url_for('user_management'))
         else:
-            return redirect(url_for('auth_error'))
+            return redirect(url_for('auth_error', msg="Only the admin can access this page. Please try logging in again to continue."))
     
     @app.route('/user/delete/<uid>/', methods = ['GET', 'POST'])
     @login_required
@@ -198,7 +198,7 @@ def register_routes(app, db, bcrypt):
             else:
                 return "User not found"
         else:
-            return redirect(url_for('auth_error'))
+            return redirect(url_for('auth_error', msg="Only the admin can access this page. Please try logging in again to continue."))
 
     # product management
     @app.route('/dashboard/product-management')
@@ -208,7 +208,7 @@ def register_routes(app, db, bcrypt):
             product_data = Products.query.all()
             return render_template('/dashboard/product_managment.html', username=current_user.username, products=product_data)
         else:
-            return redirect(url_for('auth_error'))
+            return redirect(url_for('auth_error', msg="Only the admin can access this page. Please try logging in again to continue."))
     
     @app.route('/product/insert', methods = ['POST'])
     @login_required
@@ -228,7 +228,7 @@ def register_routes(app, db, bcrypt):
 
                     return redirect(url_for('product_management'))
         else:
-            return redirect(url_for('auth_error'))
+            return redirect(url_for('auth_error', msg="Only the admin can access this page. Please try logging in again to continue."))
         
     @app.route('/product/update', methods = ['GET', 'POST'])
     @login_required
@@ -252,7 +252,7 @@ def register_routes(app, db, bcrypt):
                     flash('Product data updated successfully')
                     return redirect(url_for('product_management'))
         else:
-            return redirect(url_for('auth_error'))
+            return redirect(url_for('auth_error', msg="Only the admin can access this page. Please try logging in again to continue."))
     
     @app.route('/product/delete/<pid>/', methods = ['GET', 'POST'])
     @login_required
@@ -265,12 +265,15 @@ def register_routes(app, db, bcrypt):
             flash('Product deleted successfully')
             return redirect(url_for('product_management'))
         else:
-            return redirect(url_for('auth_error'))
-
+            return redirect(url_for('auth_error', msg="Only the admin can access this page. Please try logging in again to continue."))
 # ---------------- Error pages -----------------------
 
-    @app.route('/auth_error')
-    def auth_error():
-        return render_template("error/auth-error.html")
+    @app.route('/auth_error/<msg>')
+    def auth_error(msg):
+        return render_template("error/auth-error.html", msg=msg)
+
+    @app.errorhandler(404)
+    def not_found(e):
+        return render_template('error/404.html'), 404
 
 

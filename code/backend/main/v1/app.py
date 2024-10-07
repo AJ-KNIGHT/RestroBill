@@ -27,7 +27,7 @@ def create_app():
     # custom Unautorized access page
     @login_manager.unauthorized_handler
     def unauthorized_callback():
-        return redirect(url_for('auth_error'))
+        return redirect(url_for('auth_error', msg="Only authorized users can access this page. Please log in to continue."))
 
     bcrypt = Bcrypt(app)
 
