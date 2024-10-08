@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+    <title>Error</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            text-align: center;
+            font-family: sans-serif;
+        }
+
+        .main-div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        h1 {
+            margin: 25px auto -8px;
+            color: #133e13;
+        }
+
+        p {
+            margin: -10px 0 25px;
+            color: #fe0b00;
+        }
+
+        .img-div {
+            width: 300px;
+            margin: 0 auto;
+        }
+
+        .img-div img {
+            width: 300px;
+        }
+
+        .login {
+            text-decoration: none;
+            color: #fff;
+            background-color: #007bff;
+            font-weight: 400;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+            padding: 10px 40px;
+            line-height: 1.5;
+            border-radius: 10px;
+            border: 0;
+        }
+
+        .login:hover {
+            background-color: #0069d9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-div">
+        <h1>{{ error }} error</h1>
+        <div class="img-div">
+            <img src="/images/warning.png">
+        </div>
+        <div>
+            {% if msg %}
+            <p>{{ msg }}</p>
+            {% endif %}
+            <a class="login" href="{{ url_for(page) }}">Return</a>
+        </div>
+    </div>
+</body>
+
+</html>

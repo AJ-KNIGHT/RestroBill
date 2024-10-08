@@ -68,7 +68,7 @@ def register_routes(app, db, bcrypt):
             return redirect(
                 url_for(
                     "auth_error",
-                    msg="Only the users can access this page. Please try logging in again to continue.",
+                    msg="Only the users can access this page, Please try logging in again to continue.",
                 )
             )
 
@@ -112,7 +112,7 @@ def register_routes(app, db, bcrypt):
             return redirect(
                 url_for(
                     "auth_error",
-                    msg="Only the users can access this page. Please try logging in again to continue.",
+                    msg="Only the users can access this page, Please try logging in again to continue.",
                 )
             )
 
@@ -170,7 +170,7 @@ def register_routes(app, db, bcrypt):
             return redirect(
                 url_for(
                     "auth_error",
-                    msg="Only the admin can access this page. Please try logging in again to continue.",
+                    msg="Only the admin can access this page, Please try logging in again to continue.",
                 )
             )
 
@@ -189,7 +189,7 @@ def register_routes(app, db, bcrypt):
             return redirect(
                 url_for(
                     "auth_error",
-                    msg="Only the admin can access this page. Please try logging in again to continue.",
+                    msg="Only the admin can access this page, Please try logging in again to continue.",
                 )
             )
 
@@ -205,23 +205,36 @@ def register_routes(app, db, bcrypt):
                     username = request.form["username"]
                     password = request.form["password"]
                     role = "user"
+                    
+                    user = Users.query.filter_by(username=username).first()
+                    if not user:
+                        
+                        hashed_password = bcrypt.generate_password_hash(password)
 
-                    hashed_password = bcrypt.generate_password_hash(password)
+                        new_user_data = Users(
+                            username=username, password=hashed_password, role=role
+                        )
+                        db.session.add(new_user_data)
+                        db.session.commit()
 
-                    new_user_data = Users(
-                        username=username, password=hashed_password, role=role
-                    )
-                    db.session.add(new_user_data)
-                    db.session.commit()
+                        flash("User inserted successfully")
 
-                    flash("User inserted successfully")
-
-                    return redirect(url_for("user_management"))
+                        return redirect(url_for("user_management"))
+                    else:
+                        #if user already exist
+                        return redirect(
+                            url_for(
+                                "custom_error",
+                                msg="The user already exists, Duplicate entries are not permitted.",
+                                error="Data duplication",
+                                page="user_management",
+                            )
+                        )
         else:
             return redirect(
                 url_for(
                     "auth_error",
-                    msg="Only the admin can access this page. Please try logging in again to continue.",
+                    msg="Only the admin can access this page, Please try logging in again to continue.",
                 )
             )
 
@@ -235,27 +248,36 @@ def register_routes(app, db, bcrypt):
                     and "password" in request.form.keys()
                 ):
                     data = Users.query.get(request.form.get("uid"))
+                    if data:
+                        if (
+                            request.form["username"].strip() != ""
+                            and request.form["username"].strip() != data.username
+                        ):
+                            data.username = request.form["username"]
 
-                    if (
-                        request.form["username"].strip() != ""
-                        and request.form["username"].strip() != data.username
-                    ):
-                        data.username = request.form["username"]
+                        elif request.form["password"].strip() != "":
+                            password = request.form["password"]
+                            hashed_password = bcrypt.generate_password_hash(password)
+                            data.password = hashed_password
 
-                    elif request.form["password"].strip() != "":
-                        password = request.form["password"]
-                        hashed_password = bcrypt.generate_password_hash(password)
-                        data.password = hashed_password
+                        db.session.commit()
 
-                    db.session.commit()
-
-                    flash("User data updated successfully")
-                    return redirect(url_for("user_management"))
+                        flash("User data updated successfully")
+                        return redirect(url_for("user_management"))
+                    else:
+                        return redirect(
+                            url_for(
+                                "custom_error",
+                                msg="The user you specified does not exist.",
+                                error="User not found",
+                                page="user_management",
+                            )
+                        )
         else:
             return redirect(
                 url_for(
                     "auth_error",
-                    msg="Only the admin can access this page. Please try logging in again to continue.",
+                    msg="Only the admin can access this page, Please try logging in again to continue.",
                 )
             )
 
@@ -271,14 +293,28 @@ def register_routes(app, db, bcrypt):
                     flash("User deleted successfully")
                     return redirect(url_for("user_management"))
                 else:
-                    return "Cannot delete admin user"
+                    return redirect(
+                        url_for(
+                            "custom_error",
+                            msg="Admin user cannot be deleted.",
+                            error="Deleting admin user",
+                            page="user_management",
+                        )
+                    )
             else:
-                return "User not found"
+                return redirect(
+                    url_for(
+                        "custom_error",
+                        msg="The user you specified does not exist.",
+                        error="User not found",
+                        page="user_management",
+                    )
+                )
         else:
             return redirect(
                 url_for(
                     "auth_error",
-                    msg="Only the admin can access this page. Please try logging in again to continue.",
+                    msg="Only the admin can access this page, Please try logging in again to continue.",
                 )
             )
 
@@ -297,7 +333,7 @@ def register_routes(app, db, bcrypt):
             return redirect(
                 url_for(
                     "auth_error",
-                    msg="Only the admin can access this page. Please try logging in again to continue.",
+                    msg="Only the admin can access this page, Please try logging in again to continue.",
                 )
             )
 
@@ -311,24 +347,37 @@ def register_routes(app, db, bcrypt):
                     and "category" in request.form.keys()
                     and "price" in request.form.keys()
                 ):
-                    name = request.form["name"]
-                    category = request.form["category"]
-                    price = float(request.form["price"])
+                    product = Products.query.filter_by(name=name).first()
+                    if not product:
+                        
+                        name = request.form["name"]
+                        category = request.form["category"]
+                        price = float(request.form["price"])
 
-                    new_product_data = Products(
-                        name=name, category=category, price=price
-                    )
-                    db.session.add(new_product_data)
-                    db.session.commit()
+                        new_product_data = Products(
+                            name=name, category=category, price=price
+                        )
+                        db.session.add(new_product_data)
+                        db.session.commit()
 
-                    flash("Product inserted successfully")
+                        flash("Product inserted successfully")
 
-                    return redirect(url_for("product_management"))
+                        return redirect(url_for("product_management"))
+                    else:
+                        #if product already exist
+                        return redirect(
+                            url_for(
+                                "custom_error",
+                                msg="The product item already exists, Duplicate entries are not permitted.",
+                                error="Data duplication",
+                                page="product_management",
+                            )
+                        )
         else:
             return redirect(
                 url_for(
                     "auth_error",
-                    msg="Only the admin can access this page. Please try logging in again to continue.",
+                    msg="Only the admin can access this page, Please try logging in again to continue.",
                 )
             )
 
@@ -343,34 +392,43 @@ def register_routes(app, db, bcrypt):
                     and "price" in request.form.keys()
                 ):
                     data = Products.query.get(request.form.get("pid"))
+                    if data:
+                        if (
+                            request.form["name"].strip() != ""
+                            and request.form["name"].strip() != data.name
+                        ):
+                            data.name = request.form["name"]
 
-                    if (
-                        request.form["name"].strip() != ""
-                        and request.form["name"].strip() != data.name
-                    ):
-                        data.name = request.form["name"]
+                        elif (
+                            request.form["category"].strip() != ""
+                            and request.form["category"].strip() != data.category
+                        ):
+                            data.category = request.form["category"]
 
-                    elif (
-                        request.form["category"].strip() != ""
-                        and request.form["category"].strip() != data.category
-                    ):
-                        data.category = request.form["category"]
+                        elif (
+                            request.form["price"] != 0
+                            and float(request.form["price"]) != data.price
+                        ):
+                            data.price = float(request.form["price"])
 
-                    elif (
-                        request.form["price"] != 0
-                        and float(request.form["price"]) != data.price
-                    ):
-                        data.price = float(request.form["price"])
+                        db.session.commit()
 
-                    db.session.commit()
-
-                    flash("Product data updated successfully")
-                    return redirect(url_for("product_management"))
+                        flash("Product data updated successfully")
+                        return redirect(url_for("product_management"))
+                    else:
+                        return redirect(
+                            url_for(
+                                "custom_error",
+                                msg="Product you specified does not exist.",
+                                error="Product not found",
+                                page="product_management",
+                            )
+                        )
         else:
             return redirect(
                 url_for(
                     "auth_error",
-                    msg="Only the admin can access this page. Please try logging in again to continue.",
+                    msg="Only the admin can access this page, Please try logging in again to continue.",
                 )
             )
 
@@ -379,16 +437,28 @@ def register_routes(app, db, bcrypt):
     def product_delete(pid):
         if current_user.role == "admin":
             data = Products.query.get(pid)
-            db.session.delete(data)
-            db.session.commit()
 
-            flash("Product deleted successfully")
-            return redirect(url_for("product_management"))
+            if data:
+                db.session.delete(data)
+                db.session.commit()
+
+                flash("Product deleted successfully")
+                return redirect(url_for("product_management"))
+            else:
+                return redirect(
+                    url_for(
+                        "custom_error",
+                        msg="Product you specified does not exist.",
+                        error="Product not found",
+                        page="product_management",
+                    )
+                )
+
         else:
             return redirect(
                 url_for(
                     "auth_error",
-                    msg="Only the admin can access this page. Please try logging in again to continue.",
+                    msg="Only the admin can access this page, Please try logging in again to continue.",
                 )
             )
 
@@ -401,3 +471,14 @@ def register_routes(app, db, bcrypt):
     @app.errorhandler(404)
     def not_found(e):
         return render_template("error/404.html"), 404
+
+    @app.errorhandler(500)
+    def internal_error(e):
+        return render_template("error/500.html"), 500
+
+    @app.route("/custom_error")
+    def custom_error():
+        msg = request.args.get('msg')
+        error = request.args.get('error')
+        page = request.args.get('page')
+        return render_template("error/custom-error.html", msg=msg, error=error, page=page)
