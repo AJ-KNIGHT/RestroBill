@@ -34,139 +34,141 @@
         </nav>
         </div>
     </header>
-        <div class="main">
-            <div class="head-div">
-                <h1> Product Management </h1>
+    <div class="main">
+        <div class="head-div">
+            <h1> Product Management </h1>
+        </div>
+        <div class="container">
+            <div class="row-head">
+                <h2>Manage <b>Products</b></h2>
+                <button id="insert-popup" type="button">Add New Product</button>
             </div>
-            <div class="container">
-                <div class="row-head">
-                    <h2>Manage <b>Products</b></h2>
-                    <button id="insert-popup" type="button">Add New Product</button>
+            {% with messages = get_flashed_messages() %}
+
+            {% if messages %}
+
+            {% for message in messages %}
+            <!-- flash mesg -->
+            <div class="flash-msg-div">
+                <div class="flash-msg">
+                    <span>
+                        {{ message }}
+                    </span>
+
+                    <button type="button" class="close-flash">
+                        <span>X</span>
+                    </button>
+
                 </div>
-                {% with messages = get_flashed_messages() %}
+            </div>
+            {% endfor %}
 
-                {% if messages %}
+            {% endif %}
 
-                {% for message in messages %}
-                <!-- flash mesg -->
-                <div class="flash-msg-div">
-                    <div class="flash-msg">
-                        <span>
-                            {{ message }}
-                        </span>
+            {% endwith %}
 
-                        <button type="button" class="close-flash">
-                            <span>X</span>
-                        </button>
+            <!-- table -->
+            <div class="row-body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                        <tr>
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.category }}</td>
+                            <td>₹ {{ product.price }}</td>
+                            <td>
+                                <button type="button" data-pid="{{ product.pid }}" data-name="{{ product.name }}"
+                                    data-category="{{ product.category }}" data-price="{{ product.price }}"
+                                    class="btn btn-edit update-popup">Edit</button>
+                                <button type="button" class="btn btn-delete"><a
+                                        href="/user/delete/{{ product.pid}}">Delete</a></button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
+    <!-- Update Popup -->
+    <div class="popup-container popup-container-update">
+        <div class="popup-div">
+            <div class="close-btn-div">
+                <button id="close-popup-update"><span class="close-icon">x</span></button>
+            </div>
+            <div class="popup-head">
+                <h4>Edit Product Information</h4>
+            </div>
+            <div class="form-div">
+                <form action="{{ url_for('product_update') }}" method="POST">
+                    <input type="hidden" id="input-pid" name="pid" value="1">
+                    <div class="form-group">
+                        <label for="name">Product Name</label>
+                        <input type="text" id="input-name" minlength="2" name="name"
+                            placeholder="Enter new product name">
                     </div>
-                </div>
-                {% endfor %}
 
-                {% endif %}
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <input type="text" id="input-category" name="category" minlength="2"
+                            placeholder="Enter category">
+                    </div>
 
-                {% endwith %}
-
-                <!-- table -->
-                <div class="row-body">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Product Name</th>
-                                <th>Category</th>
-                                <th>Price</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for product in products %}
-                            <tr>
-                                <td>{{ product.name }}</td>
-                                <td>{{ product.category }}</td>
-                                <td>₹ {{ product.price }}</td>
-                                <td>
-                                    <button type="button" data-pid="{{ product.pid }}" data-name="{{ product.name }}"
-                                    data-category="{{ product.category }}" data-price="{{ product.price }}" class="btn btn-edit update-popup">Edit</button>
-                                    <button type="button" class="btn btn-delete"><a
-                                            href="/user/delete/{{ product.pid}}">Delete</a></button>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+                    <div class="form-group">
+                        <label for="price">Price</label>
+                        <input type="number" id="input-price" name="price" placeholder="Enter price">
+                    </div>
+                    <div class="form-btn">
+                        <input type="submit" value="Update">
+                    </div>
+                </form>
             </div>
         </div>
+    </div>
 
-        <!-- Update Popup -->
-        <div class="popup-container popup-container-update">
-            <div class="popup-div">
-                <div class="close-btn-div">
-                    <button id="close-popup-update"><span class="close-icon">x</span></button>
-                </div>
-                <div class="popup-head">
-                    <h4>Edit Product Information</h4>
-                </div>
-                <div class="form-div">
-                    <form action="{{ url_for('product_update') }}" method="POST">
-                        <input type="hidden" id="input-pid" name="pid" value="1">
-                        <div class="form-group">
-                            <label for="name">Product Name</label>
-                            <input type="text" id="input-name" minlength="2" name="name"
-                                placeholder="Enter new product name">
-                        </div>
+    <!-- Insert Popup -->
+    <div class="popup-container popup-container-insert">
+        <div class="popup-div">
+            <div class="close-btn-div">
+                <button id="close-popup-insert"><span class="close-icon">x</span></button>
+            </div>
+            <div class="popup-head">
+                <h4>Add Product</h4>
+            </div>
+            <div class="form-div">
+                <form action="{{ url_for('product_insert') }}" method="POST">
+                    <div class="form-group">
+                        <label for="name">Product Name</label>
+                        <input type="text" name="name" minlength="2" placeholder="Enter product name"
+                            required="required">
+                    </div>
 
-                        <div class="form-group">
-                            <label for="category">Category</label>
-                            <input type="text" id="input-category" name="category"
-                             minlength="2" placeholder="Enter category">
-                        </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <input type="text" name="category" minlength="2" placeholder="Enter category"
+                            required="required">
+                    </div>
 
-                        <div class="form-group">
-                            <label for="price">Price</label>
-                            <input type="number" id="input-price" name="price"
-                                placeholder="Enter price">
-                        </div>
-                        <div class="form-btn">
-                            <input type="submit" value="Update">
-                        </div>
-                    </form>
-                </div>
+                    <div class="form-group">
+                        <label for="price">Category</label>
+                        <input type="number" name="price" placeholder="Enter price" required="required">
+                    </div>
+                    <div class="form-btn">
+                        <input type="submit" value="Add Product">
+                    </div>
+                </form>
             </div>
         </div>
-
-        <!-- Insert Popup -->
-        <div class="popup-container popup-container-insert">
-            <div class="popup-div">
-                <div class="close-btn-div">
-                    <button id="close-popup-insert"><span class="close-icon">x</span></button>
-                </div>
-                <div class="popup-head">
-                    <h4>Add Product</h4>
-                </div>
-                <div class="form-div">
-                    <form action="{{ url_for('product_insert') }}" method="POST">
-                        <div class="form-group">
-                            <label for="name">Product Name</label>
-                            <input type="text" name="name" minlength="2" placeholder="Enter product name" required="required">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="category">Category</label>
-                            <input type="text" name="category" minlength="2" placeholder="Enter category" required="required">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="price">Category</label>
-                            <input type="number" name="price" placeholder="Enter price" required="required">
-                        </div>
-                        <div class="form-btn">
-                            <input type="submit" value="Add Product">
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+    </div>
 </body>
 <script src="/js/pdt-mng.js"></script>
 

@@ -339,15 +339,19 @@ body {
     top: -3px;
     border-radius: 8px;
     opacity: 0;
-    transform: translateY(-10px); /* Initial position for sliding effect */
-    transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth transition */
+    transform: translateY(-10px);
+    /* Initial position for sliding effect */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    /* Smooth transition */
 }
 
 .profile-div.show {
     display: flex;
     opacity: 1;
-    transform: translateY(0); /* Slide to its original position */
-    pointer-events: auto; /* Enable interaction when visible */
+    transform: translateY(0);
+    /* Slide to its original position */
+    pointer-events: auto;
+    /* Enable interaction when visible */
 }
 
 .profile-div a {
@@ -386,6 +390,7 @@ body {
     background-color: #00000070;
     transition: opacity .15s linear;
 }
+
 .popup-div {
     position: relative;
     display: flex;
@@ -521,4 +526,3 @@ body {
 .blur {
     filter: blur(5px)
 }
-

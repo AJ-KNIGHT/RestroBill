@@ -7,14 +7,14 @@
     <link rel="icon" href="/images/favicon.png" type="image/png">
     <link rel="stylesheet" href="/css/login.css">
     <title>Login</title>
-	<link rel="stylesheet" type="text/css" href="/fonts/iconic/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" type="text/css" href="/fonts/iconic/css/material-design-iconic-font.min.css">
 </head>
 
 <body>
     <div class="main">
         <div class="container">
 
-<!----------------- form begin ------------------>
+            <!----------------- form begin ------------------>
             <form class="login-form" action="{{ url_for('login') }}" method="POST">
                 <span class="form-heading">Login</span>
 
@@ -31,18 +31,18 @@
                 </div>
 
                 {% with messages = get_flashed_messages() %}
-                    {% if messages %}
-                        {% for message in messages %}
-                            <!-- flash mesg -->
-                            <div class="flash-msg-div">
-                                <div class="flash-msg">
-                                    <span>
-                                        {{ message }}
-                                    </span>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
+                {% if messages %}
+                {% for message in messages %}
+                <!-- flash mesg -->
+                <div class="flash-msg-div">
+                    <div class="flash-msg">
+                        <span>
+                            {{ message }}
+                        </span>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
                 {% endwith %}
 
                 <div class="form-btn">

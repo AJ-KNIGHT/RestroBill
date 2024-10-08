@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,11 +16,13 @@
             text-align: center;
             font-family: sans-serif;
         }
-        h1{
+
+        h1 {
             margin: 25px auto -8px;
             color: #133e13;
         }
-        p{
+
+        p {
             margin: -60px 0 18px;
             color: #fe0b00;
         }
@@ -28,7 +31,7 @@
             width: 500px;
             margin: 0 auto;
         }
-        
+
         .img-div img {
             width: 500px;
         }
@@ -46,12 +49,13 @@
             border-radius: 10px;
             border: 0;
         }
-        
+
         .login:hover {
             background-color: #218838;
         }
     </style>
 </head>
+
 <body>
     <div>
         <h1>AUTHENTICATION ERROR</h1>
@@ -59,11 +63,12 @@
             <img src="/images/auth-error.jpg">
         </div>
         <div>
-        {% if msg %}
+            {% if msg %}
             <p>{{ msg }}</p>
-        {% endif %}
+            {% endif %}
             <a class="login" href="{{ url_for('login') }}">Login</a>
         </div>
     </div>
 </body>
+
 </html>

@@ -6,15 +6,21 @@ from flask_bcrypt import Bcrypt
 
 db = SQLAlchemy()
 
+
 def create_app():
-    app = Flask(__name__, template_folder='templates', static_folder='static', static_url_path='/')
+    app = Flask(
+        __name__,
+        template_folder="templates",
+        static_folder="static",
+        static_url_path="/",
+    )
     # db config
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./app.db'
-    app.secret_key = 'resturant-app-secret-key'
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///./app.db"
+    app.secret_key = "resturant-app-secret-key"
 
     db.init_app(app)
 
-    #login manager
+    # login manager
     login_manager = LoginManager()
     login_manager.init_app(app)
 
@@ -27,11 +33,17 @@ def create_app():
     # custom Unautorized access page
     @login_manager.unauthorized_handler
     def unauthorized_callback():
-        return redirect(url_for('auth_error', msg="Only authorized users can access this page. Please log in to continue."))
+        return redirect(
+            url_for(
+                "auth_error",
+                msg="Only authorized users can access this page. Please log in to continue.",
+            )
+        )
 
     bcrypt = Bcrypt(app)
 
     from routes import register_routes
+
     register_routes(app, db, bcrypt)
 
     migrate = Migrate(app, db)

@@ -1,11 +1,13 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
+
 body {
     font-family: Arial, sans-serif;
 }
+
 .div-body {
     width: 100vw;
     height: 100vh;
@@ -14,51 +16,54 @@ body {
 
 
 /* ------------------------ dashboard style ------------------------ */
-.container{
+.container {
     display: flex;
-    justify-content:space-evenly;
+    justify-content: space-evenly;
     background-color: whitesmoke;
     height: 89.05%;
 }
-.cards{
+
+.cards {
     /* background-color: #68d2e8d1; */
-    background-color: rgba(104, 210, 232,0.82);
+    background-color: rgba(104, 210, 232, 0.82);
     height: 300px;
     width: 300px;
     margin: 150px 50px 50px 50px;
     border-radius: 15px;
-    box-shadow: 0 0px 10px rgba(104, 210, 232,0.52);
+    box-shadow: 0 0px 10px rgba(104, 210, 232, 0.52);
 }
-.cards:hover{
 
-    box-shadow: 0 0px 20px rgba(104, 210, 232,1.0);
+.cards:hover {
+
+    box-shadow: 0 0px 20px rgba(104, 210, 232, 1.0);
     cursor: pointer;
 }
+
 .cards .icon {
     width: 150px;
     height: 150px;
-    border-radius:50% ;
+    border-radius: 50%;
     background-color: white;
     margin: 25px auto 20px;
     background-repeat: no-repeat;
     background-size: 100px;
-    background-position:center ;
+    background-position: center;
 }
 
-.icon-database{
+.icon-database {
     background-image: url('/images/database-icon.png');
 
 }
 
-.icon-user{
+.icon-user {
     background-image: url('/images/user-icon.png');
 }
 
-.icon-report{
+.icon-report {
     background-image: url('/images/report-icon.png');
 }
 
-.cards h3{
+.cards h3 {
     color: white;
     font-size: 30px;
     text-align: center;

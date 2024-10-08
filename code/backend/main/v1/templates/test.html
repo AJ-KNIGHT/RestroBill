@@ -10,6 +10,7 @@
             margin: 0;
             padding: 0;
         }
+
         body {
             font-family: Arial, sans-serif;
             font-size: 14px;
@@ -18,12 +19,14 @@
 
         .bill {
             border: 1px solid black;
-            width: 84mm;;
+            width: 84mm;
+            ;
             /* Reduce the width for a receipt-like layout */
             height: auto;
             text-align: center;
             padding: 5px;
         }
+
         img {
             margin-top: 5px;
             width: 80px;
@@ -95,11 +98,13 @@
             /* Ensures content doesn't overflow the cell */
             text-overflow: ellipsis;
         }
+
         .pay {
             display: flex;
             justify-content: space-between;
             text-align: left;
         }
+
         .pay span {
             word-wrap: break-word;
             white-space: normal;
@@ -115,14 +120,14 @@
 <body>
     <div class="bill">
         <div>
-               <img src="{{ url_for('static', filename='images/bill-icon.png', _external=True) }}">
+            <img src="{{ url_for('static', filename='images/bill-icon.png', _external=True) }}">
         </div>
         <h2>Aboos Restaurant</h2>
         <span class="mar-b-20 addr">Palakkad Road, Pattambi</span>
         <span class="dotted-top dotted-down p-2">Bill</span>
         <div class="p-10 dotted-down">
             <span>Date: {{ date_time }}</span>
-<!--
+            <!--
             <span>Date: 08/09/24 02:20 PM</span>
 -->
             <span>Staff Name: {{ username }}</span>
@@ -139,14 +144,14 @@
             </thead>
             <tbody>
                 {% for key, item in items.items() %}
-                    <tr>
-                        <td>{{ loop.index }}</td>
-                        <td>{{ item.product }}</td>
-                        <td>{{ item.qty }}</td>
-                        <td>{{ item.mrp }}</td>
-                        <td>{{ item.price }}</td>
-                    </tr>
-                {% endfor %}  
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ item.product }}</td>
+                    <td>{{ item.qty }}</td>
+                    <td>{{ item.mrp }}</td>
+                    <td>{{ item.price }}</td>
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
         <h4 class="mar-b-10">

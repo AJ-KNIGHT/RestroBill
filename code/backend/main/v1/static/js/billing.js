@@ -259,7 +259,7 @@ window.addEventListener("click", function (event) {
 
 // Change box set value
 // Add an event listener for input changes on inputAmount
-inputAmount.addEventListener('input', function() {
+inputAmount.addEventListener('input', function () {
     let amount = Number(this.value);
     if (amount > totalAmount) {
         change.value = "₹" + (amount - totalAmount).toFixed(2);
@@ -269,7 +269,7 @@ inputAmount.addEventListener('input', function() {
 });
 
 // Update total amount based on discount input
-discountInput.addEventListener('input', function() {
+discountInput.addEventListener('input', function () {
     let discountValue = Number(this.value) || 0; // Get discount value or 0 if empty
 
     // Ensure discount does not exceed total amount
@@ -342,7 +342,7 @@ function printbill(htmlContent) {
     doc.close();
 
     // Wait for the iframe to load and then print
-    iframe.onload = function() {
+    iframe.onload = function () {
         const printWindow = iframe.contentWindow || iframe.contentDocument.defaultView;
         if (printWindow) {
             printWindow.print(); // Call print on the iframe's window
@@ -355,46 +355,46 @@ function printbill(htmlContent) {
 
 
 // print button
-document.getElementById("print").addEventListener("click", function() {
+document.getElementById("print").addEventListener("click", function () {
     if (print_validate()) {
         getCart();
-    if (Object.keys(cart).length === 0) {
-        alert("Product item not Selected");
-        return; // Exit the function if cart is empty
-    }
-
-    cart["payment"] = {
-        "paytype": payment.value,
-        "discount": discountInput.value,
-        "total": totalAmount,
-        "tendered": inputAmount.value,
-        "change": change.value
-    };
-
-    $.ajax({
-        url: "/print-bill",
-        type: "POST",
-        contentType: "application/json",
-        data: JSON.stringify(cart),
-        dataType: "html", // Set `dataType` to "html" to expect HTML response
-        success: function(response) {
-            if (response) {
-                printbill(response)
-                var result = window.confirm("   Bill printed successfully!\n   You want to clear bill items?");
-                if (result) {
-                    // User clicked "OK"
-                    refreshTable();  // Clears the table
-                    updateTotal(0);  // Resets the total to 0
-                    cart = {};  // Reset the cart
-                    document.getElementById('close-popup').click();
-                }
-            }
-        },
-        error: function(error) {
-            console.log("error");
+        if (Object.keys(cart).length === 0) {
+            alert("Product item not Selected");
+            return; // Exit the function if cart is empty
         }
-    });
-  }
+
+        cart["payment"] = {
+            "paytype": payment.value,
+            "discount": discountInput.value,
+            "total": totalAmount,
+            "tendered": inputAmount.value,
+            "change": change.value
+        };
+
+        $.ajax({
+            url: "/print-bill",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(cart),
+            dataType: "html", // Set `dataType` to "html" to expect HTML response
+            success: function (response) {
+                if (response) {
+                    printbill(response)
+                    var result = window.confirm("   Bill printed successfully!\n   You want to clear bill items?");
+                    if (result) {
+                        // User clicked "OK"
+                        refreshTable();  // Clears the table
+                        updateTotal(0);  // Resets the total to 0
+                        cart = {};  // Reset the cart
+                        document.getElementById('close-popup').click();
+                    }
+                }
+            },
+            error: function (error) {
+                console.log("error");
+            }
+        });
+    }
 });
 
 // keyboard shortcuts
