@@ -41,6 +41,9 @@
         <div class="container">
             <div class="row-head">
                 <h2>Manage <b>Products</b></h2>
+                <div class="count-div">
+                    <span>Product Count : {{ count }}</span>
+                </div>
                 <button id="insert-popup" type="button">Add New Product</button>
             </div>
             {% with messages = get_flashed_messages() %}

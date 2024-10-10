@@ -184,6 +184,7 @@ def register_routes(app, db, bcrypt):
                 "/dashboard/user_managment.html",
                 username=current_user.username,
                 users=user_data,
+                count=len(user_data),
             )
         else:
             return redirect(
@@ -324,10 +325,12 @@ def register_routes(app, db, bcrypt):
     def product_management():
         if current_user.role == "admin":
             product_data = Products.query.all()
+            print(product_data)
             return render_template(
                 "/dashboard/product_managment.html",
                 username=current_user.username,
                 products=product_data,
+                count=len(product_data),
             )
         else:
             return redirect(
@@ -347,13 +350,13 @@ def register_routes(app, db, bcrypt):
                     and "category" in request.form.keys()
                     and "price" in request.form.keys()
                 ):
+                    name = request.form["name"]
+                    category = request.form["category"]
+                    price = float(request.form["price"])
+                    
                     product = Products.query.filter_by(name=name).first()
                     if not product:
                         
-                        name = request.form["name"]
-                        category = request.form["category"]
-                        price = float(request.form["price"])
-
                         new_product_data = Products(
                             name=name, category=category, price=price
                         )
