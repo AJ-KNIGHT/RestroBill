@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+    <title>Auth Error</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            text-align: center;
+            font-family: sans-serif;
+        }
+
+        h1 {
+            margin: 25px auto -8px;
+            color: #133e13;
+        }
+
+        p {
+            margin: -60px 0 18px;
+            color: #fe0b00;
+        }
+
+        .img-div {
+            width: 500px;
+            margin: 0 auto;
+        }
+
+        .img-div img {
+            width: 500px;
+        }
+
+        .login {
+            text-decoration: none;
+            color: #fff;
+            background-color: #28a745;
+            font-weight: 400;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+            padding: 10px 40px;
+            line-height: 1.5;
+            border-radius: 10px;
+            border: 0;
+        }
+
+        .login:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h1>AUTHENTICATION ERROR</h1>
+        <div class="img-div">
+            <img src="/images/auth-error.jpg">
+        </div>
+        <div>
+            {% if msg %}
+            <p>{{ msg }}</p>
+            {% endif %}
+            <a class="login" href="{{ url_for('login') }}">Login</a>
+        </div>
+    </div>
+</body>
+
+</html>

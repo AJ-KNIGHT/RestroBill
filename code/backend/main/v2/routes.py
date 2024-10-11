@@ -48,17 +48,6 @@ def register_routes(app, db, bcrypt):
         logout_user()
         return redirect(url_for("login"))
 
-    # ---------------- billing page -----------------------
-
-    # billing page
-    # @app.route('/billig/<uid>')
-    # @login_required
-    # def billing(uid):
-    #     if current_user.role == 'user':
-    #         return 'Billing page'
-    #     else:
-    #         return "Access Denied"
-
     @app.route("/billing")
     @login_required
     def billing():
