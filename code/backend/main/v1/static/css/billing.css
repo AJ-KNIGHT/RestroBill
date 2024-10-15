@@ -275,6 +275,12 @@ body {
     background-color: #797979;
 }
 
+.row-name, .row-qty, .row-mrp, .row-price { 
+    word-wrap: break-word;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 /* side div  */
 .side-div {

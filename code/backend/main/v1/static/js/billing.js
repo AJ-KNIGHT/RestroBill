@@ -64,16 +64,16 @@ function addRow(name, price, pid) {
         newRow.innerHTML = `
             <td><div class="remove-icon" onclick='removeRow(this)'><img src="/images/close.png" alt="Remove"></div></td>
             <td>${newSiNo}</td>
-            <td>${name}</td>
-            <td>
+            <td class="row-name" style="width: 170px;">${name}</td>
+            <td class="row-qty" style="width: 250px;">
                 <div class="number-input">
                     <button class="minus">-</button>
                     <input type="number" value="${quantity}" min="0" max="100" step="1">
                     <button class="plus">+</button>
                 </div>
             </td>
-            <td>₹${price}</td>
-            <td>₹${(quantity * price).toFixed(2)}</td>
+            <td class="row-mrp" style="width: 100px;">₹${price}</td>
+            <td class="row-price" style="width: 110px;">₹${(quantity * price).toFixed(2)}</td>
         `;
         document.querySelector(".table-list tbody").appendChild(newRow);
         // Clear the input field, assuming `this` refers to the input field
@@ -351,6 +351,15 @@ function printbill(htmlContent) {
         }
         document.body.removeChild(iframe); // Clean up by removing the iframe
     };
+
+    var result = window.confirm("   Bill printed successfully!\n   You want to clear bill items?");
+    if (result) {
+        // User clicked "OK"
+        refreshTable();  // Clears the table
+        updateTotal(0);  // Resets the total to 0
+        cart = {};  // Reset the cart
+        document.getElementById('close-popup').click();
+    }
 };
 
 
@@ -380,14 +389,6 @@ document.getElementById("print").addEventListener("click", function () {
             success: function (response) {
                 if (response) {
                     printbill(response)
-                    var result = window.confirm("   Bill printed successfully!\n   You want to clear bill items?");
-                    if (result) {
-                        // User clicked "OK"
-                        refreshTable();  // Clears the table
-                        updateTotal(0);  // Resets the total to 0
-                        cart = {};  // Reset the cart
-                        document.getElementById('close-popup').click();
-                    }
                 }
             },
             error: function (error) {

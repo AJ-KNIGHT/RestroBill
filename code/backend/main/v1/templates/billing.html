@@ -9,7 +9,7 @@
     <title>BILLING PAGE</title>
 </head>
 
-<body>
+<body style="visibility: hidden;">
     <div class="div-body">
         <header>
             <nav class="navbar">
@@ -127,6 +127,11 @@
     </div>
     <script src="/js/jquery-3.7.1.min.js"></script>
     <script src="/js/billing.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.style.visibility = 'visible';
+        });
+    </script>
 </body>
 
 </html>
