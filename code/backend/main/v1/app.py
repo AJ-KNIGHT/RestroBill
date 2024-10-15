@@ -16,7 +16,7 @@ def create_app():
     )
     # db config
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///./app.db"
-    app.secret_key = "resturant-app-secret-key"
+    app.secret_key = "RestroBill-webapp-secret-key"
 
     db.init_app(app)
 
