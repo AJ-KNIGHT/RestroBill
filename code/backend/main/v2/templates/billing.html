@@ -9,7 +9,7 @@
     <title>BILLING PAGE</title>
 </head>
 
-<body>
+<body style="visibility: hidden;">
     <div class="div-body">
         <header>
             <nav class="navbar">
@@ -34,7 +34,7 @@
                 <a href="{{ url_for('logout') }}">Logout</a>
             </div>
             <div class="search">
-                <input type="text" onkeyup="liveSearch(this.value)" placeholder="search products" />
+                <input type="text" name="livesearchbox" onkeyup="liveSearch(this.value)" placeholder="search products" />
                 <div class="list-items">
                     <!-- list item here -->
                 </div>
@@ -97,19 +97,19 @@
                             </div>
 
                             <div class="form-group mar-l-5 w-50">
-                                <label for="discount">Discount</label>
-                                <input type="number" id="input-discount" minlength="2" name="discount"
+                                <label for="input-discount">Discount</label>
+                                <input type="number" id="input-discount" minlength="2" name="input-discount"
                                     placeholder="Discount" value="0.0">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="total">Total Amount</label>
-                            <input type="text" name="total" id="total-Amount" readonly>
+                            <label for="total-Amount">Total Amount</label>
+                            <input type="text" name="total-Amount" id="total-Amount" readonly>
                         </div>
 
                         <div class="form-group">
-                            <label for="TenderedAmount">Tendered Amount</label>
-                            <input type="number" id="input-amount" name="TenderedAmount" minlength="2"
+                            <label for="input-amount">Tendered Amount</label>
+                            <input type="number" id="input-amount" name="input-amount" minlength="2"
                                 placeholder="Enter amount" required>
                         </div>
 
@@ -127,6 +127,11 @@
     </div>
     <script src="/js/jquery-3.7.1.min.js"></script>
     <script src="/js/billing.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.style.visibility = 'visible';
+        });
+    </script>
 </body>
 
 </html>

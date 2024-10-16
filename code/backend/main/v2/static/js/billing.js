@@ -64,16 +64,16 @@ function addRow(name, price, pid) {
         newRow.innerHTML = `
             <td><div class="remove-icon" onclick='removeRow(this)'><img src="/images/close.png" alt="Remove"></div></td>
             <td>${newSiNo}</td>
-            <td>${name}</td>
-            <td>
+            <td class="row-name" style="width: 170px;">${name}</td>
+            <td class="row-qty" style="width: 250px;">
                 <div class="number-input">
                     <button class="minus">-</button>
                     <input type="number" value="${quantity}" min="0" max="100" step="1">
                     <button class="plus">+</button>
                 </div>
             </td>
-            <td>₹${price}</td>
-            <td>₹${(quantity * price).toFixed(2)}</td>
+            <td class="row-mrp" style="width: 100px;">₹${price}</td>
+            <td class="row-price" style="width: 110px;">₹${(quantity * price).toFixed(2)}</td>
         `;
         document.querySelector(".table-list tbody").appendChild(newRow);
         // Clear the input field, assuming `this` refers to the input field
@@ -278,7 +278,7 @@ discountInput.addEventListener('input', function () {
         this.value = "0.0";
         discountValue = "0.0";
         totalAmount_content.value = main_total;
-    } else if (discountValue <= 0) {
+    } else if (discountValue < 0) {
         totalAmount_content.value = main_total;
         this.value = "0.0";
     } else {
@@ -327,8 +327,10 @@ function getCart() {
     });
 }
 
-//print bill
+
+// Print bill function
 function printbill(htmlContent) {
+    let popup_of = false;
     const iframe = document.createElement('iframe');
     iframe.style.display = 'none'; // Hide the iframe
 
@@ -345,14 +347,33 @@ function printbill(htmlContent) {
     iframe.onload = function () {
         const printWindow = iframe.contentWindow || iframe.contentDocument.defaultView;
         if (printWindow) {
-            printWindow.print(); // Call print on the iframe's window
-        } else {
-            console.error("Could not access the print window.");
+            // Listen for the after print event
+            printWindow.onafterprint = function () {
+                // Show confirmation dialog after print dialog is closed
+                popup_of = handlePrintConfirmation();
+            };
+            printWindow.print();// Call print on the iframe's window
         }
-        document.body.removeChild(iframe); // Clean up by removing the iframe
-    };
-};
+        document.body.removeChild(iframe);// Clean up by removing the iframe
 
+        if (popup_of){
+            document.getElementById('close-popup').click();
+        }
+    };
+}
+
+// Function to handle confirmation after printing
+function handlePrintConfirmation() {
+    var result = window.confirm("   Bill printed successfully!\n   You want to clear bill items?");
+    if (result) {
+        // User clicked "OK"
+        refreshTable();  // Clears the table
+        updateTotal(0);  // Resets the total to 0
+        cart = {};  // Reset the cart
+        //document.getElementById('close-popup').click();
+        return true;
+    }
+}
 
 // print button
 document.getElementById("print").addEventListener("click", function () {
@@ -380,14 +401,6 @@ document.getElementById("print").addEventListener("click", function () {
             success: function (response) {
                 if (response) {
                     printbill(response)
-                    var result = window.confirm("   Bill printed successfully!\n   You want to clear bill items?");
-                    if (result) {
-                        // User clicked "OK"
-                        refreshTable();  // Clears the table
-                        updateTotal(0);  // Resets the total to 0
-                        cart = {};  // Reset the cart
-                        document.getElementById('close-popup').click();
-                    }
                 }
             },
             error: function (error) {
@@ -396,24 +409,3 @@ document.getElementById("print").addEventListener("click", function () {
         });
     }
 });
-
-// keyboard shortcuts
-// $(document).keydown(function(event) {
-//     if (event.ctrlKey) {
-//       switch (event.key) {
-//         case 'o':
-//           // Handle Ctrl+S for saving
-//           console.log("Ctrl+o pressed");
-//           break;
-//         case '.':
-//           // Handle Ctrl+N for creating a new item
-//           console.log("Ctrl+. pressed");
-//           break;
-//         case 'd':
-//           // Handle Ctrl+D for deleting the selected item
-//           console.log("Ctrl+d pressed");
-//           break;
-//         // Add more shortcuts as needed
-//       }
-//     }
-//   });

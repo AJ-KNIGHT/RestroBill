@@ -26,6 +26,10 @@
     width: 70px;
 }
 
+.nav-head {
+    margin-left: 40vh;
+}
+
 .nav-links {
     display: flex;
     align-items: center;
