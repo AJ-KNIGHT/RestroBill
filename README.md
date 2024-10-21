@@ -95,6 +95,5 @@ Bill printing
 
 ## Demo Video (All features included) :
 
-<video controls width=100%>
-  <source  src="https://github.com/AJ-KNIGHT/RestroBill/raw/refs/heads/main/code/backend/main/v1/demo-files/videos/demo.mp4">
-</video>
+![Demo GIF](https://raw.githubusercontent.com/AJ-KNIGHT/RestroBill/refs/heads/main/code/backend/main/v1/demo-files/demo.gif)
+
