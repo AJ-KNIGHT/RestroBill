@@ -9,7 +9,7 @@
 [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/AJ-KNIGHT/RestroBill?include_prereleases&label=Preview&logo=Github)](https://github.com/AJ-KNIGHT/RestroBill/releases/)
 
 
-## Made With
+## 🛠️ Made With
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
 ![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
@@ -22,12 +22,12 @@
 </div>
 
 
-## About RestroBill
+## 🍽️ About RestroBill
 
 <b>RestroBill</b> is a user-friendly web application designed for restaurant billing. It allows multiple users to manage orders and payments efficiently. With an easy-to-use admin dashboard, you can manage users and products effortlessly.
 
 
-## 📖 Features
+## ✨ Features
 
 - Multi-user billing: Supports multiple users for simultaneous order processing.
 - Admin dashboard
@@ -58,7 +58,7 @@ To set up this web application, follow these steps:
 Open any browser and navigate to `localhost:5000`
 
 
-## Usage Information
+## 📖 Usage Information
 #### Server Info :
 - Default Serving Port : 5000
 - Serving IP :
@@ -95,6 +95,5 @@ Bill printing
 
 ## Demo Video (All features included) :
 
-<video controls width=100%>
-  <source  src="https://github.com/AJ-KNIGHT/RestroBill/raw/refs/heads/main/code/backend/main/v1/demo-files/videos/demo.mp4">
-</video>
+![Demo GIF](https://raw.githubusercontent.com/AJ-KNIGHT/RestroBill/refs/heads/main/code/backend/main/v1/demo-files/demo.gif)
+
